@@ -18,13 +18,13 @@ ExportedObj/
 *.booproj
 *.svd
 
+# Dont commit vim swap files
 *~
 # AGILES231 added
-*.meta
-TEMP
-Standard\ Assets
-UnityVS
-Assets/Editor/CrossPlatformInput
+Assets/TEMP*
+Standard\ Assets*
+UnityVS*
+Assets/Editor/CrossPlatformInput*
 /ProjectSettings/ProjectSettings.asset
 
 # Unity3D generated meta files

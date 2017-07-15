@@ -7,6 +7,8 @@ public class PlayerController : NetworkBehaviour {
     bool isAlive;
     public GameObject cameraObj; // this is where the player camera will be held
     private CharacterController characterController; // character controller of parent object
+    [SerializeField]
+    private float gravityMultiplier;
 
     public float xSensitivity = 1.0f;
     public float ySensitivity = 1.0f;
@@ -59,6 +61,7 @@ public class PlayerController : NetworkBehaviour {
                                characterController.height, Physics.AllLayers, QueryTriggerInteraction.Ignore)) {
                 desiredMove = Vector3.ProjectOnPlane(desiredMove, hitInfo.normal).normalized; // only project if there was a hit
             }
+            desiredMove += Physics.gravity*gravityMultiplier*Time.fixedDeltaTime;
             Vector3 move = desiredMove * speed;
             // TODO: add speed tracking to eliminate slowness down slopes
             // TODO: track collisions from character controller
