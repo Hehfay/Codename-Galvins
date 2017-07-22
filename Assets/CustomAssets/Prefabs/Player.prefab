@@ -44,6 +44,9 @@ GameObject:
   - component: {fileID: 114821206141654580}
   - component: {fileID: 114893286227630428}
   - component: {fileID: 143438852984776208}
+  - component: {fileID: 114110501453686674}
+  - component: {fileID: 114573522933362164}
+  - component: {fileID: 114522780988060810}
   - component: {fileID: 54127999334631000}
   - component: {fileID: 82910769924033814}
   m_Layer: 0
@@ -263,6 +266,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
+--- !u!114 &114110501453686674
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1818343121984686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a1ab8904e793aa4b978197878244e14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  crossHairRaw: {fileID: 4900000, guid: 467074da7dfd9634ab2ecefa20a9e5a9, type: 3}
 --- !u!114 &114221277192922378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -295,6 +310,60 @@ MonoBehaviour:
     i15: 110
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114522780988060810
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1818343121984686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a85431f1226b847be19cf13317c001, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  leftHandIndex: 0
+  rightHandIndex: 0
+  leftHand:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 114168747689480784, guid: 4e2dc2c7fbf919342ab8c488541195db, type: 2}
+  rightHand:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 114223261747067220, guid: a5bfa42208d8f9048946515823b9d56f, type: 2}
+  armor: []
+  loot:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  equipped: {fileID: 0}
+  itemCount: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  leftHandItemCount: 00000000000000000000000000000000
+  rightHandItemCount: 00000000000000000000000000000000
+--- !u!114 &114573522933362164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1818343121984686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b4b0bc9f14fba14aa9ed49c705a9415, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &114821206141654580
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -337,6 +406,7 @@ MonoBehaviour:
   runSpeed: 4
   sprintSpeed: 10
   jumpSpeed: 6
+  shouldRotate: 0
 --- !u!136 &136662574323652708
 CapsuleCollider:
   m_ObjectHideFlags: 1
