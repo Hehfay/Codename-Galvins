@@ -328,10 +328,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraObj: {fileID: 0}
   gravityMultiplier: 2
+  frictionCoeff: 8
   xSensitivity: 200
   ySensitivity: 200
-  walkSpeed: 5
-  runSpeed: 10
+  accelRate: 15
+  strafeMultiplier: 0.5
+  walkSpeed: 1.4
+  runSpeed: 4
+  sprintSpeed: 10
+  jumpSpeed: 6
 --- !u!136 &136662574323652708
 CapsuleCollider:
   m_ObjectHideFlags: 1
@@ -357,7 +362,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 1.8
   m_Radius: 0.5
-  m_SlopeLimit: 90
+  m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0
