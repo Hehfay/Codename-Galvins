@@ -22,6 +22,8 @@ public class PlayerController : NetworkBehaviour {
     public float sprintSpeed = 10.0f;
     public float jumpSpeed = 3.0f; // average jump speed of human
 
+    bool shouldRotate;
+
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
         // get the character controller of parent object
@@ -34,6 +36,7 @@ public class PlayerController : NetworkBehaviour {
             this.transform.position = new Vector3(pos.x, hit.point.y + (height / 2), pos.z); // set the player to land on the ground beneath
         }
         isAlive = true;
+        shouldRotate = true;
         // setup camera
         accelRate += frictionCoeff;
         cameraObj = new GameObject();
@@ -43,6 +46,9 @@ public class PlayerController : NetworkBehaviour {
         Camera.main.GetComponent<PlayerCamera>().setTarget(cameraObj.transform);
     }
     void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape)) {
+            shouldRotate = !shouldRotate;
+        }
     }
     public void FixedUpdate() {
         if (!isLocalPlayer) {
@@ -52,9 +58,11 @@ public class PlayerController : NetworkBehaviour {
             // rotate camera(vertical) and model(horizontal)
             float xRot = Input.GetAxis("Mouse Y") * Time.deltaTime * xSensitivity; // get rotate input
             float yRot = Input.GetAxis("Mouse X") * Time.deltaTime * ySensitivity; // get rotate input
-            transform.Rotate(0f, yRot, 0f, Space.World);
-            // have to clamp rotation around xAxis (vertical look)
-            RotateXAxisClampedBidirectionally(-xRot, 70);
+            if (shouldRotate) {
+                transform.Rotate(0f, yRot, 0f, Space.World);
+                // have to clamp rotation around xAxis (vertical look)
+                RotateXAxisClampedBidirectionally(-xRot, 70);
+            }
 
             // do translational movement
             float x = Input.GetAxis("Horizontal"); // get input
