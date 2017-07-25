@@ -397,16 +397,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraObj: {fileID: 0}
   gravityMultiplier: 2
-  frictionCoeff: 8
-  xSensitivity: 200
-  ySensitivity: 200
-  accelRate: 15
+  frictionCoeff: 25
+  stickyCoeff: 10
+  xSensitivity: 100
+  ySensitivity: 100
+  accelRate: 35
   strafeMultiplier: 0.5
   walkSpeed: 1.4
   runSpeed: 4
   sprintSpeed: 10
-  jumpSpeed: 6
-  shouldRotate: 0
+  jumpSpeed: 5
+  minSpeed: 0.1
 --- !u!136 &136662574323652708
 CapsuleCollider:
   m_ObjectHideFlags: 1
