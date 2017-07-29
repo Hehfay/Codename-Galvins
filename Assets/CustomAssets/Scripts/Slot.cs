@@ -6,7 +6,13 @@ using System;
 
 // This class is put on the slot object and handles
 // moving UI objects around the canvas.
-public class Slot : MonoBehaviour, IDropHandler {
+public class Slot : MonoBehaviour, IDropHandler, IPointerClickHandler {
+
+    bool canvasEnabled;
+
+    public void Start () {
+        canvasEnabled = true;
+    }
 
     public GameObject item {
         get {
@@ -54,5 +60,9 @@ public class Slot : MonoBehaviour, IDropHandler {
             DragHandler.itemBeingDragged.transform.SetParent (transform);
             item.transform.SetParent (DragHandler.startParent);
         }
+    }
+
+    public void OnPointerClick (PointerEventData eventData) {
+        canvasEnabled = false;
     }
 }

@@ -14,6 +14,11 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
 
     string playerString = "Player(Clone)";
 
+    bool countButtonEnabled;
+
+    public void Start () {
+        countButtonEnabled = false;
+    }
 
     // TODO Handle dropping a stack of items.
     public void OnPointerClick (PointerEventData eventData) {
@@ -38,11 +43,17 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
             itemCount = character.itemCount[index];
         }
 
+        if (countButtonEnabled) {
+            return;
+        }
+
         if (itemCount > 1) {
             Debug.Log ("Creating button.");
             GameObject button = Instantiate (UiElementSelectCountPrefab) as GameObject;
             button.transform.SetParent (gameObject.transform.parent.transform.parent.transform.parent.transform);
             button.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+            countButtonEnabled = true;
+            i.DisableDragHandlers ();
             return;
         }
 

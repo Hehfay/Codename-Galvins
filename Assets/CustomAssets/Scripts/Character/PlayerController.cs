@@ -219,7 +219,7 @@ public class PlayerController : NetworkBehaviour {
      */
     void DebugOutput(Vector3 accel, Vector3 velocity, Vector3 friction) {
         //Debug.Log("Accel: " + accel);
-        Debug.Log("Velocity: " + velocity);
+        //Debug.Log("Velocity: " + velocity);
         //Debug.Log("Friction: " + friction);
     }
 }

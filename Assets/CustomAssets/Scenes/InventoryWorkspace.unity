@@ -813,8 +813,13 @@ Prefab:
         type: 2}
       propertyPath: pickupData
       value: 
-      objectReference: {fileID: 11400000, guid: 7b5cf3e9363563c47978d66c06df5a99,
+      objectReference: {fileID: 11400000, guid: d8f7e6e9c6ea21846bec896a5681e1b3,
         type: 2}
+    - target: {fileID: 114466462459332976, guid: cc14429a1ddee9c49a83a5b95f4ce760,
+        type: 2}
+      propertyPath: count
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: cc14429a1ddee9c49a83a5b95f4ce760, type: 2}
   m_IsPrefabParent: 0
@@ -1086,6 +1091,10 @@ Prefab:
         type: 2}
       propertyPath: m_UseSimulator
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4628921674448322, guid: 53b97e8d3cb9bf04ca68fd0750b4fdf4, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 3.27
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 53b97e8d3cb9bf04ca68fd0750b4fdf4, type: 2}
