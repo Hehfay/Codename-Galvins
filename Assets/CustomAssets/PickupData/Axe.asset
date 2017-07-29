@@ -11,7 +11,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 639aeb3d8c4db6c4c83b1b2de9d77ee4, type: 3}
   m_Name: Axe
   m_EditorClassIdentifier: 
-  handOccupancy: 0
+  handOccupancy: 2
   isArmor: 0
   equipmentName: Axe
   description: Basic axe.

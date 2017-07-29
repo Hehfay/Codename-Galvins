@@ -180,7 +180,7 @@ public class InventoryController: MonoBehaviour {
         }
 
         // TODO Total hack fix this later.
-        GameObject ButtonToDelete = GameObject.Find ("Button(Clone)");
+        GameObject ButtonToDelete = GameObject.Find ("CountDisplay(Clone)");
         if (ButtonToDelete != null) {
             Destroy (ButtonToDelete);
         }
