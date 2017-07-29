@@ -7,7 +7,9 @@ using UnityEngine.UI;
 // and manages what you have equipped.
 public class Character : MonoBehaviour {
 
-    int INVENTORY_SIZE = 14; 
+    int INVENTORY_SIZE = 14;
+
+    public bool allowedToPickThingsUp;
 
     // You can hold 3 weapons in each hand.
     // The third index of your hand slots is always
@@ -43,6 +45,8 @@ public class Character : MonoBehaviour {
         // You should always have your left hand and right hand in the array.
         Debug.Assert (leftHand[3] != null);
         Debug.Assert (rightHand[3] != null);
+
+        allowedToPickThingsUp = true;
 
         // For the items in your hands, set the transform parent.
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
@@ -104,6 +108,7 @@ public class Character : MonoBehaviour {
 
         // F button to pick up equipment.
         if (Input.GetKeyDown (KeyCode.F)) {
+            if (!allowedToPickThingsUp) return;
             Vector3 v = transform.TransformDirection (Vector3.forward);
             RaycastHit h;
             Physics.Raycast (transform.position, v, out h, 3, 1);

@@ -12,7 +12,11 @@ public class UIManager : MonoBehaviour {
     GameObject canvas;
     bool isActive;
 
+    Character myCharacterScript;
+
 	void Start () {
+
+        myCharacterScript = GetComponent<Character> ();
 
         invCont = GameObject.Find ("InventoryController").GetComponent<InventoryController>();
         canvas = GameObject.Find ("Canvas");
@@ -29,6 +33,7 @@ public class UIManager : MonoBehaviour {
         if (Input.GetKeyDown (KeyCode.Escape)) {
             // Toggle the inventory display.
             isActive = !isActive;
+            myCharacterScript.allowedToPickThingsUp = !isActive;
             if (isActive) {
                 invCont.readFromCharacterToInventory ();
             }
