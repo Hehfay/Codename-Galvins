@@ -108,37 +108,43 @@ public class Character : MonoBehaviour {
 
         // F button to pick up equipment.
         if (Input.GetKeyDown (KeyCode.F)) {
+
             if (!allowedToPickThingsUp) return;
+
             Vector3 v = transform.TransformDirection (Vector3.forward);
             RaycastHit h;
             Physics.Raycast (transform.position, v, out h, 3, 1);
 
             if (h.collider != null) {
-                Pickup C = h.collider.gameObject.GetComponent<Pickup> ();
+                Pickup[] C = h.collider.gameObject.GetComponents<Pickup> ();
 
                 if (C == null) {
                     Debug.Log ("Collided with something that can't be picked up.");
                     return;
                 }
 
-                if (C.pickupData.stackable) {
-                    for (int i = 0; i < INVENTORY_SIZE; ++i) {
-                        if (C.pickupData == loot[i]) {
-                            itemCount[i] += C.gameObject.GetComponent<Pickup> ().count;
-                            Destroy (C.gameObject);
-                            return;
+                for (int i = 0; i < C.Length; ++i) {
+                    bool foundSlotForItem = false;
+                    if (C[i].pickupData.stackable) {
+                        for (int j = 0; j < INVENTORY_SIZE; ++j) {
+                            if (C[i].pickupData == loot[j]) {
+                                itemCount[j] += C[i].count;
+                                foundSlotForItem = true;
+                            }
+                        }
+                    }
+
+                    if (!foundSlotForItem) {
+                        for (int j = 0; j < INVENTORY_SIZE; ++j) {
+                            if (loot[j] == null) {
+                                itemCount[j] += C[i].count;
+                                loot[j] = C[i].pickupData;
+                                break;
+                            }
                         }
                     }
                 }
-
-                for (int i = 0; i < INVENTORY_SIZE; ++i) {
-                    if (loot[i] == null) {
-                        itemCount[i] += C.gameObject.GetComponent<Pickup> ().count;
-                        loot[i] = C.pickupData;
-                        Destroy (C.gameObject);
-                        break;
-                    }
-                }
+                Destroy (C[0].gameObject);
             }
         }
 
