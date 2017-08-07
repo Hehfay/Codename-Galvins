@@ -6,13 +6,19 @@ using UnityEngine.EventSystems;
 
 public class OkButtonOnClick : MonoBehaviour, IPointerClickHandler {
     public void OnPointerClick (PointerEventData eventData) {
-        // TODO Cleanup.
-        GameObject.Find ("Player(Clone)").GetComponent<CursorManager> ().cursorLocked = true;
-        GameObject.Find ("Player(Clone)").GetComponent<CursorManager> ().listening = true;
-        GameObject.Find ("Player(Clone)").GetComponent<PlayerController> ().shouldRotate = true;
-        GameObject.Find ("Player(Clone)").GetComponent<PlayerController> ().listening = true;
-        GameObject.Find ("Player(Clone)").GetComponent<Character> ().allowedToPickThingsUp = true;
-        GameObject.Find ("Player(Clone)").GetComponent<UIManager> ().enabled = true;
+        GameObject currentPlayer = GameObject.Find ("Player(Clone)");
+
+        CursorManager cursorManager = currentPlayer.GetComponent<CursorManager>();
+        cursorManager.cursorLocked = true;
+        cursorManager.listening = true;
+
+        PlayerController playerController = currentPlayer.GetComponent<PlayerController> ();
+        playerController.shouldRotate = true;
+        playerController.listening = true;
+
+        currentPlayer.GetComponent<Character> ().allowedToPickThingsUp = true;
+        currentPlayer.GetComponent<UIManager> ().enabled = true;
+
         Destroy (GameObject.Find("WhatYouPickedUp(Clone)"));
     }
 }

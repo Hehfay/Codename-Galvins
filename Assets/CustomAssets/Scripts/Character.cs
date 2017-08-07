@@ -9,6 +9,8 @@ public class Character : MonoBehaviour {
 
     int INVENTORY_SIZE = 14;
 
+    // Under certain circumstances you are not allowed to pick things up.
+    // For example when you have the inventory UI enabled.
     public bool allowedToPickThingsUp;
 
     // You can hold 3 weapons in each hand.
@@ -28,11 +30,12 @@ public class Character : MonoBehaviour {
     // Not implemented yet.
     public Pickup[] armor;
 
-    // When you pickup and item, its data is stored
+    // When you pickup an item, its data is stored
     // in this array.
     public PickupData[] loot;
 
     // The text that appears in the bottom right of the screen.
+    // Currently not in use.
     public Text equipped;
 
     // TODO REDO
@@ -102,7 +105,7 @@ public class Character : MonoBehaviour {
                 leftHandItemCount[i]++;
             }
         }
-        updateGuiText ();
+        // updateGuiText ();
 	}
 
     // Update is called once per frame
@@ -114,17 +117,12 @@ public class Character : MonoBehaviour {
             if (!allowedToPickThingsUp) return;
 
             RaycastHit h;
-
             Camera cam = Camera.main;
-
             Physics.Raycast (cam.transform.position, cam.transform.forward, out h);
-
-            Debug.Log (h.collider);
 
             if (h.collider == null) return;
 
             Pickup[] C = h.collider.gameObject.GetComponents<Pickup> ();
-
             if (C == null) return;
 
             GameObject popup = Instantiate (JustPickedUp) as GameObject;
@@ -159,10 +157,14 @@ public class Character : MonoBehaviour {
                 }
             }
             popup.SetActive (true);
-            gameObject.GetComponent<CursorManager> ().cursorLocked = false;
-            gameObject.GetComponent<CursorManager> ().listening = false;
-            gameObject.GetComponent<PlayerController> ().shouldRotate = false;
-            gameObject.GetComponent<PlayerController> ().listening = false;
+            CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
+            cursorManager.cursorLocked = false;
+            cursorManager.listening = false;
+
+            PlayerController plyrcontr = GetComponent<PlayerController> ();
+            plyrcontr.shouldRotate = false;
+            plyrcontr.listening = false;
+
             popup.transform.SetParent (GameObject.Find("Canvas").transform);
             popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
             allowedToPickThingsUp = false;
@@ -217,7 +219,7 @@ public class Character : MonoBehaviour {
             if (leftHand[leftHandIndex].pickupData.handOccupancy == HandOccupancies.JustTwoHanded) {
                 disableRightHand ();
             }
-            updateGuiText ();
+            // updateGuiText ();
         }
 
         // 2 to switch weapons in your right hand.
@@ -262,7 +264,7 @@ public class Character : MonoBehaviour {
             if (rightHand[rightHandIndex].pickupData.handOccupancy == HandOccupancies.JustTwoHanded) {
                 disableLeftHand ();
             }
-            updateGuiText ();
+            // updateGuiText ();
         }
 
         // Q to two hand your left hand weapon.
@@ -280,7 +282,7 @@ public class Character : MonoBehaviour {
                 if (twoHandingRightWeapon) {
                     disableRightHand ();
                     leftHand[leftHandIndex].active = true;
-                    updateGuiText ();
+                    // updateGuiText ();
                     return;
                 } 
             }
@@ -295,7 +297,7 @@ public class Character : MonoBehaviour {
                     rightHand[rightHandIndex].active = true;
                 }
             }
-            updateGuiText ();
+            // updateGuiText ();
         }
 
         // E to two hand your right hand weapon.
@@ -313,7 +315,7 @@ public class Character : MonoBehaviour {
                 if (twoHandingLeftWeapon) {
                     disableLeftHand();
                     rightHand[rightHandIndex].active = true;
-                    updateGuiText ();
+                    // updateGuiText ();
                     return;
                 } 
             }
@@ -328,7 +330,7 @@ public class Character : MonoBehaviour {
                     leftHand[leftHandIndex].active = true;
                 }
             }
-            updateGuiText ();
+            // updateGuiText ();
         }
 	}
 
@@ -348,8 +350,8 @@ public class Character : MonoBehaviour {
         }
     }
 
+    /*
     public void updateGuiText () {
-        /*
         equipped.text = "";
 
         string leftHandText = "";
@@ -374,6 +376,6 @@ public class Character : MonoBehaviour {
             }
         }
         equipped.text = equipped.text + leftHandText + " " + rightHandText;
-        */
     }
+    */
 }
