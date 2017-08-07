@@ -40,6 +40,8 @@ public class Character : MonoBehaviour {
     public int[] leftHandItemCount;
     public int[] rightHandItemCount;
 
+    public GameObject JustPickedUp;
+
     // Use this for initialization
     void Start () {
         // You should always have your left hand and right hand in the array.
@@ -106,45 +108,70 @@ public class Character : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        // F button to pick up equipment.
+        // F button to send out a raycast to interact with something.
         if (Input.GetKeyDown (KeyCode.F)) {
 
             if (!allowedToPickThingsUp) return;
 
-            Vector3 v = transform.TransformDirection (Vector3.forward);
             RaycastHit h;
-            Physics.Raycast (transform.position, v, out h, 3, 1);
 
-            if (h.collider != null) {
-                Pickup[] C = h.collider.gameObject.GetComponents<Pickup> ();
+            Camera cam = Camera.main;
 
-                if (C == null) {
-                    Debug.Log ("Collided with something that can't be picked up.");
-                    return;
-                }
+            Physics.Raycast (cam.transform.position, cam.transform.forward, out h);
 
-                for (int i = 0; i < C.Length; ++i) {
-                    bool foundSlotForItem = false;
-                    if (C[i].pickupData.stackable) {
-                        for (int j = 0; j < INVENTORY_SIZE; ++j) {
-                            if (C[i].pickupData == loot[j]) {
-                                itemCount[j] += C[i].count;
-                                foundSlotForItem = true;
-                            }
+            Debug.Log (h.collider);
+
+            if (h.collider == null) return;
+
+            Pickup[] C = h.collider.gameObject.GetComponents<Pickup> ();
+
+            if (C == null) return;
+
+            GameObject popup = Instantiate (JustPickedUp) as GameObject;
+            Text t = popup.GetComponent<Text> ();
+            popup.SetActive (false);
+
+            int numPickedUp = 0;
+            for (int i = 0; i < C.Length; ++i) {
+                bool foundSlotForItem = false;
+                if (C[i].pickupData.stackable) {
+                    for (int j = 0; j < INVENTORY_SIZE; ++j) {
+                        if (C[i].pickupData == loot[j]) {
+                            itemCount[j] += C[i].count;
+                            foundSlotForItem = true;
+                            t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
+                            Destroy (C[i]);
+                            numPickedUp++;
                         }
                     }
-
-                    if (!foundSlotForItem) {
-                        for (int j = 0; j < INVENTORY_SIZE; ++j) {
-                            if (loot[j] == null) {
-                                itemCount[j] += C[i].count;
-                                loot[j] = C[i].pickupData;
-                                break;
-                            }
+                }
+                if (!foundSlotForItem) {
+                    for (int j = 0; j < INVENTORY_SIZE; ++j) {
+                        if (loot[j] == null) {
+                            itemCount[j] += C[i].count;
+                            loot[j] = C[i].pickupData;
+                            t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
+                            Destroy (C[i]);
+                            numPickedUp++;
+                            break;
                         }
                     }
                 }
-                Destroy (C[0].gameObject);
+            }
+            popup.SetActive (true);
+            gameObject.GetComponent<CursorManager> ().cursorLocked = false;
+            gameObject.GetComponent<CursorManager> ().listening = false;
+            gameObject.GetComponent<PlayerController> ().shouldRotate = false;
+            gameObject.GetComponent<PlayerController> ().listening = false;
+            popup.transform.SetParent (GameObject.Find("Canvas").transform);
+            popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+            allowedToPickThingsUp = false;
+            gameObject.GetComponent<UIManager> ().enabled = false;
+            if (numPickedUp == C.Length) {
+                Destroy (h.collider.gameObject);
+            }
+            if (numPickedUp == 0) {
+                t.text = "Inventory full.";
             }
         }
 

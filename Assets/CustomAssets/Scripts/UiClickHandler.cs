@@ -54,7 +54,7 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
         if (itemCount > 1) {
             GameObject button = Instantiate (UiElementSelectCountPrefab) as GameObject;
 
-            // The parent of this object is the canvas. Seems fine but the statement is kind of ugly.
+            // The parent of this object is the canvas. Seems fine but the statement is ugly.
             button.transform.SetParent (gameObject.transform.parent.transform.parent.transform.parent.transform);
             button.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
             button.GetComponentInChildren<Text> ().text = "1";

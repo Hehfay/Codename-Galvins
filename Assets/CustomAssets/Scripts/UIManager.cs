@@ -9,7 +9,9 @@ public class UIManager : MonoBehaviour {
 
     InventoryController invCont;
 
-    GameObject canvas;
+    GameObject lefthand;
+    GameObject righthand;
+    GameObject inventory;
     bool isActive;
 
     Character myCharacterScript;
@@ -19,13 +21,19 @@ public class UIManager : MonoBehaviour {
         myCharacterScript = GetComponent<Character> ();
 
         invCont = GameObject.Find ("InventoryController").GetComponent<InventoryController>();
-        canvas = GameObject.Find ("Canvas");
+        lefthand = GameObject.Find ("LeftHand");
+        righthand = GameObject.Find ("RightHand");
+        inventory = GameObject.Find ("Inventory");
 
-        Debug.Assert (canvas != null);
+        Debug.Assert (lefthand != null);
+        Debug.Assert (righthand != null);
+        Debug.Assert (inventory != null);
         Debug.Assert (invCont != null);
 
         isActive = false;
-        canvas.SetActive (false);
+        lefthand.SetActive (false);
+        righthand.SetActive (false);
+        inventory.SetActive (false);
 	}
 	
 	// Update is called once per frame
@@ -40,7 +48,9 @@ public class UIManager : MonoBehaviour {
             else {
                 invCont.deleteUiElements ();
             }
-            canvas.SetActive (isActive);
+            lefthand.SetActive (isActive);
+            righthand.SetActive (isActive);
+            inventory.SetActive (isActive);
         }
 	}
 }
