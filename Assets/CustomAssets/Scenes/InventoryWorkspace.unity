@@ -2327,7 +2327,6 @@ GameObject:
   - component: {fileID: 1685830313}
   - component: {fileID: 1685830318}
   - component: {fileID: 1685830319}
-  - component: {fileID: 1685830312}
   - component: {fileID: 1685830311}
   m_Layer: 0
   m_Name: DropItem (1)
@@ -2352,18 +2351,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1685830312
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 114724408225577814, guid: cc14429a1ddee9c49a83a5b95f4ce760,
-    type: 2}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1685830310}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fe67f4d0f29620429de02840ca8dfb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1685830313
 MonoBehaviour:
   m_ObjectHideFlags: 0
