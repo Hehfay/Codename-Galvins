@@ -33,7 +33,8 @@ public class PlayerController : NetworkBehaviour {
     private bool isSprinting;
     private CollisionFlags collisionFlags;
 
-    bool shouldRotate;
+    public bool shouldRotate;
+    public bool listening;
 
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
@@ -48,6 +49,7 @@ public class PlayerController : NetworkBehaviour {
         }
         isAlive = true;
         shouldRotate = true;
+        listening = true;
         // setup camera
         accelRate += frictionCoeff;
         cameraObj = new GameObject();
@@ -57,7 +59,7 @@ public class PlayerController : NetworkBehaviour {
         Camera.main.GetComponent<PlayerCamera>().setTarget(cameraObj.transform);
     }
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape) && listening) {
             shouldRotate = !shouldRotate;
         }
         getInput(); // get the input only once per frame
@@ -219,7 +221,7 @@ public class PlayerController : NetworkBehaviour {
      */
     void DebugOutput(Vector3 accel, Vector3 velocity, Vector3 friction) {
         //Debug.Log("Accel: " + accel);
-        Debug.Log("Velocity: " + velocity);
+        //Debug.Log("Velocity: " + velocity);
         //Debug.Log("Friction: " + friction);
     }
 }

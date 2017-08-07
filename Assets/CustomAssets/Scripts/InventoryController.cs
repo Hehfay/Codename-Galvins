@@ -20,6 +20,24 @@ public class InventoryController: MonoBehaviour {
     public GameObject inventory;
     public GameObject[] slots;
 
+    public void DisableDragHandlers () {
+        for (int i = 0; i < 14; ++i) {
+            DragHandler D = slots[i].GetComponentInChildren<DragHandler> ();
+            if (D != null) {
+                D.enabled = false;
+            }
+        }
+    }
+
+    public void EnableDragHandlers () {
+        for (int i = 0; i < 14; ++i) {
+            DragHandler D = slots[i].GetComponentInChildren<DragHandler> ();
+            if (D != null) {
+                D.enabled = true;
+            }
+        }
+    }
+
 	// Use this for initialization
 	void Start () {
         slots = new GameObject[14];
@@ -160,6 +178,14 @@ public class InventoryController: MonoBehaviour {
                 Destroy (slots[i].transform.GetChild(0).gameObject);
             }
         }
+
+        // TODO Total hack fix this later.
+        GameObject ButtonToDelete = GameObject.Find ("CountDisplay(Clone)");
+        if (ButtonToDelete != null) {
+            Destroy (ButtonToDelete);
+        }
+
+
     }
 
     public void NewChildL (int j) {

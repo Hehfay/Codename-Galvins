@@ -277,7 +277,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a1ab8904e793aa4b978197878244e14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cursorLocked: 0
   crossHairRaw: {fileID: 4900000, guid: 467074da7dfd9634ab2ecefa20a9e5a9, type: 3}
+  listening: 0
 --- !u!114 &114221277192922378
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -321,6 +323,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6a85431f1226b847be19cf13317c001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allowedToPickThingsUp: 0
   leftHandIndex: 0
   rightHandIndex: 0
   leftHand:
@@ -353,6 +356,8 @@ MonoBehaviour:
   itemCount: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   leftHandItemCount: 00000000000000000000000000000000
   rightHandItemCount: 00000000000000000000000000000000
+  JustPickedUp: {fileID: 1630763203453086, guid: 43fe7cedd1439884f88212ad42289f5f,
+    type: 2}
 --- !u!114 &114573522933362164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -408,6 +413,8 @@ MonoBehaviour:
   sprintSpeed: 10
   jumpSpeed: 5
   minSpeed: 0.1
+  shouldRotate: 0
+  listening: 0
 --- !u!136 &136662574323652708
 CapsuleCollider:
   m_ObjectHideFlags: 1
