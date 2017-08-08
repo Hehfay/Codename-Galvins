@@ -133,6 +133,10 @@ public class Character : MonoBehaviour {
             g.transform.SetParent (GameObject.Find("Canvas").transform);
             g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
         }
+        if (alreadyInstantiated && !allowedToPickThingsUp) {
+            alreadyInstantiated = false;
+            Destroy (g);
+        }
         globalPickUpCollider = other;
     }
 
