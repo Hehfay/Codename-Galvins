@@ -117,21 +117,21 @@ public class Character : MonoBehaviour {
     GameObject g;
 
     void OnTriggerEnter (Collider other) {
-        if (!alreadyInstantiated) {
+        if (!alreadyInstantiated && allowedToPickThingsUp) {
             alreadyInstantiated = true;
             g = Instantiate (PickupTextPromptPrefab) as GameObject;
             g.transform.SetParent (GameObject.Find("Canvas").transform);
-            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -30, 0);
+            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
         }
         globalPickUpCollider = other;
     }
 
     void OnTriggerStay (Collider other) {
-        if (!alreadyInstantiated) {
+        if (!alreadyInstantiated && allowedToPickThingsUp) {
             alreadyInstantiated = true;
             g = Instantiate (PickupTextPromptPrefab) as GameObject;
             g.transform.SetParent (GameObject.Find("Canvas").transform);
-            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -30, 0);
+            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
         }
         globalPickUpCollider = other;
     }
@@ -151,10 +151,12 @@ public class Character : MonoBehaviour {
             if (!allowedToPickThingsUp) return;
             if (globalPickUpCollider == null) return;
 
-            Destroy (g);
-
             // Incase we step outside of the zone and our reference goes null.
             Collider copy = globalPickUpCollider;
+
+            alreadyInstantiated = false;
+            globalPickUpCollider = null;
+            Destroy (g);
 
             Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
             if (C == null) return;
