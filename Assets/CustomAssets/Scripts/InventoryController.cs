@@ -59,11 +59,11 @@ public class InventoryController: MonoBehaviour {
 
     bool findingPlayer = true;
     void Update () {
+        // TODO This will go away once we roll our own spawning.
         if (findingPlayer) {
             GameObject tempPlayer = GameObject.Find ("Player(Clone)");
             if (tempPlayer) {
                 character = tempPlayer.GetComponent<Character> ();
-                // Debug.Log ("Found Player.");
                 findingPlayer = false;
             }
         }

@@ -45,6 +45,11 @@ public class Character : MonoBehaviour {
 
     public GameObject JustPickedUp;
 
+    // This is the thing you will pick up when you press 'F'.
+    Collider globalPickUpCollider;
+
+    public GameObject PickupTextPromptPrefab;
+
     // Use this for initialization
     void Start () {
         // You should always have your left hand and right hand in the array.
@@ -108,6 +113,35 @@ public class Character : MonoBehaviour {
         // updateGuiText ();
 	}
 
+    bool alreadyInstantiated = false;
+    GameObject g;
+
+    void OnTriggerEnter (Collider other) {
+        if (!alreadyInstantiated && allowedToPickThingsUp) {
+            alreadyInstantiated = true;
+            g = Instantiate (PickupTextPromptPrefab) as GameObject;
+            g.transform.SetParent (GameObject.Find("Canvas").transform);
+            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+        }
+        globalPickUpCollider = other;
+    }
+
+    void OnTriggerStay (Collider other) {
+        if (!alreadyInstantiated && allowedToPickThingsUp) {
+            alreadyInstantiated = true;
+            g = Instantiate (PickupTextPromptPrefab) as GameObject;
+            g.transform.SetParent (GameObject.Find("Canvas").transform);
+            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+        }
+        globalPickUpCollider = other;
+    }
+
+    void OnTriggerExit (Collider other) {
+        alreadyInstantiated = false;
+        globalPickUpCollider = null;
+        Destroy (g);
+    }
+
     // Update is called once per frame
     void Update () {
 
@@ -115,14 +149,16 @@ public class Character : MonoBehaviour {
         if (Input.GetKeyDown (KeyCode.F)) {
 
             if (!allowedToPickThingsUp) return;
+            if (globalPickUpCollider == null) return;
 
-            RaycastHit h;
-            Camera cam = Camera.main;
-            Physics.Raycast (cam.transform.position, cam.transform.forward, out h);
+            // Incase we step outside of the zone and our reference goes null.
+            Collider copy = globalPickUpCollider;
 
-            if (h.collider == null) return;
+            alreadyInstantiated = false;
+            globalPickUpCollider = null;
+            Destroy (g);
 
-            Pickup[] C = h.collider.gameObject.GetComponents<Pickup> ();
+            Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
             if (C == null) return;
 
             GameObject popup = Instantiate (JustPickedUp) as GameObject;
@@ -170,7 +206,7 @@ public class Character : MonoBehaviour {
             allowedToPickThingsUp = false;
             gameObject.GetComponent<UIManager> ().enabled = false;
             if (numPickedUp == C.Length) {
-                Destroy (h.collider.gameObject);
+                Destroy (copy.gameObject);
             }
             if (numPickedUp == 0) {
                 t.text = "Inventory full.";
