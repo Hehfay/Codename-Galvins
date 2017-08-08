@@ -6,17 +6,12 @@ using UnityEngine.UI;
 // This script is responsible for communicating UI changes from the UI to the
 // character and from the character to the UI.
 public class InventoryController: MonoBehaviour {
-
     public GameObject slotItemPrefab;
-
     public Character character;
-
     public GameObject lh;
     public GameObject rh;
-
     public GameObject[] lht;
     public GameObject[] rht;
-
     public GameObject inventory;
     public GameObject[] slots;
 
@@ -160,8 +155,7 @@ public class InventoryController: MonoBehaviour {
                 character.itemCount[i] = 0;
             }
         }
-
-        character.updateGuiText ();
+        //character.updateGuiText ();
     }
 
     public void deleteUiElements () {
@@ -179,12 +173,11 @@ public class InventoryController: MonoBehaviour {
             }
         }
 
-        // TODO Total hack fix this later.
+        // Delete the count display if one exists.
         GameObject ButtonToDelete = GameObject.Find ("CountDisplay(Clone)");
         if (ButtonToDelete != null) {
             Destroy (ButtonToDelete);
         }
-
 
     }
 
