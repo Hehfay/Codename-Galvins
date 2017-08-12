@@ -117,33 +117,63 @@ public class Character : MonoBehaviour {
     GameObject g;
 
     void OnTriggerEnter (Collider other) {
-        if (!alreadyInstantiated && allowedToPickThingsUp) {
-            alreadyInstantiated = true;
-            g = Instantiate (PickupTextPromptPrefab) as GameObject;
-            g.transform.SetParent (GameObject.Find("Canvas").transform);
-            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+        switch (other.tag) {
+        case "Pickup":
+            if (!alreadyInstantiated && allowedToPickThingsUp) {
+                alreadyInstantiated = true;
+                g = Instantiate (PickupTextPromptPrefab) as GameObject;
+                g.transform.SetParent (GameObject.Find ("Canvas").transform);
+                g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+            }
+            globalPickUpCollider = other;
+         break;
+
+        case "Quest":
+        break;
+
+        default:
+        break;
         }
-        globalPickUpCollider = other;
     }
 
     void OnTriggerStay (Collider other) {
-        if (!alreadyInstantiated && allowedToPickThingsUp) {
-            alreadyInstantiated = true;
-            g = Instantiate (PickupTextPromptPrefab) as GameObject;
-            g.transform.SetParent (GameObject.Find("Canvas").transform);
-            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+        switch (other.tag) {
+            case "Pickup":
+                if (!alreadyInstantiated && allowedToPickThingsUp) {
+                    alreadyInstantiated = true;
+                    g = Instantiate (PickupTextPromptPrefab) as GameObject;
+                    g.transform.SetParent (GameObject.Find("Canvas").transform);
+                    g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+                }
+                if (alreadyInstantiated && !allowedToPickThingsUp) {
+                    alreadyInstantiated = false;
+                    Destroy (g);
+                }
+                globalPickUpCollider = other;
+            break;
+
+            case "Quest":
+            break;
+
+            default:
+            break;
         }
-        if (alreadyInstantiated && !allowedToPickThingsUp) {
-            alreadyInstantiated = false;
-            Destroy (g);
-        }
-        globalPickUpCollider = other;
     }
 
     void OnTriggerExit (Collider other) {
-        alreadyInstantiated = false;
-        globalPickUpCollider = null;
-        Destroy (g);
+        switch (other.tag) {
+            case "Pickup":
+                alreadyInstantiated = false;
+                globalPickUpCollider = null;
+                Destroy (g);
+            break;
+
+            case "Quest":
+            break;
+
+            default:
+            break;
+        }
     }
 
     // Update is called once per frame

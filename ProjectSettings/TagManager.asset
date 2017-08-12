@@ -4,19 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - ActButton
-  - MoveButton
-  - WaitButton
-  - MoveButtonTextPrompt
-  - ActButtonTextPrompt
-  - Enemy
-  - AttackButton
-  - Ability
-  - NorthButton
-  - SouthButton
-  - EastButton
-  - WestButton
   - handle
+  - RightHand
+  - LeftHand
   layers:
   - Default
   - TransparentFX
