@@ -360,6 +360,8 @@ MonoBehaviour:
     type: 2}
   PickupTextPromptPrefab: {fileID: 1664422159923830, guid: 28fd8c6b7fc763e4ab52f8e9af076863,
     type: 2}
+  QuestTextPromptPrefab: {fileID: 1167984159562256, guid: 463a5bffa45bb444b84665be5d8e57ad,
+    type: 2}
 --- !u!114 &114573522933362164
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -49,6 +49,7 @@ public class Character : MonoBehaviour {
     Collider globalPickUpCollider;
 
     public GameObject PickupTextPromptPrefab;
+    public GameObject QuestTextPromptPrefab;
 
     // Use this for initialization
     void Start () {
@@ -115,6 +116,7 @@ public class Character : MonoBehaviour {
 
     bool alreadyInstantiated = false;
     GameObject g;
+    Collider copy;
 
     void OnTriggerEnter (Collider other) {
         switch (other.tag) {
@@ -129,6 +131,13 @@ public class Character : MonoBehaviour {
          break;
 
         case "Quest":
+            if (!alreadyInstantiated && allowedToPickThingsUp) {
+                alreadyInstantiated = true;
+                g = Instantiate (QuestTextPromptPrefab) as GameObject;
+                g.transform.SetParent (GameObject.Find ("Canvas").transform);
+                g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+            }
+            globalPickUpCollider = other;
         break;
 
         default:
@@ -169,6 +178,9 @@ public class Character : MonoBehaviour {
             break;
 
             case "Quest":
+                alreadyInstantiated = false;
+                globalPickUpCollider = null;
+                Destroy (g);
             break;
 
             default:
@@ -179,21 +191,25 @@ public class Character : MonoBehaviour {
     // Update is called once per frame
     void Update () {
 
-        // F button to send out a raycast to interact with something.
         if (Input.GetKeyDown (KeyCode.F)) {
 
             if (!allowedToPickThingsUp) return;
             if (globalPickUpCollider == null) return;
 
             // Incase we step outside of the zone and our reference goes null.
-            Collider copy = globalPickUpCollider;
+            copy = globalPickUpCollider;
 
             alreadyInstantiated = false;
             globalPickUpCollider = null;
             Destroy (g);
 
+            if (copy.CompareTag ("Quest")) {
+                QuestLogic ();
+                return;
+            }
+
             Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
-            if (C == null) return;
+            if (C.Length == 0) return;
 
             GameObject popup = Instantiate (JustPickedUp) as GameObject;
             Text t = popup.GetComponent<Text> ();
@@ -231,9 +247,9 @@ public class Character : MonoBehaviour {
             cursorManager.cursorLocked = false;
             cursorManager.listening = false;
 
-            PlayerController plyrcontr = GetComponent<PlayerController> ();
-            plyrcontr.shouldRotate = false;
-            plyrcontr.listening = false;
+            PlayerController playerController = GetComponent<PlayerController> ();
+            playerController.shouldRotate = false;
+            playerController.listening = false;
 
             popup.transform.SetParent (GameObject.Find("Canvas").transform);
             popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
@@ -403,6 +419,25 @@ public class Character : MonoBehaviour {
             // updateGuiText ();
         }
 	}
+
+    void QuestLogic () {
+        GameObject popup = Instantiate (JustPickedUp) as GameObject;
+        Text t = popup.GetComponent<Text> ();
+
+        popup.SetActive (true);
+        CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
+        cursorManager.cursorLocked = false;
+        cursorManager.listening = false;
+
+        PlayerController playerController = GetComponent<PlayerController> ();
+        playerController.shouldRotate = false;
+        playerController.listening = false;
+
+        popup.transform.SetParent (GameObject.Find("Canvas").transform);
+        popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+        t.text = copy.gameObject.GetComponent<Quest> ().GetDialog();
+        copy.gameObject.GetComponent<Quest> ().Advance();
+    }
 
     void disableLeftHand () {
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
