@@ -138,60 +138,8 @@ public class Character : MonoBehaviour {
             }
             else if (copy.tag == "Pickup") {
                 gameObject.GetComponent<PickupHandler>().DeletePrompt();
-            }
-
-            Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
-            if (C.Length == 0) return;
-
-            GameObject popup = Instantiate (JustPickedUp) as GameObject;
-            Text t = popup.GetComponent<Text> ();
-            popup.SetActive (false);
-
-            int numPickedUp = 0;
-            for (int i = 0; i < C.Length; ++i) {
-                bool foundSlotForItem = false;
-                if (C[i].pickupData.stackable) {
-                    for (int j = 0; j < INVENTORY_SIZE; ++j) {
-                        if (C[i].pickupData == loot[j]) {
-                            itemCount[j] += C[i].count;
-                            foundSlotForItem = true;
-                            t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
-                            Destroy (C[i]);
-                            numPickedUp++;
-                        }
-                    }
-                }
-                if (!foundSlotForItem) {
-                    for (int j = 0; j < INVENTORY_SIZE; ++j) {
-                        if (loot[j] == null) {
-                            itemCount[j] += C[i].count;
-                            loot[j] = C[i].pickupData;
-                            t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
-                            Destroy (C[i]);
-                            numPickedUp++;
-                            break;
-                        }
-                    }
-                }
-            }
-            popup.SetActive (true);
-            CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
-            cursorManager.cursorLocked = false;
-            cursorManager.listening = false;
-
-            PlayerController playerController = GetComponent<PlayerController> ();
-            playerController.shouldRotate = false;
-            playerController.listening = false;
-
-            popup.transform.SetParent (GameObject.Find("Canvas").transform);
-            popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
-            allowedToPickThingsUp = false;
-            gameObject.GetComponent<UIManager> ().enabled = false;
-            if (numPickedUp == C.Length) {
-                Destroy (copy.gameObject);
-            }
-            if (numPickedUp == 0) {
-                t.text = "Inventory full.";
+                PickupLogic ();
+                return;
             }
         }
 
@@ -352,7 +300,64 @@ public class Character : MonoBehaviour {
         }
 	}
 
+    void PickupLogic () {
+        Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
+        if (C.Length == 0) return;
+
+        GameObject popup = Instantiate (JustPickedUp) as GameObject;
+        Text t = popup.GetComponent<Text> ();
+        popup.SetActive (false);
+
+        int numPickedUp = 0;
+        for (int i = 0; i < C.Length; ++i) {
+            bool foundSlotForItem = false;
+            if (C[i].pickupData.stackable) {
+                for (int j = 0; j < INVENTORY_SIZE; ++j) {
+                    if (C[i].pickupData == loot[j]) {
+                        itemCount[j] += C[i].count;
+                        foundSlotForItem = true;
+                        t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
+                        Destroy (C[i]);
+                        numPickedUp++;
+                    }
+                }
+            }
+            if (!foundSlotForItem) {
+                for (int j = 0; j < INVENTORY_SIZE; ++j) {
+                    if (loot[j] == null) {
+                        itemCount[j] += C[i].count;
+                        loot[j] = C[i].pickupData;
+                        t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
+                        Destroy (C[i]);
+                        numPickedUp++;
+                        break;
+                    }
+                }
+            }
+        }
+        popup.SetActive (true);
+        CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
+        cursorManager.cursorLocked = false;
+        cursorManager.listening = false;
+
+        PlayerController playerController = GetComponent<PlayerController> ();
+        playerController.shouldRotate = false;
+        playerController.listening = false;
+
+        popup.transform.SetParent (GameObject.Find("Canvas").transform);
+        popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+        allowedToPickThingsUp = false;
+        gameObject.GetComponent<UIManager> ().enabled = false;
+        if (numPickedUp == C.Length) {
+            Destroy (copy.gameObject);
+        }
+        if (numPickedUp == 0) {
+            t.text = "Inventory full.";
+        }
+    }
+
     void QuestLogic () {
+         allowedToPickThingsUp = false;
         GameObject popup = Instantiate (JustPickedUp) as GameObject;
         Text t = popup.GetComponent<Text> ();
 
