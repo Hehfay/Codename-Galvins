@@ -357,7 +357,7 @@ public class Character : MonoBehaviour {
     }
 
     void QuestLogic () {
-         allowedToPickThingsUp = false;
+        allowedToPickThingsUp = false;
         GameObject popup = Instantiate (JustPickedUp) as GameObject;
         Text t = popup.GetComponent<Text> ();
 
@@ -372,8 +372,11 @@ public class Character : MonoBehaviour {
 
         popup.transform.SetParent (GameObject.Find("Canvas").transform);
         popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+
+        if (copy.gameObject.GetComponent<Quest>().ConditionMet(loot)) {
+            copy.gameObject.GetComponent<Quest> ().Advance();
+        }
         t.text = copy.gameObject.GetComponent<Quest> ().GetDialog();
-        copy.gameObject.GetComponent<Quest> ().Advance();
     }
 
     void disableLeftHand () {

@@ -831,6 +831,11 @@ MonoBehaviour:
   text:
   - Can you get that spoon for me? Thanks.
   - Thanks for the spoon. Actually you keep it.
+  - Thanks
+  winCondition:
+  - {fileID: 11400000, guid: 9f3cfc7716dcb9643a5ff721cd9dda51, type: 2}
+  - {fileID: 0}
+  - {fileID: 0}
 --- !u!1 &539454751
 GameObject:
   m_ObjectHideFlags: 0
