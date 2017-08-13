@@ -45,11 +45,13 @@ public class Character : MonoBehaviour {
 
     public GameObject JustPickedUp;
 
-    // This is the thing you will pick up when you press 'F'.
-    Collider globalPickUpCollider;
+    // This is the collider you are interacting with when you press 'f'.
+    public Collider currentCollider;
 
-    public GameObject PickupTextPromptPrefab;
-    public GameObject QuestTextPromptPrefab;
+    // False if a popup has not been instantiaed..
+    public bool alreadyInstantiated = false;
+    // Copy of currentCollider for processing when 'f' is pressed.
+    Collider copy;
 
     // Use this for initialization
     void Start () {
@@ -114,98 +116,28 @@ public class Character : MonoBehaviour {
         // updateGuiText ();
 	}
 
-    bool alreadyInstantiated = false;
-    GameObject g;
-    Collider copy;
-
-    void OnTriggerEnter (Collider other) {
-        switch (other.tag) {
-        case "Pickup":
-            if (!alreadyInstantiated && allowedToPickThingsUp) {
-                alreadyInstantiated = true;
-                g = Instantiate (PickupTextPromptPrefab) as GameObject;
-                g.transform.SetParent (GameObject.Find ("Canvas").transform);
-                g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
-            }
-            globalPickUpCollider = other;
-         break;
-
-        case "Quest":
-            if (!alreadyInstantiated && allowedToPickThingsUp) {
-                alreadyInstantiated = true;
-                g = Instantiate (QuestTextPromptPrefab) as GameObject;
-                g.transform.SetParent (GameObject.Find ("Canvas").transform);
-                g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
-            }
-            globalPickUpCollider = other;
-        break;
-
-        default:
-        break;
-        }
-    }
-
-    void OnTriggerStay (Collider other) {
-        switch (other.tag) {
-            case "Pickup":
-                if (!alreadyInstantiated && allowedToPickThingsUp) {
-                    alreadyInstantiated = true;
-                    g = Instantiate (PickupTextPromptPrefab) as GameObject;
-                    g.transform.SetParent (GameObject.Find("Canvas").transform);
-                    g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
-                }
-                if (alreadyInstantiated && !allowedToPickThingsUp) {
-                    alreadyInstantiated = false;
-                    Destroy (g);
-                }
-                globalPickUpCollider = other;
-            break;
-
-            case "Quest":
-            break;
-
-            default:
-            break;
-        }
-    }
-
-    void OnTriggerExit (Collider other) {
-        switch (other.tag) {
-            case "Pickup":
-                alreadyInstantiated = false;
-                globalPickUpCollider = null;
-                Destroy (g);
-            break;
-
-            case "Quest":
-                alreadyInstantiated = false;
-                globalPickUpCollider = null;
-                Destroy (g);
-            break;
-
-            default:
-            break;
-        }
-    }
 
     // Update is called once per frame
     void Update () {
 
         if (Input.GetKeyDown (KeyCode.F)) {
 
+            if (currentCollider == null) return;
             if (!allowedToPickThingsUp) return;
-            if (globalPickUpCollider == null) return;
 
             // Incase we step outside of the zone and our reference goes null.
-            copy = globalPickUpCollider;
+            copy = currentCollider;
 
             alreadyInstantiated = false;
-            globalPickUpCollider = null;
-            Destroy (g);
+            currentCollider = null;
 
-            if (copy.CompareTag ("Quest")) {
+            if (copy.tag == "Quest") {
+                gameObject.GetComponent<QuestHandler> ().DeletePrompt ();
                 QuestLogic ();
                 return;
+            }
+            else if (copy.tag == "Pickup") {
+                gameObject.GetComponent<PickupHandler>().DeletePrompt();
             }
 
             Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
