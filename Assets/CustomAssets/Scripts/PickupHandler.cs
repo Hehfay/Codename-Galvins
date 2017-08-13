@@ -12,39 +12,40 @@ public class PickupHandler : MonoBehaviour {
     }
 
     void OnTriggerEnter (Collider other) {
-        if (other.CompareTag ("Pickup")) {
-            if (!gameObject.GetComponent<Character>().alreadyInstantiated &&
-                gameObject.GetComponent<Character>().allowedToPickThingsUp) {
+        if (other.tag != "Pickup") return;
 
-                gameObject.GetComponent<Character>().alreadyInstantiated = true;
-                newPickupTextPrompt = Instantiate (PickupTextPrompt) as GameObject;
-                newPickupTextPrompt.transform.SetParent (GameObject.Find ("Canvas").transform);
-                newPickupTextPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+        if (!gameObject.GetComponent<Character>().alreadyInstantiated &&
+            gameObject.GetComponent<Character>().allowedToPickThingsUp) {
 
-            }
-            gameObject.GetComponent<Character>().currentCollider = other;
+            gameObject.GetComponent<Character>().alreadyInstantiated = true;
+            newPickupTextPrompt = Instantiate (PickupTextPrompt) as GameObject;
+            newPickupTextPrompt.transform.SetParent (GameObject.Find ("Canvas").transform);
+            newPickupTextPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+
         }
+        gameObject.GetComponent<Character>().currentCollider = other;
     }
     void OnTriggerStay (Collider other) {
-        if (other.CompareTag("Pickup")) {
-            if (!gameObject.GetComponent<Character>().alreadyInstantiated &&
-                gameObject.GetComponent<Character>().allowedToPickThingsUp) {
+        if (other.tag != "Pickup") return;
 
-                gameObject.GetComponent<Character>().alreadyInstantiated = true;
-                newPickupTextPrompt = Instantiate (PickupTextPrompt) as GameObject;
-                newPickupTextPrompt.transform.SetParent (GameObject.Find ("Canvas").transform);
-                newPickupTextPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
-            }
-            if (gameObject.GetComponent<Character>().alreadyInstantiated &&
-                !gameObject.GetComponent<Character>().allowedToPickThingsUp) {
-                gameObject.GetComponent<Character>().alreadyInstantiated = false;
-                Destroy (newPickupTextPrompt);
-            }
+        if (!gameObject.GetComponent<Character>().alreadyInstantiated &&
+            gameObject.GetComponent<Character>().allowedToPickThingsUp) {
+
+            gameObject.GetComponent<Character>().alreadyInstantiated = true;
+            newPickupTextPrompt = Instantiate (PickupTextPrompt) as GameObject;
+            newPickupTextPrompt.transform.SetParent (GameObject.Find ("Canvas").transform);
+            newPickupTextPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+        }
+        if (gameObject.GetComponent<Character>().alreadyInstantiated &&
+            !gameObject.GetComponent<Character>().allowedToPickThingsUp) {
+            gameObject.GetComponent<Character>().alreadyInstantiated = false;
+            Destroy (newPickupTextPrompt);
         }
         gameObject.GetComponent<Character>().currentCollider = other;
     }
 
     void OnTriggerExit (Collider other) {
+        if (other.tag != "Pickup") return;
         gameObject.GetComponent<Character>().alreadyInstantiated = false;
         gameObject.GetComponent<Character>().currentCollider = null;
         Destroy (newPickupTextPrompt);
