@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestHandler : MonoBehaviour {
+public class TalkHandler : MonoBehaviour {
 
     public GameObject TalkPrompt;
     GameObject newTalkPrompt;

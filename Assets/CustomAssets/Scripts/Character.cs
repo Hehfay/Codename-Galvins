@@ -132,7 +132,7 @@ public class Character : MonoBehaviour {
             currentCollider = null;
 
             if (copy.tag == "Quest") {
-                gameObject.GetComponent<QuestHandler> ().DeletePrompt ();
+                gameObject.GetComponent<TalkHandler> ().DeletePrompt ();
                 QuestLogic ();
                 return;
             }

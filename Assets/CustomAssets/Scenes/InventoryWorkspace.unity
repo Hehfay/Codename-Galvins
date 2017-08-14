@@ -830,11 +830,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   text:
   - Can you get that spoon for me? Thanks.
-  - Thanks for the spoon. Actually you keep it.
+  - Thanks for the spoon. Can you get that Axe for me? Thanks.
+  - Thanks for the Axe. Why don't you keep it.
   - Thanks
   winCondition:
   - {fileID: 11400000, guid: 9f3cfc7716dcb9643a5ff721cd9dda51, type: 2}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 7b5cf3e9363563c47978d66c06df5a99, type: 2}
   - {fileID: 0}
 --- !u!1 &539454751
 GameObject:
