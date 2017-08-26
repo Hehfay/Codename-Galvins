@@ -6,19 +6,32 @@ using UnityEngine.UI;
 // This script is responsible for communicating UI changes from the UI to the
 // character and from the character to the UI.
 public class InventoryController: MonoBehaviour {
-
     public GameObject slotItemPrefab;
-
     public Character character;
-
     public GameObject lh;
     public GameObject rh;
-
     public GameObject[] lht;
     public GameObject[] rht;
-
     public GameObject inventory;
     public GameObject[] slots;
+
+    public void DisableDragHandlers () {
+        for (int i = 0; i < 14; ++i) {
+            DragHandler D = slots[i].GetComponentInChildren<DragHandler> ();
+            if (D != null) {
+                D.enabled = false;
+            }
+        }
+    }
+
+    public void EnableDragHandlers () {
+        for (int i = 0; i < 14; ++i) {
+            DragHandler D = slots[i].GetComponentInChildren<DragHandler> ();
+            if (D != null) {
+                D.enabled = true;
+            }
+        }
+    }
 
 	// Use this for initialization
 	void Start () {
@@ -46,11 +59,11 @@ public class InventoryController: MonoBehaviour {
 
     bool findingPlayer = true;
     void Update () {
+        // TODO This will go away once we roll our own spawning.
         if (findingPlayer) {
             GameObject tempPlayer = GameObject.Find ("Player(Clone)");
             if (tempPlayer) {
                 character = tempPlayer.GetComponent<Character> ();
-                // Debug.Log ("Found Player.");
                 findingPlayer = false;
             }
         }
@@ -142,8 +155,7 @@ public class InventoryController: MonoBehaviour {
                 character.itemCount[i] = 0;
             }
         }
-
-        character.updateGuiText ();
+        //character.updateGuiText ();
     }
 
     public void deleteUiElements () {
@@ -160,6 +172,13 @@ public class InventoryController: MonoBehaviour {
                 Destroy (slots[i].transform.GetChild(0).gameObject);
             }
         }
+
+        // Delete the count display if one exists.
+        GameObject ButtonToDelete = GameObject.Find ("CountDisplay(Clone)");
+        if (ButtonToDelete != null) {
+            Destroy (ButtonToDelete);
+        }
+
     }
 
     public void NewChildL (int j) {

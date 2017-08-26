@@ -7,7 +7,11 @@ using UnityEngine.UI;
 // and manages what you have equipped.
 public class Character : MonoBehaviour {
 
-    int INVENTORY_SIZE = 14; 
+    int INVENTORY_SIZE = 14;
+
+    // Under certain circumstances you are not allowed to pick things up.
+    // For example when you have the inventory UI enabled.
+    public bool allowedToPickThingsUp;
 
     // You can hold 3 weapons in each hand.
     // The third index of your hand slots is always
@@ -26,11 +30,12 @@ public class Character : MonoBehaviour {
     // Not implemented yet.
     public Pickup[] armor;
 
-    // When you pickup and item, its data is stored
+    // When you pickup an item, its data is stored
     // in this array.
     public PickupData[] loot;
 
     // The text that appears in the bottom right of the screen.
+    // Currently not in use.
     public Text equipped;
 
     // TODO REDO
@@ -38,11 +43,20 @@ public class Character : MonoBehaviour {
     public int[] leftHandItemCount;
     public int[] rightHandItemCount;
 
+    public GameObject JustPickedUp;
+
+    // This is the thing you will pick up when you press 'F'.
+    Collider globalPickUpCollider;
+
+    public GameObject PickupTextPromptPrefab;
+
     // Use this for initialization
     void Start () {
         // You should always have your left hand and right hand in the array.
         Debug.Assert (leftHand[3] != null);
         Debug.Assert (rightHand[3] != null);
+
+        allowedToPickThingsUp = true;
 
         // For the items in your hands, set the transform parent.
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
@@ -96,44 +110,110 @@ public class Character : MonoBehaviour {
                 leftHandItemCount[i]++;
             }
         }
-        updateGuiText ();
+        // updateGuiText ();
 	}
+
+    bool alreadyInstantiated = false;
+    GameObject g;
+
+    void OnTriggerEnter (Collider other) {
+        if (!alreadyInstantiated && allowedToPickThingsUp) {
+            alreadyInstantiated = true;
+            g = Instantiate (PickupTextPromptPrefab) as GameObject;
+            g.transform.SetParent (GameObject.Find("Canvas").transform);
+            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+        }
+        globalPickUpCollider = other;
+    }
+
+    void OnTriggerStay (Collider other) {
+        if (!alreadyInstantiated && allowedToPickThingsUp) {
+            alreadyInstantiated = true;
+            g = Instantiate (PickupTextPromptPrefab) as GameObject;
+            g.transform.SetParent (GameObject.Find("Canvas").transform);
+            g.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+        }
+        if (alreadyInstantiated && !allowedToPickThingsUp) {
+            alreadyInstantiated = false;
+            Destroy (g);
+        }
+        globalPickUpCollider = other;
+    }
+
+    void OnTriggerExit (Collider other) {
+        alreadyInstantiated = false;
+        globalPickUpCollider = null;
+        Destroy (g);
+    }
 
     // Update is called once per frame
     void Update () {
 
-        // F button to pick up equipment.
+        // F button to send out a raycast to interact with something.
         if (Input.GetKeyDown (KeyCode.F)) {
-            Vector3 v = transform.TransformDirection (Vector3.forward);
-            RaycastHit h;
-            Physics.Raycast (transform.position, v, out h, 3, 1);
 
-            if (h.collider != null) {
-                Pickup C = h.collider.gameObject.GetComponent<Pickup> ();
+            if (!allowedToPickThingsUp) return;
+            if (globalPickUpCollider == null) return;
 
-                if (C == null) {
-                    Debug.Log ("Collided with something that can't be picked up.");
-                    return;
-                }
+            // Incase we step outside of the zone and our reference goes null.
+            Collider copy = globalPickUpCollider;
 
-                if (C.pickupData.stackable) {
-                    for (int i = 0; i < INVENTORY_SIZE; ++i) {
-                        if (C.pickupData == loot[i]) {
-                            itemCount[i] += C.gameObject.GetComponent<Pickup> ().count;
-                            Destroy (C.gameObject);
-                            return;
+            alreadyInstantiated = false;
+            globalPickUpCollider = null;
+            Destroy (g);
+
+            Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
+            if (C == null) return;
+
+            GameObject popup = Instantiate (JustPickedUp) as GameObject;
+            Text t = popup.GetComponent<Text> ();
+            popup.SetActive (false);
+
+            int numPickedUp = 0;
+            for (int i = 0; i < C.Length; ++i) {
+                bool foundSlotForItem = false;
+                if (C[i].pickupData.stackable) {
+                    for (int j = 0; j < INVENTORY_SIZE; ++j) {
+                        if (C[i].pickupData == loot[j]) {
+                            itemCount[j] += C[i].count;
+                            foundSlotForItem = true;
+                            t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
+                            Destroy (C[i]);
+                            numPickedUp++;
                         }
                     }
                 }
-
-                for (int i = 0; i < INVENTORY_SIZE; ++i) {
-                    if (loot[i] == null) {
-                        itemCount[i] += C.gameObject.GetComponent<Pickup> ().count;
-                        loot[i] = C.pickupData;
-                        Destroy (C.gameObject);
-                        break;
+                if (!foundSlotForItem) {
+                    for (int j = 0; j < INVENTORY_SIZE; ++j) {
+                        if (loot[j] == null) {
+                            itemCount[j] += C[i].count;
+                            loot[j] = C[i].pickupData;
+                            t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
+                            Destroy (C[i]);
+                            numPickedUp++;
+                            break;
+                        }
                     }
                 }
+            }
+            popup.SetActive (true);
+            CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
+            cursorManager.cursorLocked = false;
+            cursorManager.listening = false;
+
+            PlayerController plyrcontr = GetComponent<PlayerController> ();
+            plyrcontr.shouldRotate = false;
+            plyrcontr.listening = false;
+
+            popup.transform.SetParent (GameObject.Find("Canvas").transform);
+            popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+            allowedToPickThingsUp = false;
+            gameObject.GetComponent<UIManager> ().enabled = false;
+            if (numPickedUp == C.Length) {
+                Destroy (copy.gameObject);
+            }
+            if (numPickedUp == 0) {
+                t.text = "Inventory full.";
             }
         }
 
@@ -179,7 +259,7 @@ public class Character : MonoBehaviour {
             if (leftHand[leftHandIndex].pickupData.handOccupancy == HandOccupancies.JustTwoHanded) {
                 disableRightHand ();
             }
-            updateGuiText ();
+            // updateGuiText ();
         }
 
         // 2 to switch weapons in your right hand.
@@ -224,7 +304,7 @@ public class Character : MonoBehaviour {
             if (rightHand[rightHandIndex].pickupData.handOccupancy == HandOccupancies.JustTwoHanded) {
                 disableLeftHand ();
             }
-            updateGuiText ();
+            // updateGuiText ();
         }
 
         // Q to two hand your left hand weapon.
@@ -242,7 +322,7 @@ public class Character : MonoBehaviour {
                 if (twoHandingRightWeapon) {
                     disableRightHand ();
                     leftHand[leftHandIndex].active = true;
-                    updateGuiText ();
+                    // updateGuiText ();
                     return;
                 } 
             }
@@ -257,7 +337,7 @@ public class Character : MonoBehaviour {
                     rightHand[rightHandIndex].active = true;
                 }
             }
-            updateGuiText ();
+            // updateGuiText ();
         }
 
         // E to two hand your right hand weapon.
@@ -275,7 +355,7 @@ public class Character : MonoBehaviour {
                 if (twoHandingLeftWeapon) {
                     disableLeftHand();
                     rightHand[rightHandIndex].active = true;
-                    updateGuiText ();
+                    // updateGuiText ();
                     return;
                 } 
             }
@@ -290,7 +370,7 @@ public class Character : MonoBehaviour {
                     leftHand[leftHandIndex].active = true;
                 }
             }
-            updateGuiText ();
+            // updateGuiText ();
         }
 	}
 
@@ -310,8 +390,8 @@ public class Character : MonoBehaviour {
         }
     }
 
+    /*
     public void updateGuiText () {
-        /*
         equipped.text = "";
 
         string leftHandText = "";
@@ -336,6 +416,6 @@ public class Character : MonoBehaviour {
             }
         }
         equipped.text = equipped.text + leftHandText + " " + rightHandText;
-        */
     }
+    */
 }

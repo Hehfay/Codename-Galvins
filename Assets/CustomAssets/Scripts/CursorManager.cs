@@ -6,12 +6,14 @@ using UnityEngine;
 // escape is pressed. It also handles loading the cursor texture.
 public class CursorManager : MonoBehaviour {
 
-    bool cursorLocked;
+    public bool cursorLocked;
     public TextAsset crossHairRaw;
     private Texture2D crossHair;
+    public bool listening;
 
 	// Use this for initialization
 	void Start () {
+        listening = true;
         Cursor.lockState = CursorLockMode.Locked;
         cursorLocked = true;
         Cursor.visible = true;
@@ -30,7 +32,7 @@ public class CursorManager : MonoBehaviour {
             Cursor.lockState = CursorLockMode.None;
         }
 
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape) && listening) {
             cursorLocked = !cursorLocked;
         }
 	}

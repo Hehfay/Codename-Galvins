@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 65494387399799018}
   - component: {fileID: 23426359479970478}
   - component: {fileID: 114466462459332976}
-  - component: {fileID: 114724408225577814}
   - component: {fileID: 54576692264016832}
   m_Layer: 0
   m_Name: DropItem
@@ -95,7 +94,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
+  m_Size: {x: 3, y: 1, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &114466462459332976
 MonoBehaviour:
@@ -112,17 +111,6 @@ MonoBehaviour:
   pickupData: {fileID: 0}
   inventoryIndex: 0
   count: 1
---- !u!114 &114724408225577814
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1310671514465608}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0fe67f4d0f29620429de02840ca8dfb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &224297752606484862
 RectTransform:
   m_ObjectHideFlags: 1
