@@ -28,6 +28,7 @@ public class TalkHandler : MonoBehaviour {
 
     void OnTriggerExit (Collider other) {
         if (other.tag != "Quest") return;
+        // TODO If you walk away from someone when you talk to them your dialog box should go away.
         gameObject.GetComponent<Character>().alreadyInstantiated = false;
         gameObject.GetComponent<Character>().currentCollider = null;
         Destroy (newTalkPrompt);

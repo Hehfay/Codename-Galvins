@@ -139,6 +139,7 @@ public class Character : MonoBehaviour {
             else if (copy.tag == "Pickup") {
                 gameObject.GetComponent<PickupHandler>().DeletePrompt();
                 PickupLogic ();
+
                 return;
             }
         }
@@ -304,6 +305,10 @@ public class Character : MonoBehaviour {
         Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
         if (C.Length == 0) return;
 
+        for (int i = 0; i < C.Length; ++i) {
+            gameObject.GetComponent<ObjectiveListener> ().ObserveAction (C[i]);
+        }
+
         GameObject popup = Instantiate (JustPickedUp) as GameObject;
         Text t = popup.GetComponent<Text> ();
         popup.SetActive (false);
@@ -372,11 +377,24 @@ public class Character : MonoBehaviour {
 
         popup.transform.SetParent (GameObject.Find("Canvas").transform);
         popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+        gameObject.GetComponent<UIManager> ().enabled = false;
+        // This is where this script was getting the Quest componenet of the collision
+        // and getting the dialog to populate the box with.
 
-        if (copy.gameObject.GetComponent<Quest>().ConditionMet(loot)) {
-            copy.gameObject.GetComponent<Quest> ().Advance();
+        QuestHolder qh = copy.GetComponent<QuestHolder> ();
+        Debug.Assert (qh != null);
+
+        if (qh.QuestsIHaveToGive.Length != 0) {
+            for (int i = 0; i < qh.given.Length; ++i) {
+                if (!qh.given[i]) {
+                    GameObject QuestManager = GameObject.Find ("QuestManager");
+                    QuestManager.GetComponent<QuestManagerScript> ().QuestsIHave.Add(qh.QuestsIHaveToGive[i]);
+                    qh.given[i] = true;
+                    t.text = (qh.QuestsIHaveToGive[i].Objectives[0].description);
+                    break;
+                }
+            }
         }
-        t.text = copy.gameObject.GetComponent<Quest> ().GetDialog();
     }
 
     void disableLeftHand () {

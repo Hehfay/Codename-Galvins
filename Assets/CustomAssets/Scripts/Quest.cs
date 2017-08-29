@@ -2,42 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum QuestType {
-    Fetch
-};
+[CreateAssetMenu()]
+public class Quest : ScriptableObject {
+    public Objective[] Objectives;
 
-public class Quest : MonoBehaviour {
+    // This should be set to zero unless you want to start at some other objective for debugging.
+    public int currentObjectiveIndex;
 
-    bool started = false;
-    
-    int index = 0;
-
-    public string[] text;
-
-    public PickupData[] winCondition;
-
-    public void Advance () {
-        if (++index >= text.Length) {
-            --index;
-        }
+    public Objective currentObjective () {
+        return Objectives[currentObjectiveIndex];
     }
 
-    public string GetDialog () {
-        return text[index];
-    }
-
-    public bool ConditionMet (PickupData[] characterInventory) {
-
-        if (!started) {
-            started = true;
-            return false;
+    public void AdvanceObjective () {
+        currentObjectiveIndex++;
+        if (currentObjectiveIndex > Objectives.Length) {
+            currentObjectiveIndex = Objectives.Length - 1;
         }
-
-        for (int i = 0; i < characterInventory.Length; ++i) {
-            if (characterInventory[i] == winCondition[index]) {
-                return true;
-            }
-        }
-        return false;
     }
 }
