@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 114609901892026156}
   - component: {fileID: 54482324414829440}
   - component: {fileID: 82547086563048104}
-  - component: {fileID: 114135324367518800}
+  - component: {fileID: 114345297709124662}
   m_Layer: 0
   m_Name: QuestGiver
   m_TagString: Quest
@@ -262,7 +262,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 0
---- !u!114 &114135324367518800
+--- !u!114 &114345297709124662
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -270,12 +270,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1940157410919288}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 50f58fd4eeee32549990ae711a25a13b, type: 3}
+  m_Script: {fileID: 11500000, guid: d9b7a753c9f5a0043ad26f28226c70c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  QuestsIHaveToGive:
-  - {fileID: 11400000, guid: b7fa423465ba43c4391d57894d8587f7, type: 2}
-  given: 00
+  quest: {fileID: 0}
 --- !u!114 &114375070588094064
 MonoBehaviour:
   m_ObjectHideFlags: 1

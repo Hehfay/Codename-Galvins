@@ -139,7 +139,7 @@ public class Character : MonoBehaviour {
             }
 
             if (copy.tag == "Quest") {
-                gameObject.GetComponent<TalkHandler>().DeletePrompt();
+                gameObject.GetComponent<TalkHandler> ().DeletePrompt ();
                 GameObject popup = Instantiate (JustPickedUp) as GameObject;
                 CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
                 PlayerController2 playerController = GetComponent<PlayerController2> ();
@@ -147,6 +147,22 @@ public class Character : MonoBehaviour {
                 cursorManager.listening = false;
                 playerController.shouldRotate = false;
                 allowedToPickThingsUp = false;
+
+
+                bool alreadyHasQuest = false;
+                for (int i = 0; i < GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ().ActiveQuests.Count; ++i) {
+                    if (copy.gameObject.GetComponent<QuestWrapper>().quest == GameObject.Find("QuestManager").GetComponent<QuestManagerScript>().ActiveQuests[i].quest) {
+                        alreadyHasQuest = true;
+                        break;
+                    }
+                }
+
+                if (!alreadyHasQuest) {
+                    Debug.Log ("Adding quest to the global manager.");
+                    GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ().ActiveQuests.Add (copy.gameObject.GetComponent<QuestWrapper>());
+
+                    GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ().ShowCurrentObjectives ();
+                }
 
                 popup.transform.SetParent (GameObject.Find("Canvas").transform);
                 popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
@@ -342,6 +358,19 @@ public class Character : MonoBehaviour {
                         Destroy (C[i]);
                         numPickedUp++;
                         break;
+                    }
+                }
+            }
+
+
+            // See if the item has a quest trigger.
+            QuestTrigger qt = copy.gameObject.GetComponent<QuestTrigger> ();
+            if (qt != null) {
+                QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ();
+                for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
+                    if (qt.quest == qms.ActiveQuests[i].quest) {
+                        qms.ActiveQuests[i].currentObjective = qt.nextObjective;
+                        qms.ShowCurrentObjectives ();
                     }
                 }
             }
