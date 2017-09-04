@@ -345,7 +345,7 @@ public class Character : MonoBehaviour {
         cursorManager.cursorLocked = false;
         cursorManager.listening = false;
 
-        PlayerController playerController = GetComponent<PlayerController> ();
+        PlayerController2 playerController = GetComponent<PlayerController2> ();
         playerController.shouldRotate = false;
         playerController.listening = false;
 
@@ -371,7 +371,7 @@ public class Character : MonoBehaviour {
         cursorManager.cursorLocked = false;
         cursorManager.listening = false;
 
-        PlayerController playerController = GetComponent<PlayerController> ();
+        PlayerController2 playerController = GetComponent<PlayerController2> ();
         playerController.shouldRotate = false;
         playerController.listening = false;
 

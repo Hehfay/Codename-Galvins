@@ -20,7 +20,7 @@ public class UIManager : MonoBehaviour {
 
         myCharacterScript = GetComponent<Character> ();
 
-        invCont = GameObject.Find ("InventoryController").GetComponent<InventoryController>();
+        invCont = GameObject.Find ("Player(Clone)").GetComponent<InventoryController>();
         lefthand = GameObject.Find ("LeftHand");
         righthand = GameObject.Find ("RightHand");
         inventory = GameObject.Find ("Inventory");

@@ -41,7 +41,8 @@ public class PlayerController2 : NetworkBehaviour {
     private JumpState jumpState;
     private float timeLanded;
 
-    bool shouldRotate;
+    public bool shouldRotate;
+    public bool listening;
 
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
@@ -57,6 +58,7 @@ public class PlayerController2 : NetworkBehaviour {
         jumpState = JumpState.Grounded;
         isAlive = true;
         shouldRotate = true;
+        listening = true;
         // setup camera
         accelRate += frictionCoeff;
         cameraObj = new GameObject();
@@ -67,7 +69,7 @@ public class PlayerController2 : NetworkBehaviour {
     }
     
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
+        if (Input.GetKeyDown(KeyCode.Escape) && listening) {
             shouldRotate = !shouldRotate;
         }
     }
@@ -153,7 +155,7 @@ public class PlayerController2 : NetworkBehaviour {
             Vector3 totalAccel = desiredAcceleration + friction + Physics.gravity;
             velocity = velocity.magnitude * velocityDirection + totalAccel * Time.fixedDeltaTime;
             velocity = Vector3.ClampMagnitude(velocity, speed);
-            Debug.Log(velocity.magnitude);
+            // Debug.Log(velocity.magnitude);
         } else {
         }
         /*Vector3 frictionalAccel; // no friction unless grounded
@@ -243,7 +245,7 @@ public class PlayerController2 : NetworkBehaviour {
      */
     void DebugOutput(Vector3 accel, Vector3 velocity, Vector3 friction) {
         //Debug.Log("Accel: " + accel);
-        Debug.Log("Velocity: " + velocity);
+        //Debug.Log("Velocity: " + velocity);
         //Debug.Log("Friction: " + friction);
     }
 

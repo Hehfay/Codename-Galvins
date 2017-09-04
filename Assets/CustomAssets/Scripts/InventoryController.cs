@@ -7,7 +7,9 @@ using UnityEngine.UI;
 // character and from the character to the UI.
 public class InventoryController: MonoBehaviour {
     public GameObject slotItemPrefab;
-    public Character character;
+
+    Character character;
+
     public GameObject lh;
     public GameObject rh;
     public GameObject[] lht;
@@ -35,6 +37,15 @@ public class InventoryController: MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        inventory = GameObject.Find ("Canvas").transform.Find("Inventory").gameObject;
+        lh = GameObject.Find ("Canvas").transform.Find("LeftHand").gameObject;
+        rh = GameObject.Find ("Canvas").transform.Find("RightHand").gameObject;
+        Debug.Assert (inventory != null);
+        Debug.Assert (lh != null);
+        Debug.Assert (rh != null);
+
+        character = gameObject.GetComponent<Character> ();
+
         slots = new GameObject[14];
         int i = 0;
         foreach (Transform t in inventory.transform) {
@@ -56,19 +67,6 @@ public class InventoryController: MonoBehaviour {
             ++i;
         }
 	}
-
-    bool findingPlayer = true;
-    void Update () {
-        // TODO This will go away once we roll our own spawning.
-        if (findingPlayer) {
-            GameObject tempPlayer = GameObject.Find ("Player(Clone)");
-            if (tempPlayer) {
-                character = tempPlayer.GetComponent<Character> ();
-                findingPlayer = false;
-            }
-        }
-    }
-
 
     public void readFromCharacterToInventory () {
         for (int i = 0; i < 3; ++i) {

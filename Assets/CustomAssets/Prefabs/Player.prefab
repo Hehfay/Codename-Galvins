@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 114110501453686674}
   - component: {fileID: 114573522933362164}
   - component: {fileID: 114522780988060810}
+  - component: {fileID: 114330173098271200}
   - component: {fileID: 114620091093295884}
   - component: {fileID: 114296293390817750}
   - component: {fileID: 114664315673305434}
@@ -327,6 +328,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TalkPrompt: {fileID: 1167984159562256, guid: 463a5bffa45bb444b84665be5d8e57ad, type: 2}
+--- !u!114 &114330173098271200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1818343121984686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f75ca8a2997d1134aa1558b61ef25168, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotItemPrefab: {fileID: 1106010620724704, guid: 50dc6c4c2466abc4a9ce746de966c8e0,
+    type: 2}
+  lh: {fileID: 0}
+  rh: {fileID: 0}
+  lht: []
+  rht: []
+  inventory: {fileID: 0}
+  slots: []
 --- !u!114 &114522780988060810
 MonoBehaviour:
   m_ObjectHideFlags: 1

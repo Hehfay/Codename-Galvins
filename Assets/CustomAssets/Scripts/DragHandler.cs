@@ -13,7 +13,7 @@ public class DragHandler: MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
     InventoryController invCont;
 
     void Start () {
-        invCont = GameObject.Find ("InventoryController").GetComponent<InventoryController>();
+        invCont = GameObject.Find ("Player(Clone)").GetComponent<InventoryController>();
     }
 
     public static GameObject itemBeingDragged;

@@ -27,7 +27,7 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick (PointerEventData eventData) {
 
-        InventoryController i = GameObject.Find ("InventoryController").GetComponent<InventoryController>();
+        InventoryController i = GameObject.Find ("Player(Clone)").GetComponent<InventoryController>();
 
         Character character = GameObject.Find (playerString).GetComponent<Character>();
 
@@ -83,7 +83,7 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
     }
 
     public void DropStackOfItems (int dropCount) {
-        InventoryController i = GameObject.Find ("InventoryController").GetComponent<InventoryController>();
+        InventoryController i = GameObject.Find ("Player(Clone)").GetComponent<InventoryController>();
 
         GameObject g = Instantiate (dropItemPrefab) as GameObject;
         g.GetComponent<Pickup>().pickupData = gameObject.GetComponent<Pickup>().pickupData;
