@@ -131,16 +131,26 @@ public class Character : MonoBehaviour {
             alreadyInstantiated = false;
             currentCollider = null;
 
-            if (copy.tag == "Quest") {
-                gameObject.GetComponent<TalkHandler> ().DeletePrompt ();
-                QuestLogic ();
-                return;
-            }
-            else if (copy.tag == "Pickup") {
+            // TODO Instead of the tag it is going to be a signal from the collider interaction brain.
+            if (copy.tag == "Pickup") {
                 gameObject.GetComponent<PickupHandler>().DeletePrompt();
                 PickupLogic ();
-
                 return;
+            }
+
+            if (copy.tag == "Quest") {
+                gameObject.GetComponent<TalkHandler>().DeletePrompt();
+                GameObject popup = Instantiate (JustPickedUp) as GameObject;
+                CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
+                PlayerController2 playerController = GetComponent<PlayerController2> ();
+                cursorManager.cursorLocked = false;
+                cursorManager.listening = false;
+                playerController.shouldRotate = false;
+                allowedToPickThingsUp = false;
+
+                popup.transform.SetParent (GameObject.Find("Canvas").transform);
+                popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+                gameObject.GetComponent<UIManager> ().enabled = false;
             }
         }
 
@@ -305,10 +315,6 @@ public class Character : MonoBehaviour {
         Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
         if (C.Length == 0) return;
 
-        for (int i = 0; i < C.Length; ++i) {
-            gameObject.GetComponent<ObjectiveListener> ().ObserveAction (C[i]);
-        }
-
         GameObject popup = Instantiate (JustPickedUp) as GameObject;
         Text t = popup.GetComponent<Text> ();
         popup.SetActive (false);
@@ -361,42 +367,6 @@ public class Character : MonoBehaviour {
         }
     }
 
-    void QuestLogic () {
-        allowedToPickThingsUp = false;
-        GameObject popup = Instantiate (JustPickedUp) as GameObject;
-        Text t = popup.GetComponent<Text> ();
-
-        popup.SetActive (true);
-        CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
-        cursorManager.cursorLocked = false;
-        cursorManager.listening = false;
-
-        PlayerController2 playerController = GetComponent<PlayerController2> ();
-        playerController.shouldRotate = false;
-        playerController.listening = false;
-
-        popup.transform.SetParent (GameObject.Find("Canvas").transform);
-        popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
-        gameObject.GetComponent<UIManager> ().enabled = false;
-        // This is where this script was getting the Quest componenet of the collision
-        // and getting the dialog to populate the box with.
-
-        QuestHolder qh = copy.GetComponent<QuestHolder> ();
-        Debug.Assert (qh != null);
-
-        if (qh.QuestsIHaveToGive.Length != 0) {
-            for (int i = 0; i < qh.given.Length; ++i) {
-                if (!qh.given[i]) {
-                    GameObject QuestManager = GameObject.Find ("QuestManager");
-                    QuestManager.GetComponent<QuestManagerScript> ().QuestsIHave.Add(qh.QuestsIHaveToGive[i]);
-                    qh.given[i] = true;
-                    t.text = (qh.QuestsIHaveToGive[i].Objectives[0].description);
-                    break;
-                }
-            }
-        }
-    }
-
     void disableLeftHand () {
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (leftHand[i] != null) {
@@ -412,33 +382,4 @@ public class Character : MonoBehaviour {
             }
         }
     }
-
-    /*
-    public void updateGuiText () {
-        equipped.text = "";
-
-        string leftHandText = "";
-        string rightHandText = "";
-
-        if (usingWeaponInTwoHands) {
-            equipped.text += "Two Handed ";
-        }
-
-        for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
-            if (leftHand[i] != null) {
-                if (leftHand[i].active) {
-                    leftHandText += leftHand[i].pickupData.equipmentName;
-                }
-            }
-        }
-        for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
-            if (rightHand[i] != null) {
-                if (rightHand[i].active) {
-                    rightHandText += rightHand[i].pickupData.equipmentName;
-                }
-            }
-        }
-        equipped.text = equipped.text + leftHandText + " " + rightHandText;
-    }
-    */
 }
