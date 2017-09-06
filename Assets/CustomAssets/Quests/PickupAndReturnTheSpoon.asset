@@ -13,5 +13,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   objectiveDescription:
   - Find the spoon.
-  - Return to the man.
-  objectiveValue: 0a00000014000000
+  - Return to the guy.
+  - Quest complete.
+  objectiveValue: 0a000000140000001e000000
