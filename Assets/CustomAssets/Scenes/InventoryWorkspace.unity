@@ -858,7 +858,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed7ac18c18b89cb48b4b40d03e5eb6c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ActiveQuests: []
+  ActiveQuests:
+  - {fileID: 0}
 --- !u!4 &441685503
 Transform:
   m_ObjectHideFlags: 0
@@ -890,6 +891,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentObjective: 0
   quest: {fileID: 11400000, guid: f3c93bac6cf39ed4b80a443cdb55d33b, type: 2}
+  isActiveQuest: 0
 --- !u!114 &516875824
 MonoBehaviour:
   m_ObjectHideFlags: 0

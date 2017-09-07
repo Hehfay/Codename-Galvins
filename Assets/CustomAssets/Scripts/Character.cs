@@ -149,25 +149,22 @@ public class Character : MonoBehaviour {
                 allowedToPickThingsUp = false;
 
 
-                bool alreadyHasQuest = false;
-                for (int i = 0; i < GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ().ActiveQuests.Count; ++i) {
-                    if (copy.gameObject.GetComponent<QuestWrapper>().quest == GameObject.Find("QuestManager").GetComponent<QuestManagerScript>().ActiveQuests[i].quest) {
-                        alreadyHasQuest = true;
-                        break;
+
+                QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript>();
+
+                for (int i = 0; i < qms.ActiveQuests.Count; ++i) {
+                    if (copy.gameObject.GetComponent<QuestWrapper>().quest == qms.ActiveQuests[i].quest &&
+                        !qms.ActiveQuests[i].isActiveQuest) {
+                        qms.ActiveQuests[i].isActiveQuest = true;
+
+                        qms.ActiveQuests[i].currentObjective = qms.ActiveQuests[i].quest.firstObjective;
+                        qms.ShowCurrentObjectives ();
                     }
                 }
 
-                if (!alreadyHasQuest) {
-                    QuestWrapper q = copy.gameObject.GetComponent<QuestWrapper>();
-                    q.ObjectiveCompletionStatus.Add (q.currentObjective, false);
-
-                    GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ().ActiveQuests.Add (q);
-                    GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ().ShowCurrentObjectives ();
-                }
 
                 QuestTrigger qt = copy.gameObject.GetComponent<QuestTrigger> ();
                 if (qt != null) {
-                    QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ();
                     for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
                         if (qt.quest == qms.ActiveQuests[j].quest) {
 

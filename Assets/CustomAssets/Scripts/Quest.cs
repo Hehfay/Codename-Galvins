@@ -10,7 +10,7 @@ public class Quest : ScriptableObject {
     public string[] objectiveDescription;
     public int[] objectiveValue;
 
-    int firstObjective;
+    public int firstObjective;
 
     // Scriptable objects do NOT have 'void Start ()'.
     void OnEnable () {
