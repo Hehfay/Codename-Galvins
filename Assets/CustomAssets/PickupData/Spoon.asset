@@ -18,3 +18,5 @@ MonoBehaviour:
   hoverText: Spoon.
   stackable: 0
   damage: 0
+  questTrigger: {fileID: 11400000, guid: 8b909a896bc65634697eff09d39de4c4, type: 2}
+  questUnTrigger: {fileID: 11400000, guid: 9db5b975dc04acf4da9cca6f5eeb4060, type: 2}

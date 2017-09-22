@@ -27,4 +27,7 @@ public class PickupData : ScriptableObject {
     // public Mesh mesh;
     // public SwingAnimation swinganimation;
     // public Sound sound.
+
+    public QuestTrigger questTrigger;
+    public QuestUnTrigger questUnTrigger;
 }

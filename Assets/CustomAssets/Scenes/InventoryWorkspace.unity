@@ -421,25 +421,6 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 218220488}
---- !u!1 &233777312 stripped
-GameObject:
-  m_PrefabParentObject: {fileID: 1310671514465608, guid: cc14429a1ddee9c49a83a5b95f4ce760,
-    type: 2}
-  m_PrefabInternal: {fileID: 585232710}
---- !u!114 &233777319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 233777312}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9c091ddc02826d47bfab2c0af047cb6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nextObjective: 20
-  advanceCondition: 0
-  quest: {fileID: 11400000, guid: f3c93bac6cf39ed4b80a443cdb55d33b, type: 2}
 --- !u!1 &264138257
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,6 +873,7 @@ MonoBehaviour:
   currentObjective: 0
   quest: {fileID: 11400000, guid: f3c93bac6cf39ed4b80a443cdb55d33b, type: 2}
   isActiveQuest: 0
+  currentObjectiveIndex: 0
 --- !u!114 &516875824
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -900,12 +882,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 516875814}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9c091ddc02826d47bfab2c0af047cb6, type: 3}
+  m_Script: {fileID: 11500000, guid: d4dfe1247f9088b49b570bd99e5bea6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  nextObjective: 30
-  advanceCondition: 10
-  quest: {fileID: 11400000, guid: f3c93bac6cf39ed4b80a443cdb55d33b, type: 2}
+  questTrigger: {fileID: 11400000, guid: dea3af9e66053ae4f89d3d5446a8255d, type: 2}
+  questUnTrigger: {fileID: 0}
 --- !u!1 &539454751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1136,7 +1117,7 @@ Prefab:
       value: 252
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 114345297709124662, guid: 34a2a17f1401cbf489e53fbcb978bffc, type: 2}
+    - {fileID: 0}
   m_ParentPrefab: {fileID: 100100000, guid: 34a2a17f1401cbf489e53fbcb978bffc, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &585232710

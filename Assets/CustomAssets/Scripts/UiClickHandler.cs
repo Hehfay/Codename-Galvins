@@ -67,7 +67,7 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
             return;
         }
 
-        // If you are trying to drop a non-stackable itme this logic will run.
+        // If you are trying to drop a non-stackable item this logic will run.
         GameObject g = Instantiate (dropItemPrefab) as GameObject;
         g.GetComponent<Pickup>().pickupData = gameObject.GetComponent<Pickup>().pickupData;
 
@@ -80,6 +80,37 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
         // character.itemCount[index]--;
         i.readFromInventoryToCharacter ();
         i.UpdateGuiCounts ();
+
+        // TODO Wrap this nicely so other drop logic can use it.
+        QuestUnTrigger questUnTrigger = g.GetComponent<Pickup> ().pickupData.questUnTrigger;
+        if (questUnTrigger == null) {
+            return;
+        }
+
+        QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ();
+        for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
+            if (questUnTrigger.quest == qms.ActiveQuests[j].quest) {
+
+                if (!qms.ActiveQuests[j].isActiveQuest) {
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (questUnTrigger.previousObjective);
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (questUnTrigger.previousObjective, false);
+                    Debug.Log ("Here");
+                    return;
+                }
+
+                if (qms.ActiveQuests[j].currentObjective == questUnTrigger.thisObjective) {
+                    qms.ActiveQuests[j].currentObjective = questUnTrigger.previousObjective;
+
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (questUnTrigger.thisObjective);
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (questUnTrigger.thisObjective, false);
+
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (questUnTrigger.previousObjective);
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (questUnTrigger.previousObjective, false);
+
+                    qms.ActiveQuests[j].DisplayObjective ();
+                }
+            }
+        }
     }
 
     public void DropStackOfItems (int dropCount) {

@@ -8,12 +8,14 @@ public class QuestWrapper : MonoBehaviour {
     public Dictionary<int, bool> ObjectiveCompletionStatus;
     public bool isActiveQuest;
 
+    public int currentObjectiveIndex;
+
     void Start () {
         currentObjective = quest.objectiveValue[0];
         ObjectiveCompletionStatus = new Dictionary<int, bool>();
         ObjectiveCompletionStatus.Add (0, true);
         isActiveQuest = false;
-
+        currentObjectiveIndex = 0;
         GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ().ActiveQuests.Add (this);
     }
 
@@ -23,4 +25,11 @@ public class QuestWrapper : MonoBehaviour {
         Debug.Log (output);
     }
 
+    public void NextObjective () {
+        currentObjectiveIndex += 1;
+        if (currentObjectiveIndex > (quest.objectiveValue.Length - 1)) {
+            currentObjectiveIndex = quest.objectiveValue.Length - 1;
+        }
+        currentObjective = quest.objectiveValue[currentObjectiveIndex];
+    }
 }

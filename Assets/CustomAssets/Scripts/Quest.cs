@@ -13,6 +13,10 @@ public class Quest : ScriptableObject {
     public int firstObjective;
 
     // Scriptable objects do NOT have 'void Start ()'.
+
+    // This function is called when you create the scriptable object from
+    // the UI (Used for editor scripting i think). TODO This game logic should be 
+    // moved elsewhere.
     void OnEnable () {
         ObjectiveDescription = new Dictionary<int, string>();
 
@@ -23,4 +27,3 @@ public class Quest : ScriptableObject {
         }
     }
 }
-

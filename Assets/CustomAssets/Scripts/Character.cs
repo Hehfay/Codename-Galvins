@@ -148,9 +148,8 @@ public class Character : MonoBehaviour {
                 playerController.shouldRotate = false;
                 allowedToPickThingsUp = false;
 
-
-
                 QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript>();
+                bool doOtherThing = true;
 
                 for (int i = 0; i < qms.ActiveQuests.Count; ++i) {
                     if (copy.gameObject.GetComponent<QuestWrapper>().quest == qms.ActiveQuests[i].quest &&
@@ -158,37 +157,61 @@ public class Character : MonoBehaviour {
                         qms.ActiveQuests[i].isActiveQuest = true;
 
                         qms.ActiveQuests[i].currentObjective = qms.ActiveQuests[i].quest.firstObjective;
+
+                        bool foundCurrentObjective = false;
+
+                        while (!foundCurrentObjective) {
+
+                            bool currentObjectiveComplete = true;
+
+                            QuestWrapper qw = copy.gameObject.GetComponent<QuestWrapper> ();
+
+                            qms.getQuest (qw.quest).ObjectiveCompletionStatus.TryGetValue(qms.getQuest(qw.quest).currentObjective, out currentObjectiveComplete);
+
+                            if (currentObjectiveComplete) {
+                                qms.getQuest(qw.quest).ObjectiveCompletionStatus.Remove (qms.getQuest(qw.quest).currentObjective);
+                                qms.getQuest(qw.quest).ObjectiveCompletionStatus.Add (qms.getQuest(qw.quest).currentObjective, true);
+                                qms.getQuest (qw.quest).NextObjective ();
+                                doOtherThing = false;
+                            }
+                            else {
+                                foundCurrentObjective = true;
+                            }
+                        }
                         qms.ShowCurrentObjectives ();
                     }
                 }
 
+                if (doOtherThing) {
+                    // TODO If the tag is quest, the quest trigger will be in the quest trigger wrapper, not the pickupData.
+                    QuestTrigger qt = copy.gameObject.GetComponent<QuestTriggerWrapper> ().questTrigger;
+                    if (qt != null) {
+                        for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
+                            if (qt.quest == qms.ActiveQuests[j].quest) {
 
-                QuestTrigger qt = copy.gameObject.GetComponent<QuestTrigger> ();
-                if (qt != null) {
-                    for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
-                        if (qt.quest == qms.ActiveQuests[j].quest) {
+                                bool satisfied = false;
 
-                            bool satisfied = false;
+                                qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qt.advanceCondition, out satisfied);
 
-                            qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qt.advanceCondition, out satisfied);
+                                bool currentObjectiveComplete = true;
 
-                            bool currentObjectiveComplete = true;
+                                qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qms.ActiveQuests[j].currentObjective, out currentObjectiveComplete);
 
-                            qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qms.ActiveQuests[j].currentObjective, out currentObjectiveComplete);
+                                currentObjectiveComplete = qms.ActiveQuests[j].currentObjective == qt.nextObjective;
 
-                            currentObjectiveComplete = qms.ActiveQuests[j].currentObjective == qt.nextObjective;
+                                if (satisfied && !currentObjectiveComplete) {
 
-                            if (satisfied && !currentObjectiveComplete) {
+                                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (qms.ActiveQuests[j].currentObjective);
+                                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (qms.ActiveQuests[j].currentObjective, true);
 
-                                qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (qms.ActiveQuests[j].currentObjective);
-                                qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (qms.ActiveQuests[j].currentObjective, true);
-
-                                qms.ActiveQuests[j].currentObjective = qt.nextObjective;
-                                qms.ShowCurrentObjectives ();
+                                    qms.ActiveQuests[j].currentObjective = qt.nextObjective;
+                                    qms.ShowCurrentObjectives ();
+                                }
                             }
                         }
                     }
                 }
+
 
                 popup.transform.SetParent (GameObject.Find("Canvas").transform);
                 popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
@@ -387,24 +410,32 @@ public class Character : MonoBehaviour {
             }
 
             // See if the item has a quest trigger.
-            QuestTrigger qt = copy.gameObject.GetComponent<QuestTrigger> ();
+            QuestTrigger qt = copy.gameObject.GetComponent<Pickup> ().pickupData.questTrigger;
             if (qt != null) {
                 QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ();
                 for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
                     if (qt.quest == qms.ActiveQuests[j].quest) {
-                        bool conditionMet = false;
-                        qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qt.advanceCondition, out conditionMet);
 
-                        bool currentObjectiveComplete;
-                        qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qms.ActiveQuests[j].currentObjective, out currentObjectiveComplete);
+                        if (!qms.ActiveQuests[j].isActiveQuest) {
+                            qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (qt.thisObjective);
+                            qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (qt.thisObjective, true);
+                            Debug.Log ("We are here.");
+                        }
+                        else {
+                            bool conditionMet = false;
+                            qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qt.advanceCondition, out conditionMet);
+
+                            bool currentObjectiveComplete;
+                            qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qms.ActiveQuests[j].currentObjective, out currentObjectiveComplete);
 
 
-                        if (conditionMet && !currentObjectiveComplete) {
-                            qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (qms.ActiveQuests[j].currentObjective);
-                            qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (qms.ActiveQuests[j].currentObjective, true);
+                            if (conditionMet && !currentObjectiveComplete) {
+                                qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (qms.ActiveQuests[j].currentObjective);
+                                qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (qms.ActiveQuests[j].currentObjective, true);
 
-                            qms.ActiveQuests[j].currentObjective = qt.nextObjective;
-                            qms.ShowCurrentObjectives ();
+                                qms.ActiveQuests[j].currentObjective = qt.nextObjective;
+                                qms.ShowCurrentObjectives ();
+                            }
                         }
                     }
                 }
