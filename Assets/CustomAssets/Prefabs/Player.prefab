@@ -405,7 +405,6 @@ MonoBehaviour:
   cameraObj: {fileID: 0}
   gravityMultiplier: 2
   frictionCoeff: 35
-  stickyCoeff: 45
   xSensitivity: 100
   ySensitivity: 100
   accelRate: 65
@@ -413,7 +412,8 @@ MonoBehaviour:
   walkSpeed: 1.4
   runSpeed: 4
   sprintSpeed: 7
-  jumpSpeed: 5
+  jumpSpeed: 4
+  jumpHeight: 1
   jumpLandDuration: 0.1
   minSpeed: 0.1
   shouldRotate: 0
@@ -427,7 +427,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
