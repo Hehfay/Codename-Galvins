@@ -9,12 +9,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 639aeb3d8c4db6c4c83b1b2de9d77ee4, type: 3}
-  m_Name: Potion
+  m_Name: Sword
   m_EditorClassIdentifier: 
   handOccupancy: 2
   isArmor: 0
-  equipmentName: Potion
-  description: Heals 10 HP.
-  hoverText: Potion
-  stackable: 1
-  damage: 0
+  equipmentName: Sword
+  description: A regular sword.
+  hoverText: Sword
+  stackable: 0
+  damage: 10
+  questTrigger: {fileID: 0}
+  questUnTrigger: {fileID: 0}
+  MeshFilterName: Cube
+  MaterialName: Blue

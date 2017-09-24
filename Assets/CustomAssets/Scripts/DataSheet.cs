@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu()]
-public class PickupData : ScriptableObject {
+public class DataSheet : ScriptableObject {
     // The number of hands this combat equipment takes.
     public HandOccupancies handOccupancy;
 
@@ -23,11 +23,20 @@ public class PickupData : ScriptableObject {
 
     public float damage;
 
+
+    public QuestTrigger questTrigger;
+    public QuestUnTrigger questUnTrigger;
+
+    public string MeshFilterName;
+    public string MaterialName;
+
     // TODO All the other combat equipment stuff.
     // public Mesh mesh;
     // public SwingAnimation swinganimation;
     // public Sound sound.
 
-    public QuestTrigger questTrigger;
-    public QuestUnTrigger questUnTrigger;
+    // public MeshFilter meshFilter;
+    // public BoxCollider boxCollider;
+    // public MeshRenderer meshRenderer;
+    // public Rigidbody rigidBody;
 }

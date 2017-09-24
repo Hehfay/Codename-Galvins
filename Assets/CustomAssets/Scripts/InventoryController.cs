@@ -79,7 +79,7 @@ public class InventoryController: MonoBehaviour {
                 g.GetComponent<Text> ().text = character.loot[j].equipmentName + " x" + character.itemCount[j];
                 Pickup ce = g.GetComponent<Pickup> ();
                 ce.inventoryIndex = j;
-                ce.pickupData = character.loot[j];
+                g.GetComponent<DataSheetWrapper>().dataSheet = character.loot[j];
                 slots[j].GetComponentInChildren<Pickup> ().count = character.itemCount[j];
             }
         }
@@ -87,8 +87,8 @@ public class InventoryController: MonoBehaviour {
 
     public void readFromInventoryToCharacter () {
 
-        character.leftHand[3].active = true;
-        character.rightHand[3].active = true;
+        character.leftHand[3].GetComponent<Pickup>().active = true;
+        character.rightHand[3].GetComponent<Pickup>().active = true;
 
         character.leftHandIndex = 3;
         character.rightHandIndex = 3;
@@ -103,11 +103,12 @@ public class InventoryController: MonoBehaviour {
         for (int i = 0; i < 3; ++i) {
             if (lht[i].transform.childCount != 0) {
                 GameObject go = new GameObject ();
-                Pickup ce = go.AddComponent<Pickup> ().GetComponent<Pickup> ();
-                ce.pickupData = lht[i].GetComponentInChildren<Pickup> ().pickupData;
+                Pickup ce = go.AddComponent<Pickup> ();
+                DataSheetWrapper dataSheetWrapper = go.AddComponent<DataSheetWrapper> ();
+                dataSheetWrapper.dataSheet = lht[i].GetComponentInChildren<DataSheetWrapper> ().dataSheet;
                 character.leftHandItemCount[i] = lht[i].GetComponentInChildren<Pickup> ().count;
-                character.leftHand[i] = ce;
-                ce.GetComponent<Pickup> ().inventoryIndex = i;
+                character.leftHand[i] = go;
+                ce.inventoryIndex = i;
                 ce.transform.parent = character.transform;
             }
             else {
@@ -119,9 +120,9 @@ public class InventoryController: MonoBehaviour {
             if (rht[i].transform.childCount != 0) {
                 GameObject go = new GameObject ();
                 Pickup ce = go.AddComponent<Pickup> ().GetComponent<Pickup> ();
-                ce.pickupData = rht[i].GetComponentInChildren<Pickup> ().pickupData;
+                go.AddComponent<DataSheetWrapper>().dataSheet = rht[i].GetComponentInChildren<DataSheetWrapper> ().dataSheet;
                 character.rightHandItemCount[i] = rht[i].GetComponentInChildren<Pickup> ().count;
-                character.rightHand[i] = ce;
+                character.rightHand[i] = go;
                 ce.GetComponent<Pickup> ().inventoryIndex = i;
                 ce.transform.parent = character.transform;
             }
@@ -133,7 +134,7 @@ public class InventoryController: MonoBehaviour {
         for (int i = 0; i < 14; ++i) {
             character.loot[i] = null;
             if (slots[i].transform.childCount != 0) {
-                character.loot[i] = (slots[i].GetComponentInChildren<Pickup> ().pickupData);
+                character.loot[i] = (slots[i].GetComponentInChildren<DataSheetWrapper> ().dataSheet);
                 slots[i].GetComponentInChildren<Pickup> ().inventoryIndex = i;
                 character.itemCount[i] = slots[i].GetComponentInChildren<Pickup> ().count;
             }
@@ -182,9 +183,9 @@ public class InventoryController: MonoBehaviour {
     public void NewChildL (int j) {
         if (character.leftHand[j] != null) {
             GameObject g =  Instantiate (slotItemPrefab, lht[j].transform) as GameObject;
-            g.GetComponent<Text>().text = character.leftHand[j].pickupData.equipmentName + " x" + character.leftHandItemCount[j];
+            g.GetComponent<Text>().text = character.leftHand[j].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + character.leftHandItemCount[j];
             Pickup ce = g.GetComponent<Pickup> ();
-            ce.pickupData = character.leftHand[j].pickupData;
+            g.AddComponent<DataSheetWrapper>().dataSheet = character.leftHand[j].GetComponent <DataSheetWrapper>().dataSheet;
             ce.inventoryIndex = j;
             lht[j].GetComponentInChildren<Pickup> ().count = character.leftHandItemCount[j];
         }
@@ -193,9 +194,9 @@ public class InventoryController: MonoBehaviour {
     void NewChildR (int j) {
         if (character.rightHand[j] != null) {
             GameObject g =  Instantiate (slotItemPrefab, rht[j].transform) as GameObject;
-            g.GetComponent<Text>().text = character.rightHand[j].pickupData.equipmentName + " x" + character.rightHandItemCount[j];
+            g.GetComponent<Text>().text = character.rightHand[j].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + character.rightHandItemCount[j];
             Pickup ce = g.GetComponent<Pickup> ();
-            ce.pickupData = character.rightHand[j].pickupData;
+            g.AddComponent<DataSheetWrapper>().dataSheet = character.rightHand[j].GetComponent<DataSheetWrapper>().dataSheet;
             ce.inventoryIndex = j;
             rht[j].GetComponentInChildren<Pickup> ().count = character.rightHandItemCount[j];
         }

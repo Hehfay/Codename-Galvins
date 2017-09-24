@@ -24,19 +24,15 @@ public class Character : MonoBehaviour {
 
     bool usingWeaponInTwoHands;
 
-    public Pickup[] leftHand;
-    public Pickup[] rightHand;
+    public GameObject[] leftHand;
+    public GameObject[] rightHand;
 
     // Not implemented yet.
     public Pickup[] armor;
 
     // When you pickup an item, its data is stored
     // in this array.
-    public PickupData[] loot;
-
-    // The text that appears in the bottom right of the screen.
-    // Currently not in use.
-    public Text equipped;
+    public DataSheet[] loot;
 
     // TODO REDO
     public int[] itemCount;
@@ -56,8 +52,15 @@ public class Character : MonoBehaviour {
     // Use this for initialization
     void Start () {
         // You should always have your left hand and right hand in the array.
-        Debug.Assert (leftHand[3] != null);
-        Debug.Assert (rightHand[3] != null);
+
+        if (leftHand[3] == null) {
+            leftHand[3] = Resources.Load<GameObject> ("Items/LeftHand");
+        }
+
+        if (rightHand[3] == null) {
+            rightHand[3] = Resources.Load<GameObject> ("Items/RightHand");
+        }
+
 
         allowedToPickThingsUp = true;
 
@@ -66,13 +69,13 @@ public class Character : MonoBehaviour {
             if (leftHand[i] != null) {
                 if (leftHand[i].GetComponent<MeshRenderer> () != null) {
                     leftHand[i].GetComponent<MeshRenderer> ().enabled = false;
-                    leftHand[i].gameObject.transform.SetParent (transform);
+                    leftHand[i].gameObject.transform.SetParent (transform.parent);
                 }
             }
             if (rightHand[i] != null) {
                 if (rightHand[i].GetComponent<MeshRenderer> () != null) {
                     rightHand[i].GetComponent<MeshRenderer> ().enabled = false;
-                    rightHand[i].gameObject.transform.SetParent (transform);
+                    rightHand[i].gameObject.transform.SetParent (transform.parent);
                 }
             }
         }
@@ -92,14 +95,14 @@ public class Character : MonoBehaviour {
 
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (leftHand[i] != null) {
-                leftHand[i].active = true;
+                leftHand[i].GetComponent<Pickup>().active = true;
                 break;
             }
         }
 
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (rightHand[i] != null) {
-                rightHand[i].active = true;
+                rightHand[i].GetComponent<Pickup>().active = true;
                 break;
             }
         }
@@ -225,7 +228,7 @@ public class Character : MonoBehaviour {
             if (usingWeaponInTwoHands) {
                 usingWeaponInTwoHands = false;
                 if (rightHand[rightHandIndex] != null) {
-                    rightHand[rightHandIndex].active = true;
+                    rightHand[rightHandIndex].GetComponent<Pickup>().active = true;
                 }
             }
 
@@ -244,9 +247,9 @@ public class Character : MonoBehaviour {
                 }
 
                 if (leftHand[leftHandIndex] != null) {
-                    leftHand[leftHandIndex].active = true;
+                    leftHand[leftHandIndex].GetComponent<Pickup>().active = true;
                     if (leftHandIndex != previousIndex) {
-                        leftHand[previousIndex].active = false;
+                        leftHand[previousIndex].GetComponent<Pickup>().active = false;
                     }
                     findingWeapon = false;
                 }
@@ -254,11 +257,11 @@ public class Character : MonoBehaviour {
 
             for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
                 if (i != leftHandIndex && leftHand[i] != null) {
-                    leftHand[i].active = false;
+                    leftHand[i].GetComponent<Pickup>().active = false;
                 }
             }
 
-            if (leftHand[leftHandIndex].pickupData.handOccupancy == HandOccupancies.JustTwoHanded) {
+            if (leftHand[leftHandIndex].GetComponent<DataSheetWrapper>().dataSheet.handOccupancy == HandOccupancies.JustTwoHanded) {
                 disableRightHand ();
             }
             // updateGuiText ();
@@ -270,7 +273,7 @@ public class Character : MonoBehaviour {
             if (usingWeaponInTwoHands) {
                 usingWeaponInTwoHands = false;
                 if (leftHand[leftHandIndex] != null) {
-                    leftHand[leftHandIndex].active = true;
+                    leftHand[leftHandIndex].GetComponent<Pickup>().active = true;
                 }
             }
 
@@ -289,9 +292,9 @@ public class Character : MonoBehaviour {
                 }
 
                 if (rightHand[rightHandIndex] != null) {
-                    rightHand[rightHandIndex].active = true;
+                    rightHand[rightHandIndex].GetComponent<Pickup>().active = true;
                     if (previousIndex != rightHandIndex) {
-                        rightHand[previousIndex].active = false;
+                        rightHand[previousIndex].GetComponent<Pickup>().active = false;
                     }
                     findingWeapon = false;
                 }
@@ -299,11 +302,11 @@ public class Character : MonoBehaviour {
 
             for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
                 if (i != rightHandIndex && rightHand[i] != null) {
-                    rightHand[i].active = false;
+                    rightHand[i].GetComponent<Pickup>().active = false;
                 }
             }
 
-            if (rightHand[rightHandIndex].pickupData.handOccupancy == HandOccupancies.JustTwoHanded) {
+            if (rightHand[rightHandIndex].GetComponent<DataSheetWrapper>().dataSheet.handOccupancy == HandOccupancies.JustTwoHanded) {
                 disableLeftHand ();
             }
             // updateGuiText ();
@@ -315,7 +318,7 @@ public class Character : MonoBehaviour {
                 bool twoHandingRightWeapon = false;
                 for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
                     if (rightHand[i] != null) {
-                        if (rightHand[i].active) {
+                        if (rightHand[i].GetComponent<Pickup>().active) {
                             twoHandingRightWeapon = true;
                         }
                     }
@@ -323,7 +326,7 @@ public class Character : MonoBehaviour {
 
                 if (twoHandingRightWeapon) {
                     disableRightHand ();
-                    leftHand[leftHandIndex].active = true;
+                    leftHand[leftHandIndex].GetComponent<Pickup>().active = true;
                     // updateGuiText ();
                     return;
                 } 
@@ -336,7 +339,7 @@ public class Character : MonoBehaviour {
             else {
                 usingWeaponInTwoHands = false;
                 if (rightHand[rightHandIndex] != null) {
-                    rightHand[rightHandIndex].active = true;
+                    rightHand[rightHandIndex].GetComponent<Pickup>().active = true;
                 }
             }
             // updateGuiText ();
@@ -348,14 +351,14 @@ public class Character : MonoBehaviour {
                 bool twoHandingLeftWeapon = false;
                 for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
                     if (leftHand[i] != null) {
-                        if (leftHand[i].active) {
+                        if (leftHand[i].GetComponent<Pickup>().active) {
                             twoHandingLeftWeapon = true;
                         }
                     }
                 }
                 if (twoHandingLeftWeapon) {
                     disableLeftHand();
-                    rightHand[rightHandIndex].active = true;
+                    rightHand[rightHandIndex].GetComponent<Pickup>().active = true;
                     // updateGuiText ();
                     return;
                 } 
@@ -367,7 +370,7 @@ public class Character : MonoBehaviour {
             else {
                 usingWeaponInTwoHands = false;
                 if (leftHand[leftHandIndex] != null) {
-                    leftHand[leftHandIndex].active = true;
+                    leftHand[leftHandIndex].GetComponent<Pickup>().active = true;
                 }
             }
             // updateGuiText ();
@@ -375,23 +378,26 @@ public class Character : MonoBehaviour {
 	}
 
     void PickupLogic () {
-        Pickup[] C = copy.gameObject.GetComponents<Pickup> ();
-        if (C.Length == 0) return;
+        DataSheetWrapper[] dataSheetWrapper = copy.gameObject.GetComponents<DataSheetWrapper> ();
+        Pickup[] pickup = copy.gameObject.GetComponents<Pickup> ();
+        if (dataSheetWrapper.Length == 0) {
+            return;
+        }
 
         GameObject popup = Instantiate (JustPickedUp) as GameObject;
         Text t = popup.GetComponent<Text> ();
         popup.SetActive (false);
 
         int numPickedUp = 0;
-        for (int i = 0; i < C.Length; ++i) {
+        for (int i = 0; i < dataSheetWrapper.Length; ++i) {
             bool foundSlotForItem = false;
-            if (C[i].pickupData.stackable) {
+            if (dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.stackable) {
                 for (int j = 0; j < INVENTORY_SIZE; ++j) {
-                    if (C[i].pickupData == loot[j]) {
-                        itemCount[j] += C[i].count;
+                    if (dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet == loot[j]) {
+                        itemCount[j] += pickup[i].count;
                         foundSlotForItem = true;
-                        t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
-                        Destroy (C[i]);
+                        t.text += dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + pickup[i].count.ToString () + "\n";
+                        Destroy (dataSheetWrapper[i]);
                         numPickedUp++;
                     }
                 }
@@ -399,10 +405,10 @@ public class Character : MonoBehaviour {
             if (!foundSlotForItem) {
                 for (int j = 0; j < INVENTORY_SIZE; ++j) {
                     if (loot[j] == null) {
-                        itemCount[j] += C[i].count;
-                        loot[j] = C[i].pickupData;
-                        t.text += C[i].pickupData.equipmentName + " x" + C[i].count.ToString () + "\n";
-                        Destroy (C[i]);
+                        itemCount[j] += pickup[i].count;
+                        loot[j] = dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet;
+                        t.text += dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + pickup[i].count.ToString () + "\n";
+                        Destroy (dataSheetWrapper[i]);
                         numPickedUp++;
                         break;
                     }
@@ -410,7 +416,7 @@ public class Character : MonoBehaviour {
             }
 
             // See if the item has a quest trigger.
-            QuestTrigger qt = copy.gameObject.GetComponent<Pickup> ().pickupData.questTrigger;
+            QuestTrigger qt = copy.gameObject.GetComponent<Pickup> ().GetComponent<DataSheetWrapper>().dataSheet.questTrigger;
             if (qt != null) {
                 QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ();
                 for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
@@ -419,7 +425,6 @@ public class Character : MonoBehaviour {
                         if (!qms.ActiveQuests[j].isActiveQuest) {
                             qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (qt.thisObjective);
                             qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (qt.thisObjective, true);
-                            Debug.Log ("We are here.");
                         }
                         else {
                             bool conditionMet = false;
@@ -454,7 +459,7 @@ public class Character : MonoBehaviour {
         popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
         allowedToPickThingsUp = false;
         gameObject.GetComponent<UIManager> ().enabled = false;
-        if (numPickedUp == C.Length) {
+        if (numPickedUp == dataSheetWrapper.Length) {
             Destroy (copy.gameObject);
         }
         if (numPickedUp == 0) {
@@ -465,7 +470,7 @@ public class Character : MonoBehaviour {
     void disableLeftHand () {
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (leftHand[i] != null) {
-                leftHand[i].active = false;
+                leftHand[i].GetComponent<Pickup>().active = false;
             }
         }
     }
@@ -473,7 +478,7 @@ public class Character : MonoBehaviour {
     void disableRightHand () {
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (rightHand[i] != null) {
-                rightHand[i].active = false;
+                rightHand[i].GetComponent<Pickup>().active = false;
             }
         }
     }

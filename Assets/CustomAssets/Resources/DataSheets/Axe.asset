@@ -9,12 +9,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 639aeb3d8c4db6c4c83b1b2de9d77ee4, type: 3}
-  m_Name: LeftHand
+  m_Name: Axe
   m_EditorClassIdentifier: 
   handOccupancy: 2
   isArmor: 0
-  equipmentName: Left Hand
-  description: Left Hand
-  hoverText: Left Hand
+  equipmentName: Axe
+  description: Basic axe.
+  hoverText: Axe
   stackable: 0
-  damage: 0
+  damage: 1
+  questTrigger: {fileID: 0}
+  questUnTrigger: {fileID: 0}
+  MeshFilterName: Cube
+  MaterialName: Black
