@@ -30,7 +30,7 @@ public class Slot : MonoBehaviour, IDropHandler {
             // left or right hand.
             if ((transform.parent == leftHand.transform ||
                 transform.parent == rightHand.transform) &&
-                DragHandler.itemBeingDragged.GetComponent<Pickup>().pickupData.stackable) {
+                DragHandler.itemBeingDragged.GetComponent<DataSheetWrapper>().dataSheet.stackable) {
 
                 DragHandler.itemBeingDragged.transform.SetParent (DragHandler.startParent);
                 return;
@@ -42,13 +42,13 @@ public class Slot : MonoBehaviour, IDropHandler {
             // DragHandler.itemBeingDragged is stackable and being swapped with an item in left or right hand.
             if ((item.transform.parent.parent.transform == leftHand.transform ||
                 item.transform.parent.parent.transform == rightHand.transform) &&
-                DragHandler.itemBeingDragged.GetComponent<Pickup>().pickupData.stackable) {
+                DragHandler.itemBeingDragged.GetComponent<DataSheetWrapper>().dataSheet.stackable) {
                 return;
             }
 
             if (DragHandler.itemBeingDragged.transform.parent.parent.transform == leftHand.transform ||
                 DragHandler.itemBeingDragged.transform.parent.parent.transform == rightHand.transform &&
-                item.GetComponent<Pickup>().pickupData.stackable) {
+                item.GetComponent<DataSheetWrapper>().dataSheet.stackable) {
                 return;
             }
             DragHandler.itemBeingDragged.transform.SetParent (transform);

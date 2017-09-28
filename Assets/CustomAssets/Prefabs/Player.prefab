@@ -47,6 +47,9 @@ GameObject:
   - component: {fileID: 114110501453686674}
   - component: {fileID: 114573522933362164}
   - component: {fileID: 114522780988060810}
+  - component: {fileID: 114330173098271200}
+  - component: {fileID: 114620091093295884}
+  - component: {fileID: 114296293390817750}
   - component: {fileID: 54127999334631000}
   - component: {fileID: 82910769924033814}
   m_Layer: 0
@@ -312,6 +315,37 @@ MonoBehaviour:
     i15: 110
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &114296293390817750
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1818343121984686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d76b759813e8946448820b01f8ca9792, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TalkPrompt: {fileID: 1167984159562256, guid: 463a5bffa45bb444b84665be5d8e57ad, type: 2}
+--- !u!114 &114330173098271200
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1818343121984686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f75ca8a2997d1134aa1558b61ef25168, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotItemPrefab: {fileID: 1106010620724704, guid: 50dc6c4c2466abc4a9ce746de966c8e0,
+    type: 2}
+  lh: {fileID: 0}
+  rh: {fileID: 0}
+  lht: []
+  rht: []
+  inventory: {fileID: 0}
+  slots: []
 --- !u!114 &114522780988060810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -330,12 +364,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 114168747689480784, guid: 4e2dc2c7fbf919342ab8c488541195db, type: 2}
+  - {fileID: 1917387982629174, guid: 62d0ce0d196d2f845a3e91f06b03dfd8, type: 2}
   rightHand:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 114223261747067220, guid: a5bfa42208d8f9048946515823b9d56f, type: 2}
+  - {fileID: 1105099921906192, guid: 0bf2bfaf1685dc94b96ea6d698dc3502, type: 2}
   armor: []
   loot:
   - {fileID: 0}
@@ -352,14 +386,13 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  equipped: {fileID: 0}
   itemCount: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   leftHandItemCount: 00000000000000000000000000000000
   rightHandItemCount: 00000000000000000000000000000000
   JustPickedUp: {fileID: 1630763203453086, guid: 43fe7cedd1439884f88212ad42289f5f,
     type: 2}
-  PickupTextPromptPrefab: {fileID: 1664422159923830, guid: 28fd8c6b7fc763e4ab52f8e9af076863,
-    type: 2}
+  currentCollider: {fileID: 0}
+  alreadyInstantiated: 0
 --- !u!114 &114573522933362164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -371,6 +404,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4b0bc9f14fba14aa9ed49c705a9415, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &114620091093295884
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1818343121984686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 39ac0c0db807ef1459cb527b9b68fcca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PickupTextPrompt: {fileID: 1664422159923830, guid: 28fd8c6b7fc763e4ab52f8e9af076863,
+    type: 2}
 --- !u!114 &114821206141654580
 MonoBehaviour:
   m_ObjectHideFlags: 1

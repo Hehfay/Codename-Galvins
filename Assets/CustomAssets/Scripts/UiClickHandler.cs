@@ -9,8 +9,6 @@ using UnityEngine.UI;
 // When a UI element is clicked on, it is dropped.
 public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
 
-    public GameObject dropItemPrefab;
-
     public GameObject UiElementSelectCountPrefab;
 
     string playerString = "Player(Clone)";
@@ -27,7 +25,7 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick (PointerEventData eventData) {
 
-        InventoryController i = GameObject.Find ("InventoryController").GetComponent<InventoryController>();
+        InventoryController i = GameObject.Find ("Player(Clone)").GetComponent<InventoryController>();
 
         Character character = GameObject.Find (playerString).GetComponent<Character>();
 
@@ -67,33 +65,65 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
             return;
         }
 
-        // If you are trying to drop a non-stackable itme this logic will run.
-        GameObject g = Instantiate (dropItemPrefab) as GameObject;
-        g.GetComponent<Pickup>().pickupData = gameObject.GetComponent<Pickup>().pickupData;
+        GameObject dropItem = Resources.Load<GameObject>("Items/" + GetComponent<DataSheetWrapper>().dataSheet.name);
 
         GameObject c = GameObject.Find (playerString);
-        g.transform.position = c.transform.position;
+        dropItem.transform.position = c.transform.position;
+
+        dropItem.GetComponent<Pickup> ().count = GetComponent<Pickup> ().count;
+
+        Instantiate (dropItem);
 
         gameObject.transform.SetParent (null);
-        gameObject.GetComponent<Pickup> ().count--;
         Destroy (gameObject);
         // character.itemCount[index]--;
         i.readFromInventoryToCharacter ();
         i.UpdateGuiCounts ();
+
+        // TODO Wrap this nicely so other drop logic can use it.
+        QuestUnTrigger questUnTrigger = dropItem.GetComponent<DataSheetWrapper> ().dataSheet.questUnTrigger;
+        if (questUnTrigger == null) {
+            return;
+        }
+
+        QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ();
+        for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
+            if (questUnTrigger.quest == qms.ActiveQuests[j].quest) {
+
+                if (!qms.ActiveQuests[j].isActiveQuest) {
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (questUnTrigger.previousObjective);
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (questUnTrigger.previousObjective, false);
+                    return;
+                }
+
+                if (qms.ActiveQuests[j].currentObjective == questUnTrigger.thisObjective) {
+                    qms.ActiveQuests[j].currentObjective = questUnTrigger.previousObjective;
+
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (questUnTrigger.thisObjective);
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (questUnTrigger.thisObjective, false);
+
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (questUnTrigger.previousObjective);
+                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (questUnTrigger.previousObjective, false);
+
+                    qms.ActiveQuests[j].DisplayObjective ();
+                }
+            }
+        }
     }
 
     public void DropStackOfItems (int dropCount) {
-        InventoryController i = GameObject.Find ("InventoryController").GetComponent<InventoryController>();
+        InventoryController i = GameObject.Find ("Player(Clone)").GetComponent<InventoryController>();
 
-        GameObject g = Instantiate (dropItemPrefab) as GameObject;
-        g.GetComponent<Pickup>().pickupData = gameObject.GetComponent<Pickup>().pickupData;
+        GameObject dropItem = Resources.Load<GameObject>("Items/" + GetComponent<DataSheetWrapper>().dataSheet.name);
 
         GameObject c = GameObject.Find (playerString);
-        g.transform.position = c.transform.position;
+        dropItem.transform.position = c.transform.position;
 
-        //character.itemCount[index]--;
         gameObject.GetComponent<Pickup> ().count -= dropCount;
-        g.GetComponent<Pickup> ().count = dropCount;
+
+        dropItem.GetComponent<Pickup> ().count = dropCount;
+
+        Instantiate (dropItem);
 
         if (gameObject.GetComponent<Pickup>().count == 0) {
             gameObject.transform.SetParent (null);

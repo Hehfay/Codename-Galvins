@@ -17,12 +17,12 @@ public class Pickup : MonoBehaviour {
     // If the equipment is not active, it means the character
     // is not currently using this combat equipment.
     public bool active;
-    public PickupData pickupData;
     public int inventoryIndex;
     public int count;
 
     void Start () {
-        Debug.Assert (pickupData != null);
+        Debug.Assert (count != 0);
     }
 }
+
 
