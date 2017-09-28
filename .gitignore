@@ -29,6 +29,7 @@ Assets/TEMP*
 Standard\ Assets*
 Assets/Editor/CrossPlatformInput*
 Assets/UnityVS*
+Assets/CustomAssets/Resources/Items
 #
 ## Unity3D generated meta files
 *.pidb.meta
