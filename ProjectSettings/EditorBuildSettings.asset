@@ -11,5 +11,5 @@ EditorBuildSettings:
     path: Assets/Scenes/NewGameLevel.unity
   - enabled: 0
     path: Assets/Scenes/RandomBattle.unity
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/NetworkMain.unity
