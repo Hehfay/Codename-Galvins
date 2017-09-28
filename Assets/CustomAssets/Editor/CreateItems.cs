@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-public class CreatePrefab : EditorWindow {
+public class CreateItems : EditorWindow {
     [MenuItem ("Window/CreatePrefabFromDataSheet")]
 
     public static void ShowWindow () {
-        EditorWindow.GetWindow (typeof(CreatePrefab));
+        EditorWindow.GetWindow (typeof(CreateItems));
     }
 
     void OnGUI () {
-        if (GUILayout.Button("Create Prefabs")) {
+        if (GUILayout.Button("Create Items")) {
 
             DataSheet[] dataSheets = Resources.LoadAll<DataSheet> ("DataSheets");
 
             Debug.Assert (dataSheets.Length != 0);
 
             for (int i = 0; i < dataSheets.Length; ++i) {
+
 
                 GameObject newPrefab = new GameObject ();
 

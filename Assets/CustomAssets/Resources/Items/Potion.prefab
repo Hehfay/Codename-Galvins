@@ -9,22 +9,22 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1918614662053128}
+  m_RootGameObject: {fileID: 1102764697162876}
   m_IsPrefabParent: 1
---- !u!1 &1918614662053128
+--- !u!1 &1102764697162876
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 224240508961330244}
-  - component: {fileID: 33117513947374026}
-  - component: {fileID: 65276423168286210}
-  - component: {fileID: 23406741235065630}
-  - component: {fileID: 114205605373144610}
-  - component: {fileID: 114893057153396110}
-  - component: {fileID: 54380309629468582}
+  - component: {fileID: 224373690073684318}
+  - component: {fileID: 33839877024547460}
+  - component: {fileID: 65260181910685968}
+  - component: {fileID: 23922831894949374}
+  - component: {fileID: 114867488898267308}
+  - component: {fileID: 114996690324727964}
+  - component: {fileID: 54038730009629794}
   m_Layer: 0
   m_Name: Potion
   m_TagString: Pickup
@@ -32,12 +32,12 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!23 &23406741235065630
+--- !u!23 &23922831894949374
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1918614662053128}
+  m_GameObject: {fileID: 1102764697162876}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -63,19 +63,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &33117513947374026
+--- !u!33 &33839877024547460
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1918614662053128}
+  m_GameObject: {fileID: 1102764697162876}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54380309629468582
+--- !u!54 &54038730009629794
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1918614662053128}
+  m_GameObject: {fileID: 1102764697162876}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -85,36 +85,36 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &65276423168286210
+--- !u!65 &65260181910685968
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1918614662053128}
+  m_GameObject: {fileID: 1102764697162876}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 3, y: 1, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114205605373144610
+--- !u!114 &114867488898267308
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1918614662053128}
+  m_GameObject: {fileID: 1102764697162876}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed70e107c39f6f046ba8bd808be3002b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dataSheet: {fileID: 11400000, guid: e324d351a7819854f83f3e3cb17c6844, type: 2}
---- !u!114 &114893057153396110
+--- !u!114 &114996690324727964
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1918614662053128}
+  m_GameObject: {fileID: 1102764697162876}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f57c182aff3740243a05f57a0a94024a, type: 3}
@@ -122,15 +122,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   active: 0
   inventoryIndex: 0
-  count: 1
---- !u!224 &224240508961330244
+  count: 0
+--- !u!224 &224373690073684318
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1918614662053128}
+  m_GameObject: {fileID: 1102764697162876}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 16.569801}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -138,6 +138,6 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 39.92157, y: 0.980001}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
