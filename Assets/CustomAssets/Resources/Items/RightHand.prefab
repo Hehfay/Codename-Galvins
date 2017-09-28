@@ -9,22 +9,22 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1872427467730022}
+  m_RootGameObject: {fileID: 1773432404036590}
   m_IsPrefabParent: 1
---- !u!1 &1872427467730022
+--- !u!1 &1773432404036590
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 224067546413535390}
-  - component: {fileID: 33196901387537150}
-  - component: {fileID: 65855384836550158}
-  - component: {fileID: 23006993938804758}
-  - component: {fileID: 114976002933386936}
-  - component: {fileID: 114275545654242590}
-  - component: {fileID: 54513792700214980}
+  - component: {fileID: 224462043878927518}
+  - component: {fileID: 33093831209289184}
+  - component: {fileID: 65312010717065872}
+  - component: {fileID: 23824478122997276}
+  - component: {fileID: 114812279598185570}
+  - component: {fileID: 114361657105628526}
+  - component: {fileID: 54512956380943846}
   m_Layer: 0
   m_Name: RightHand
   m_TagString: Pickup
@@ -32,13 +32,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!23 &23006993938804758
+--- !u!23 &23824478122997276
 MeshRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1872427467730022}
-  m_Enabled: 0
+  m_GameObject: {fileID: 1773432404036590}
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_MotionVectors: 1
@@ -63,19 +63,19 @@ MeshRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingOrder: 0
---- !u!33 &33196901387537150
+--- !u!33 &33093831209289184
 MeshFilter:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1872427467730022}
+  m_GameObject: {fileID: 1773432404036590}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!54 &54513792700214980
+--- !u!54 &54512956380943846
 Rigidbody:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1872427467730022}
+  m_GameObject: {fileID: 1773432404036590}
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
@@ -85,50 +85,50 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!65 &65855384836550158
+--- !u!65 &65312010717065872
 BoxCollider:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1872427467730022}
+  m_GameObject: {fileID: 1773432404036590}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 3, y: 1, z: 3}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &114275545654242590
+--- !u!114 &114361657105628526
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1872427467730022}
+  m_GameObject: {fileID: 1773432404036590}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f57c182aff3740243a05f57a0a94024a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   inventoryIndex: 0
   count: 0
---- !u!114 &114976002933386936
+--- !u!114 &114812279598185570
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1872427467730022}
+  m_GameObject: {fileID: 1773432404036590}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ed70e107c39f6f046ba8bd808be3002b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   dataSheet: {fileID: 11400000, guid: 17d8f95062e21f345a3c2329f01571d3, type: 2}
---- !u!224 &224067546413535390
+--- !u!224 &224462043878927518
 RectTransform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1872427467730022}
+  m_GameObject: {fileID: 1773432404036590}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
