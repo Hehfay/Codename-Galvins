@@ -1885,10 +1885,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1810215443}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a4b007b407d32484786150955915b034, type: 3}
+  m_Script: {fileID: 11500000, guid: 683fe34b3c16db34f9eda6fa5d1a860f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locationName: Prancing Pony
+  locationName: 
 --- !u!4 &1810215446
 Transform:
   m_ObjectHideFlags: 0
