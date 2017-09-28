@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 public class CreateItems : EditorWindow {
-    [MenuItem ("Window/CreatePrefabFromDataSheet")]
+    [MenuItem ("Window/Create Items")]
 
     public static void ShowWindow () {
         EditorWindow.GetWindow (typeof(CreateItems));
