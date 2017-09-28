@@ -22,7 +22,7 @@ GameObject:
   - component: {fileID: 222264317130413576}
   - component: {fileID: 114644231615447448}
   m_Layer: 5
-  m_Name: InteractionPrompt
+  m_Name: TalkPrompt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -364,12 +364,12 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 1917387982629174, guid: 62d0ce0d196d2f845a3e91f06b03dfd8, type: 2}
+  - {fileID: 0}
   rightHand:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 1105099921906192, guid: 0bf2bfaf1685dc94b96ea6d698dc3502, type: 2}
+  - {fileID: 0}
   armor: []
   loot:
   - {fileID: 0}
@@ -445,7 +445,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1818343121984686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9bc24aa61a755fd49a3ec5aaa8ee9f0d, type: 3}
+  m_Script: {fileID: 11500000, guid: 73bea36db1f81bb43a74d80644bb34d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   cameraObj: {fileID: 0}
@@ -459,7 +459,7 @@ MonoBehaviour:
   runSpeed: 4
   sprintSpeed: 7
   jumpSpeed: 4
-  jumpHeight: 1
+  jumpHeight: 1.5
   jumpLandDuration: 0.1
   minSpeed: 0.1
   shouldRotate: 0

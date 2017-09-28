@@ -20,9 +20,9 @@ public class Pickup : MonoBehaviour {
     public int inventoryIndex;
     public int count;
 
-    void Start () {
-        Debug.Assert (count != 0);
-    }
+    //void Start () {
+    //    Debug.Assert (count != 0);
+    //}
 }
 
 

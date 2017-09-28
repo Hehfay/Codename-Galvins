@@ -145,7 +145,7 @@ public class Character : MonoBehaviour {
                 gameObject.GetComponent<TalkHandler> ().DeletePrompt ();
                 GameObject popup = Instantiate (JustPickedUp) as GameObject;
                 CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
-                PlayerController2 playerController = GetComponent<PlayerController2> ();
+                PlayerController playerController = GetComponent<PlayerController> ();
                 cursorManager.cursorLocked = false;
                 cursorManager.listening = false;
                 playerController.shouldRotate = false;
@@ -451,7 +451,7 @@ public class Character : MonoBehaviour {
         cursorManager.cursorLocked = false;
         cursorManager.listening = false;
 
-        PlayerController2 playerController = GetComponent<PlayerController2> ();
+        PlayerController playerController = GetComponent<PlayerController> ();
         playerController.shouldRotate = false;
         playerController.listening = false;
 
