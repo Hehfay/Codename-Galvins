@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerController : NetworkBehaviour {
+public class PlayerMovementController : NetworkBehaviour {
     // local variables
     bool isAlive;
     public GameObject cameraObj; // this is where the player camera will be held

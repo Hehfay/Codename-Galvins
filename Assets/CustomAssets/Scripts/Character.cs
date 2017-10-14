@@ -201,7 +201,7 @@ public class Character : MonoBehaviour {
             cursorManager.cursorLocked = false;
             cursorManager.listening = false;
 
-            PlayerController plyrcontr = GetComponent<PlayerController> ();
+            PlayerMovementController plyrcontr = GetComponent<PlayerMovementController> ();
             plyrcontr.shouldRotate = false;
             plyrcontr.listening = false;
 
