@@ -2,7 +2,7 @@
 using UnityEngine.Networking;
 
 [RequireComponent(typeof(CharacterController))]
-public class PlayerController : NetworkBehaviour {
+public class PlayerMovementController : NetworkBehaviour {
     // local variables
     bool isAlive;
     public GameObject cameraObj; // this is where the player camera will be held
@@ -30,6 +30,8 @@ public class PlayerController : NetworkBehaviour {
     private float zInput;
     private float xRotInput;
     private float yRotInput;
+    private bool clicked;
+    private Vector2 mousePos;
     private bool jumpInput;
     private bool isWalking;
     private bool isSprinting;
@@ -89,6 +91,17 @@ public class PlayerController : NetworkBehaviour {
             // have to clamp rotation around xAxis (vertical look)
             RotateXAxisClampedBidirectionally(-xRotInput, 70);
         }
+        // process click
+        if (clicked) {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(mousePos);
+            Physics.Raycast(ray, out hit, 2.0f);
+            Collider collider = hit.collider;
+            ActorAI npc = collider.GetComponent<ActorAI>();
+            if (npc != null) {
+                npc.doInteract();
+            }
+        }
 
 
         // do translational movement
@@ -133,6 +146,11 @@ public class PlayerController : NetworkBehaviour {
             }
             // TODO: play land noise
         }
+        else if (!isOnGround) {
+            // TODO: figure out why this happens
+            Debug.Log("I am not on the ground, somehow.");
+            jumpState = JumpState.Airborn;
+        }
         else if (jumpState == JumpState.JustLanded) {
             if (Time.time - timeLanded > jumpLandDuration) {
                 jumpState = JumpState.Grounded;
@@ -151,12 +169,9 @@ public class PlayerController : NetworkBehaviour {
             if ((friction.magnitude * Time.fixedDeltaTime) > velocity.magnitude && desiredAcceleration.magnitude == 0) { // friction would actually cause velocity in negative direction
                 friction = -velocity / Time.fixedDeltaTime; // so make it so that velocity will be zero due to friction
             }
-            //Vector3 totalAccel = desiredAcceleration + friction + Physics.gravity;
-            //velocity = velocity.magnitude * velocityDirection + totalAccel * Time.fixedDeltaTime;
-            //velocity = Vector3.ClampMagnitude(velocity, speed);
             velocity = velocity.magnitude * velocityDirection + (desiredAcceleration + friction) * Time.fixedDeltaTime;
             velocity = Vector3.ClampMagnitude(velocity, speed);
-            velocity += Physics.gravity * Time.fixedDeltaTime;
+            //velocity += Physics.gravity * Time.fixedDeltaTime;
         } else {
         }
 
@@ -208,6 +223,8 @@ public class PlayerController : NetworkBehaviour {
         yRotInput = Input.GetAxis("Mouse X") * Time.deltaTime * ySensitivity; // get rotate input
         xInput = Input.GetAxis("Horizontal"); // get input
         zInput = Input.GetAxis("Vertical"); // get input
+        clicked = Input.GetMouseButtonDown(0);
+        mousePos = Input.mousePosition;
         isSprinting = Input.GetButton("Sprint"); // is user trying to sprint
         isWalking = Input.GetButton("Walk"); // is user trying to walk
         jumpInput = Input.GetButton("Jump"); // is user trying to jump

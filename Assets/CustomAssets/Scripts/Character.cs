@@ -50,15 +50,15 @@ public class Character : MonoBehaviour {
     Collider copy;
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         // You should always have your left hand and right hand in the array.
 
         if (leftHand[3] == null) {
-            leftHand[3] = Resources.Load<GameObject> ("Items/LeftHand");
+            leftHand[3] = Resources.Load<GameObject>("Items/LeftHand");
         }
 
         if (rightHand[3] == null) {
-            rightHand[3] = Resources.Load<GameObject> ("Items/RightHand");
+            rightHand[3] = Resources.Load<GameObject>("Items/RightHand");
         }
 
 
@@ -67,26 +67,26 @@ public class Character : MonoBehaviour {
         // For the items in your hands, set the transform parent.
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (leftHand[i] != null) {
-                if (leftHand[i].GetComponent<MeshRenderer> () != null) {
-                    leftHand[i].GetComponent<MeshRenderer> ().enabled = false;
-                    leftHand[i].gameObject.transform.SetParent (transform.parent);
+                if (leftHand[i].GetComponent<MeshRenderer>() != null) {
+                    leftHand[i].GetComponent<MeshRenderer>().enabled = false;
+                    leftHand[i].gameObject.transform.SetParent(transform.parent);
                 }
             }
             if (rightHand[i] != null) {
-                if (rightHand[i].GetComponent<MeshRenderer> () != null) {
-                    rightHand[i].GetComponent<MeshRenderer> ().enabled = false;
-                    rightHand[i].gameObject.transform.SetParent (transform.parent);
+                if (rightHand[i].GetComponent<MeshRenderer>() != null) {
+                    rightHand[i].GetComponent<MeshRenderer>().enabled = false;
+                    rightHand[i].gameObject.transform.SetParent(transform.parent);
                 }
             }
         }
 
-        for (int i = 0 ;; ++i) {
+        for (int i = 0; ; ++i) {
             if (leftHand[i] != null) {
                 leftHandIndex = i;
                 break;
             }
         }
-        for (int i = 0 ;; ++i) {
+        for (int i = 0; ; ++i) {
             if (rightHand[i] != null) {
                 rightHandIndex = i;
                 break;
@@ -117,13 +117,13 @@ public class Character : MonoBehaviour {
             }
         }
         // updateGuiText ();
-	}
+    }
 
 
     // Update is called once per frame
-    void Update () {
+    void Update() {
 
-        if (Input.GetKeyDown (KeyCode.F)) {
+        if (Input.GetKeyDown(KeyCode.F)) {
 
             if (currentCollider == null) return;
             if (!allowedToPickThingsUp) return;
@@ -137,21 +137,21 @@ public class Character : MonoBehaviour {
             // TODO Instead of the tag it is going to be a signal from the collider interaction brain.
             if (copy.tag == "Pickup") {
                 gameObject.GetComponent<PickupHandler>().DeletePrompt();
-                PickupLogic ();
+                PickupLogic();
                 return;
             }
 
             if (copy.tag == "Quest") {
-                gameObject.GetComponent<TalkHandler> ().DeletePrompt ();
-                GameObject popup = Instantiate (JustPickedUp) as GameObject;
-                CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
-                PlayerController playerController = GetComponent<PlayerController> ();
+                gameObject.GetComponent<TalkHandler>().DeletePrompt();
+                GameObject popup = Instantiate(JustPickedUp) as GameObject;
+                CursorManager cursorManager = gameObject.GetComponent<CursorManager>();
+                PlayerMovementController playerController = GetComponent<PlayerMovementController>();
                 cursorManager.cursorLocked = false;
                 cursorManager.listening = false;
                 playerController.shouldRotate = false;
                 allowedToPickThingsUp = false;
 
-                QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript>();
+                QuestManagerScript qms = GameObject.Find("QuestManager").GetComponent<QuestManagerScript>();
                 bool doOtherThing = true;
 
                 for (int i = 0; i < qms.ActiveQuests.Count; ++i) {
@@ -167,48 +167,48 @@ public class Character : MonoBehaviour {
 
                             bool currentObjectiveComplete = true;
 
-                            QuestWrapper qw = copy.gameObject.GetComponent<QuestWrapper> ();
+                            QuestWrapper qw = copy.gameObject.GetComponent<QuestWrapper>();
 
-                            qms.getQuest (qw.quest).ObjectiveCompletionStatus.TryGetValue(qms.getQuest(qw.quest).currentObjective, out currentObjectiveComplete);
+                            qms.getQuest(qw.quest).ObjectiveCompletionStatus.TryGetValue(qms.getQuest(qw.quest).currentObjective, out currentObjectiveComplete);
 
                             if (currentObjectiveComplete) {
-                                qms.getQuest(qw.quest).ObjectiveCompletionStatus.Remove (qms.getQuest(qw.quest).currentObjective);
-                                qms.getQuest(qw.quest).ObjectiveCompletionStatus.Add (qms.getQuest(qw.quest).currentObjective, true);
-                                qms.getQuest (qw.quest).NextObjective ();
+                                qms.getQuest(qw.quest).ObjectiveCompletionStatus.Remove(qms.getQuest(qw.quest).currentObjective);
+                                qms.getQuest(qw.quest).ObjectiveCompletionStatus.Add(qms.getQuest(qw.quest).currentObjective, true);
+                                qms.getQuest(qw.quest).NextObjective();
                                 doOtherThing = false;
                             }
                             else {
                                 foundCurrentObjective = true;
                             }
                         }
-                        qms.ShowCurrentObjectives ();
+                        qms.ShowCurrentObjectives();
                     }
                 }
 
                 if (doOtherThing) {
                     // TODO If the tag is quest, the quest trigger will be in the quest trigger wrapper, not the pickupData.
-                    QuestTrigger qt = copy.gameObject.GetComponent<QuestTriggerWrapper> ().questTrigger;
+                    QuestTrigger qt = copy.gameObject.GetComponent<QuestTriggerWrapper>().questTrigger;
                     if (qt != null) {
                         for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
                             if (qt.quest == qms.ActiveQuests[j].quest) {
 
                                 bool satisfied = false;
 
-                                qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qt.advanceCondition, out satisfied);
+                                qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue(qt.advanceCondition, out satisfied);
 
                                 bool currentObjectiveComplete = true;
 
-                                qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qms.ActiveQuests[j].currentObjective, out currentObjectiveComplete);
+                                qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue(qms.ActiveQuests[j].currentObjective, out currentObjectiveComplete);
 
                                 currentObjectiveComplete = qms.ActiveQuests[j].currentObjective == qt.nextObjective;
 
                                 if (satisfied && !currentObjectiveComplete) {
 
-                                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (qms.ActiveQuests[j].currentObjective);
-                                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (qms.ActiveQuests[j].currentObjective, true);
+                                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove(qms.ActiveQuests[j].currentObjective);
+                                    qms.ActiveQuests[j].ObjectiveCompletionStatus.Add(qms.ActiveQuests[j].currentObjective, true);
 
                                     qms.ActiveQuests[j].currentObjective = qt.nextObjective;
-                                    qms.ShowCurrentObjectives ();
+                                    qms.ShowCurrentObjectives();
                                 }
                             }
                         }
@@ -216,14 +216,14 @@ public class Character : MonoBehaviour {
                 }
 
 
-                popup.transform.SetParent (GameObject.Find("Canvas").transform);
-                popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
-                gameObject.GetComponent<UIManager> ().enabled = false;
+                popup.transform.SetParent(GameObject.Find("Canvas").transform);
+                popup.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
+                gameObject.GetComponent<UIManager>().enabled = false;
             }
         }
 
         // 1 to switch weapons in your left hand.
-        if (Input.GetKeyDown (KeyCode.Alpha1)) {
+        if (Input.GetKeyDown(KeyCode.Alpha1)) {
 
             if (usingWeaponInTwoHands) {
                 usingWeaponInTwoHands = false;
@@ -253,7 +253,7 @@ public class Character : MonoBehaviour {
                     }
                     findingWeapon = false;
                 }
-            } while (findingWeapon) ;
+            } while (findingWeapon);
 
             for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
                 if (i != leftHandIndex && leftHand[i] != null) {
@@ -262,13 +262,13 @@ public class Character : MonoBehaviour {
             }
 
             if (leftHand[leftHandIndex].GetComponent<DataSheetWrapper>().dataSheet.handOccupancy == HandOccupancies.JustTwoHanded) {
-                disableRightHand ();
+                disableRightHand();
             }
             // updateGuiText ();
         }
 
         // 2 to switch weapons in your right hand.
-        if (Input.GetKeyDown (KeyCode.Alpha2)) {
+        if (Input.GetKeyDown(KeyCode.Alpha2)) {
 
             if (usingWeaponInTwoHands) {
                 usingWeaponInTwoHands = false;
@@ -298,7 +298,7 @@ public class Character : MonoBehaviour {
                     }
                     findingWeapon = false;
                 }
-            } while (findingWeapon) ;
+            } while (findingWeapon);
 
             for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
                 if (i != rightHandIndex && rightHand[i] != null) {
@@ -307,13 +307,13 @@ public class Character : MonoBehaviour {
             }
 
             if (rightHand[rightHandIndex].GetComponent<DataSheetWrapper>().dataSheet.handOccupancy == HandOccupancies.JustTwoHanded) {
-                disableLeftHand ();
+                disableLeftHand();
             }
             // updateGuiText ();
         }
 
         // Q to two hand your left hand weapon.
-        if (Input.GetKeyDown (KeyCode.Q)) {
+        if (Input.GetKeyDown(KeyCode.Q)) {
             if (usingWeaponInTwoHands) {
                 bool twoHandingRightWeapon = false;
                 for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
@@ -325,15 +325,15 @@ public class Character : MonoBehaviour {
                 }
 
                 if (twoHandingRightWeapon) {
-                    disableRightHand ();
+                    disableRightHand();
                     leftHand[leftHandIndex].GetComponent<Pickup>().active = true;
                     // updateGuiText ();
                     return;
-                } 
+                }
             }
 
             if (!usingWeaponInTwoHands) {
-                disableRightHand ();
+                disableRightHand();
                 usingWeaponInTwoHands = true;
             }
             else {
@@ -346,7 +346,7 @@ public class Character : MonoBehaviour {
         }
 
         // E to two hand your right hand weapon.
-        if (Input.GetKeyDown (KeyCode.E)) {
+        if (Input.GetKeyDown(KeyCode.E)) {
             if (usingWeaponInTwoHands) {
                 bool twoHandingLeftWeapon = false;
                 for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
@@ -361,10 +361,10 @@ public class Character : MonoBehaviour {
                     rightHand[rightHandIndex].GetComponent<Pickup>().active = true;
                     // updateGuiText ();
                     return;
-                } 
+                }
             }
             if (!usingWeaponInTwoHands) {
-                disableLeftHand ();
+                disableLeftHand();
                 usingWeaponInTwoHands = true;
             }
             else {
@@ -375,18 +375,18 @@ public class Character : MonoBehaviour {
             }
             // updateGuiText ();
         }
-	}
+    }
 
-    void PickupLogic () {
-        DataSheetWrapper[] dataSheetWrapper = copy.gameObject.GetComponents<DataSheetWrapper> ();
-        Pickup[] pickup = copy.gameObject.GetComponents<Pickup> ();
+    void PickupLogic() {
+        DataSheetWrapper[] dataSheetWrapper = copy.gameObject.GetComponents<DataSheetWrapper>();
+        Pickup[] pickup = copy.gameObject.GetComponents<Pickup>();
         if (dataSheetWrapper.Length == 0) {
             return;
         }
 
-        GameObject popup = Instantiate (JustPickedUp) as GameObject;
-        Text t = popup.GetComponent<Text> ();
-        popup.SetActive (false);
+        GameObject popup = Instantiate(JustPickedUp) as GameObject;
+        Text t = popup.GetComponent<Text>();
+        popup.SetActive(false);
 
         int numPickedUp = 0;
         for (int i = 0; i < dataSheetWrapper.Length; ++i) {
@@ -396,8 +396,8 @@ public class Character : MonoBehaviour {
                     if (dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet == loot[j]) {
                         itemCount[j] += pickup[i].count;
                         foundSlotForItem = true;
-                        t.text += dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + pickup[i].count.ToString () + "\n";
-                        Destroy (dataSheetWrapper[i]);
+                        t.text += dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + pickup[i].count.ToString() + "\n";
+                        Destroy(dataSheetWrapper[i]);
                         numPickedUp++;
                     }
                 }
@@ -407,8 +407,8 @@ public class Character : MonoBehaviour {
                     if (loot[j] == null) {
                         itemCount[j] += pickup[i].count;
                         loot[j] = dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet;
-                        t.text += dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + pickup[i].count.ToString () + "\n";
-                        Destroy (dataSheetWrapper[i]);
+                        t.text += dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + pickup[i].count.ToString() + "\n";
+                        Destroy(dataSheetWrapper[i]);
                         numPickedUp++;
                         break;
                     }
@@ -416,58 +416,58 @@ public class Character : MonoBehaviour {
             }
 
             // See if the item has a quest trigger.
-            QuestTrigger qt = copy.gameObject.GetComponent<Pickup> ().GetComponent<DataSheetWrapper>().dataSheet.questTrigger;
+            QuestTrigger qt = copy.gameObject.GetComponent<Pickup>().GetComponent<DataSheetWrapper>().dataSheet.questTrigger;
             if (qt != null) {
-                QuestManagerScript qms = GameObject.Find ("QuestManager").GetComponent<QuestManagerScript> ();
+                QuestManagerScript qms = GameObject.Find("QuestManager").GetComponent<QuestManagerScript>();
                 for (int j = 0; j < qms.ActiveQuests.Count; ++j) {
                     if (qt.quest == qms.ActiveQuests[j].quest) {
 
                         if (!qms.ActiveQuests[j].isActiveQuest) {
-                            qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (qt.thisObjective);
-                            qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (qt.thisObjective, true);
+                            qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove(qt.thisObjective);
+                            qms.ActiveQuests[j].ObjectiveCompletionStatus.Add(qt.thisObjective, true);
                         }
                         else {
                             bool conditionMet = false;
-                            qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qt.advanceCondition, out conditionMet);
+                            qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue(qt.advanceCondition, out conditionMet);
 
                             bool currentObjectiveComplete;
-                            qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue (qms.ActiveQuests[j].currentObjective, out currentObjectiveComplete);
+                            qms.ActiveQuests[j].ObjectiveCompletionStatus.TryGetValue(qms.ActiveQuests[j].currentObjective, out currentObjectiveComplete);
 
 
                             if (conditionMet && !currentObjectiveComplete) {
-                                qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove (qms.ActiveQuests[j].currentObjective);
-                                qms.ActiveQuests[j].ObjectiveCompletionStatus.Add (qms.ActiveQuests[j].currentObjective, true);
+                                qms.ActiveQuests[j].ObjectiveCompletionStatus.Remove(qms.ActiveQuests[j].currentObjective);
+                                qms.ActiveQuests[j].ObjectiveCompletionStatus.Add(qms.ActiveQuests[j].currentObjective, true);
 
                                 qms.ActiveQuests[j].currentObjective = qt.nextObjective;
-                                qms.ShowCurrentObjectives ();
+                                qms.ShowCurrentObjectives();
                             }
                         }
                     }
                 }
             }
         }
-        popup.SetActive (true);
-        CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
+        popup.SetActive(true);
+        CursorManager cursorManager = gameObject.GetComponent<CursorManager>();
         cursorManager.cursorLocked = false;
         cursorManager.listening = false;
 
-        PlayerController playerController = GetComponent<PlayerController> ();
+        PlayerMovementController playerController = GetComponent<PlayerMovementController>();
         playerController.shouldRotate = false;
         playerController.listening = false;
 
-        popup.transform.SetParent (GameObject.Find("Canvas").transform);
-        popup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+        popup.transform.SetParent(GameObject.Find("Canvas").transform);
+        popup.GetComponent<RectTransform>().localPosition = new Vector3(0, 0, 0);
         allowedToPickThingsUp = false;
-        gameObject.GetComponent<UIManager> ().enabled = false;
+        gameObject.GetComponent<UIManager>().enabled = false;
         if (numPickedUp == dataSheetWrapper.Length) {
-            Destroy (copy.gameObject);
+            Destroy(copy.gameObject);
         }
         if (numPickedUp == 0) {
             t.text = "Inventory full.";
         }
     }
 
-    void disableLeftHand () {
+    void disableLeftHand() {
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (leftHand[i] != null) {
                 leftHand[i].GetComponent<Pickup>().active = false;
@@ -475,7 +475,7 @@ public class Character : MonoBehaviour {
         }
     }
 
-    void disableRightHand () {
+    void disableRightHand() {
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (rightHand[i] != null) {
                 rightHand[i].GetComponent<Pickup>().active = false;
