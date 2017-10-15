@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 197a46e234504e242a62979e6e39a71c, type: 3}
+  m_Name: MysteryOfTheMissingAxeAndSpoon
+  m_EditorClassIdentifier: 
+  questName: The Missing Axe and Spoon
+  currentObjective: {fileID: 11400000, guid: 0bc96c856c106fd44bb82a80bde4d9eb, type: 2}
+  firstobjective: {fileID: 11400000, guid: f7d9fbf340db5f744ba636cb83afbdf5, type: 2}
+  questComplete: 1

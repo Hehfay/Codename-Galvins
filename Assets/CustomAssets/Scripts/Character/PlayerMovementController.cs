@@ -71,11 +71,6 @@ public class PlayerMovementController : NetworkBehaviour {
         Camera.main.GetComponent<PlayerCamera>().setTarget(cameraObj.transform);
     }
     
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            shouldRotate = !shouldRotate;
-        }
-    }
     public void FixedUpdate() {
         if (!isLocalPlayer) { // networking related: this makes only local player controlled by this script
             return;
@@ -97,12 +92,13 @@ public class PlayerMovementController : NetworkBehaviour {
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
             Physics.Raycast(ray, out hit, 2.0f);
             Collider collider = hit.collider;
-            ActorAI npc = collider.GetComponent<ActorAI>();
-            if (npc != null) {
-                npc.doInteract();
+            if (collider != null) {
+                ActorAI npc = collider.GetComponent<ActorAI>();
+                if (npc != null) {
+                    npc.doInteract();
+                }
             }
         }
-
 
         // do translational movement
         float speed = runSpeed; // determine max speed based on running/walking/sprinting
