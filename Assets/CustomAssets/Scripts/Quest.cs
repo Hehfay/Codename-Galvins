@@ -22,6 +22,10 @@ public class Quest: ScriptableObject {
         if (currentObjective.next.Length == 0) {
             questComplete = true;
             Debug.Log ("Quest Complete.");
+
+            // Drop the reward on the current node.
+            givePlayersQuestNodeRewards ();
+
             return;
         }
 
@@ -116,6 +120,10 @@ public class Quest: ScriptableObject {
 
     private void AdvanceQuestAndDisplayObjectives () {
         // TODO Select the next objective.
+
+        // Instantiate the reward for this node.
+        givePlayersQuestNodeRewards ();
+
         currentObjective = currentObjective.next[0];
         currentObjective.ShowCurrentTasks ();
     }
@@ -151,6 +159,16 @@ public class Quest: ScriptableObject {
         else {
             currentObjective.ShowCurrentTasksInLog ();
         }
+    }
 
+    private void givePlayersQuestNodeRewards () {
+        Debug.Log ("Dropping loot!");
+        // TODO put the reward in the character's inventory 
+        // if their inventory is not full.
+        // TODO Figure out how to remove GameObject.Find.
+        for (int i = 0; i < currentObjective.rewards.Length; ++i) {
+            currentObjective.rewards[i].GetComponent<Pickup> ().count = currentObjective.rewardCount[i];
+            Instantiate (currentObjective.rewards[i]).transform.position = GameObject.Find ("Player(Clone)").transform.position;
+        }
     }
 }

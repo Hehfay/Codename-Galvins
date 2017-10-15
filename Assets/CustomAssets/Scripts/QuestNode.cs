@@ -40,6 +40,7 @@ public class QuestNode : ScriptableObject {
 
     // Used if completing a quest gives you a reward.
     public GameObject[] rewards;
+    public int[] rewardCount;
 
     public void ShowCurrentTasks () {
         for (int i = 0; i < tasks.Length; ++i) {
