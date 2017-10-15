@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21238c5bfa3800043bd6ab00280626a1, type: 3}
+  m_Name: PickupTheSpoonAndTheAxe
+  m_EditorClassIdentifier: 
+  questLogDescription: Find the Spoon.
+  advanceConditionGate: 0
+  taskType: 0
+  previous: {fileID: 0}
+  next:
+  - {fileID: 11400000, guid: 0bc96c856c106fd44bb82a80bde4d9eb, type: 2}
+  tasks: 0a00000014000000
+  taskDescriptions:
+  - Find the Spoon
+  - Find the Axe
+  objectives:
+  - {fileID: 1729987497063828, guid: 80db095f2112a024ca57f57a83e01b10, type: 2}
+  - {fileID: 1623542887717794, guid: 1609d5e0dd4605e4582cdd88a8b6d691, type: 2}
+  rewards: []

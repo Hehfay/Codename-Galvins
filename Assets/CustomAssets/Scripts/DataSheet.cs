@@ -4,6 +4,14 @@ using UnityEngine;
 
 [CreateAssetMenu()]
 public class DataSheet : ScriptableObject {
+
+    
+    // Type healing, AOE
+
+    // public sound;
+
+
+
     // The number of hands this combat equipment takes.
     public HandOccupancies handOccupancy;
 
@@ -22,10 +30,6 @@ public class DataSheet : ScriptableObject {
     public bool stackable;
 
     public float damage;
-
-
-    public QuestTrigger questTrigger;
-    public QuestUnTrigger questUnTrigger;
 
     public string MeshFilterName;
     public string MaterialName;

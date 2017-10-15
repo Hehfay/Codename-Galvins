@@ -26,6 +26,7 @@ GameObject:
   - component: {fileID: 114447204875803442}
   - component: {fileID: 114229482471129136}
   - component: {fileID: 114812815229126448}
+  - component: {fileID: 114026071265435898}
   m_Layer: 0
   m_Name: SlotItem
   m_TagString: Untagged
@@ -33,6 +34,19 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &114026071265435898
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1106010620724704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed7ac18c18b89cb48b4b40d03e5eb6c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quests:
+  - {fileID: 11400000, guid: b85046b9e3f226b429d164cb28f893ca, type: 2}
 --- !u!114 &114229482471129136
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -81,8 +95,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f14fa4196f978ab41803543d5d727298, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dropItemPrefab: {fileID: 1310671514465608, guid: cc14429a1ddee9c49a83a5b95f4ce760,
-    type: 2}
   UiElementSelectCountPrefab: {fileID: 1276337496858500, guid: 10407cfdf97f1554b8c91e73c4cc02bd,
     type: 2}
 --- !u!114 &114812815229126448

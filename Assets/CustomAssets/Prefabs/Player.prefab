@@ -45,13 +45,11 @@ GameObject:
   - component: {fileID: 114893286227630428}
   - component: {fileID: 143438852984776208}
   - component: {fileID: 114110501453686674}
-  - component: {fileID: 114573522933362164}
   - component: {fileID: 114522780988060810}
-  - component: {fileID: 114330173098271200}
-  - component: {fileID: 114620091093295884}
-  - component: {fileID: 114296293390817750}
+  - component: {fileID: 114276594026780264}
   - component: {fileID: 54127999334631000}
   - component: {fileID: 82910769924033814}
+  - component: {fileID: 114491546547864046}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -315,7 +313,7 @@ MonoBehaviour:
     i15: 110
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
---- !u!114 &114296293390817750
+--- !u!114 &114276594026780264
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -323,29 +321,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 1818343121984686}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d76b759813e8946448820b01f8ca9792, type: 3}
+  m_Script: {fileID: 11500000, guid: f65dadbde494eef47a95dc989026b46a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TalkPrompt: {fileID: 1167984159562256, guid: 463a5bffa45bb444b84665be5d8e57ad, type: 2}
---- !u!114 &114330173098271200
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1818343121984686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f75ca8a2997d1134aa1558b61ef25168, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotItemPrefab: {fileID: 1106010620724704, guid: 50dc6c4c2466abc4a9ce746de966c8e0,
+  JustPickedUp: {fileID: 1630763203453086, guid: 43fe7cedd1439884f88212ad42289f5f,
     type: 2}
-  lh: {fileID: 0}
-  rh: {fileID: 0}
-  lht: []
-  rht: []
-  inventory: {fileID: 0}
-  slots: []
+  PickupTextPrompt: {fileID: 1664422159923830, guid: 28fd8c6b7fc763e4ab52f8e9af076863,
+    type: 2}
+  allowedToPickThingsUp: 0
+  TalkPrompt: {fileID: 1167984159562256, guid: 463a5bffa45bb444b84665be5d8e57ad, type: 2}
+  currentCollider: {fileID: 0}
+  interactWithCollider: 0
+  popupInstantiated: 0
+--- !u!114 &114491546547864046
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1818343121984686}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed7ac18c18b89cb48b4b40d03e5eb6c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  quests:
+  - {fileID: 11400000, guid: b85046b9e3f226b429d164cb28f893ca, type: 2}
 --- !u!114 &114522780988060810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -357,9 +357,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6a85431f1226b847be19cf13317c001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  allowedToPickThingsUp: 0
-  leftHandIndex: 0
-  rightHandIndex: 0
   leftHand:
   - {fileID: 0}
   - {fileID: 0}
@@ -389,34 +386,6 @@ MonoBehaviour:
   itemCount: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
   leftHandItemCount: 00000000000000000000000000000000
   rightHandItemCount: 00000000000000000000000000000000
-  JustPickedUp: {fileID: 1630763203453086, guid: 43fe7cedd1439884f88212ad42289f5f,
-    type: 2}
-  currentCollider: {fileID: 0}
-  alreadyInstantiated: 0
---- !u!114 &114573522933362164
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1818343121984686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b4b0bc9f14fba14aa9ed49c705a9415, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &114620091093295884
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1818343121984686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 39ac0c0db807ef1459cb527b9b68fcca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PickupTextPrompt: {fileID: 1664422159923830, guid: 28fd8c6b7fc763e4ab52f8e9af076863,
-    type: 2}
 --- !u!114 &114821206141654580
 MonoBehaviour:
   m_ObjectHideFlags: 1

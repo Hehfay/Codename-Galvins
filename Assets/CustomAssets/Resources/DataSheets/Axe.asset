@@ -17,8 +17,6 @@ MonoBehaviour:
   description: Basic axe.
   hoverText: Axe
   stackable: 0
-  damage: 1
-  questTrigger: {fileID: 0}
-  questUnTrigger: {fileID: 0}
+  damage: 30
   MeshFilterName: Cube
   MaterialName: Black

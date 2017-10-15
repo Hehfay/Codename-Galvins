@@ -69,11 +69,6 @@ public class PlayerController : NetworkBehaviour {
         Camera.main.GetComponent<PlayerCamera>().setTarget(cameraObj.transform);
     }
     
-    void Update() {
-        if (Input.GetKeyDown(KeyCode.Escape)) {
-            shouldRotate = !shouldRotate;
-        }
-    }
     public void FixedUpdate() {
         if (!isLocalPlayer) { // networking related: this makes only local player controlled by this script
             return;

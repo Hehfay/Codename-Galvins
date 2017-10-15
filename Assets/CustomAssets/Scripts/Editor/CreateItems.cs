@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 public class CreateItems : EditorWindow {
-    [MenuItem ("Window/Create Items")]
+    [MenuItem ("Item/Create Items")]
 
     public static void ShowWindow () {
         EditorWindow.GetWindow (typeof(CreateItems));
@@ -49,7 +49,7 @@ public class CreateItems : EditorWindow {
                 DataSheetWrapper dataSheetWrapper = newPrefab.AddComponent<DataSheetWrapper> ();
                 dataSheetWrapper.dataSheet = dataSheets[i];
 
-                Pickup pickup = newPrefab.AddComponent<Pickup> ();
+                newPrefab.AddComponent<Pickup> ();
 
                 Rigidbody rigidBody = newPrefab.AddComponent<Rigidbody> ();
                 rigidBody.mass = 1;

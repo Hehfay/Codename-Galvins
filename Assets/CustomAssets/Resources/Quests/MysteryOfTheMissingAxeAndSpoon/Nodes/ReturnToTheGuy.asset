@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21238c5bfa3800043bd6ab00280626a1, type: 3}
+  m_Name: ReturnToTheGuy
+  m_EditorClassIdentifier: 
+  questLogDescription: Return the Spoon to the guy
+  advanceConditionGate: 1
+  taskType: 1
+  previous: {fileID: 11400000, guid: f7d9fbf340db5f744ba636cb83afbdf5, type: 2}
+  next: []
+  tasks: 0a000000
+  taskDescriptions:
+  - Return the items to the guy.
+  objectives:
+  - {fileID: 1940157410919288, guid: 34a2a17f1401cbf489e53fbcb978bffc, type: 2}
+  rewards: []

@@ -31,10 +31,6 @@ public class CursorManager : MonoBehaviour {
         else {
             Cursor.lockState = CursorLockMode.None;
         }
-
-        if (Input.GetKeyDown(KeyCode.Escape) && listening) {
-            cursorLocked = !cursorLocked;
-        }
 	}
 
      void OnGUI () {
