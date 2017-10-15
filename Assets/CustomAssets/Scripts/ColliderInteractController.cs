@@ -77,14 +77,14 @@ public class ColliderInteractController : MonoBehaviour {
 	}
 
     public void DisplayWhatWasPickedUp (string whatWasPickedUp) {
-        LockView ();
-        allowedToPickThingsUp = false;
+        //LockView ();
+        allowedToPickThingsUp = true;
 
         uiController.CreateWhatWasPickedUp (whatWasPickedUp);
 
-        if (whatWasPickedUp != "") {
-            GetComponent<QuestManager> ().ProcessQuestTrigger (copy.GetComponent<QuestTrigger> ());
-        }
+        // TODO Another way to detect nothing was picked up.
+        // if (whatWasPickedUp != "") {
+        GetComponent<QuestManager> ().ProcessQuestTrigger (copy.GetComponent<QuestTrigger> ());
     }
 
     void OnTriggerEnter (Collider collider) {
