@@ -28,7 +28,7 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>136</x>
+      <x>160</x>
       <y>448</y>
       <w>192</w>
       <h>40</h>
@@ -40,19 +40,19 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>208</x>
+      <x>232</x>
       <y>352</y>
-      <w>192</w>
+      <w>168</w>
       <h>112</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>220.0;10.0;10.0;120.0</additional_attributes>
+    <additional_attributes>190.0;10.0;10.0;120.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>456</x>
-      <y>448</y>
+      <x>464</x>
+      <y>440</y>
       <w>224</w>
       <h>88</h>
     </coordinates>
@@ -70,11 +70,11 @@
     <coordinates>
       <x>408</x>
       <y>352</y>
-      <w>168</w>
-      <h>112</h>
+      <w>176</w>
+      <h>104</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;190.0;120.0</additional_attributes>
+    <additional_attributes>10.0;10.0;200.0;110.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -109,35 +109,37 @@
     <id>Relation</id>
     <coordinates>
       <x>448</x>
-      <y>528</y>
-      <w>136</w>
-      <h>80</h>
+      <y>520</y>
+      <w>128</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>150.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>140.0;10.0;10.0;90.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1152</x>
+      <x>1032</x>
       <y>192</y>
-      <w>168</w>
-      <h>40</h>
+      <w>232</w>
+      <h>56</h>
     </coordinates>
-    <panel_attributes>Loot
+    <panel_attributes>PickupItem 
 --
-/abstract transferToInventory(Inventory inven)/</panel_attributes>
+public ItemCategory category
+--
+/virtual transferToInventory(Inventory inven)/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1056</x>
+      <x>960</x>
       <y>288</y>
       <w>168</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>NonStackableLoot
+    <panel_attributes>NonStackablePickupItem
 --
 ++cant stack</panel_attributes>
     <additional_attributes/>
@@ -145,12 +147,12 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1248</x>
+      <x>1168</x>
       <y>288</y>
       <w>168</w>
       <h>40</h>
     </coordinates>
-    <panel_attributes>StackableLoot
+    <panel_attributes>StackablePickupItem
 --
 ++can stack</panel_attributes>
     <additional_attributes/>
@@ -158,36 +160,37 @@
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1136</x>
-      <y>224</y>
+      <x>1040</x>
+      <y>240</y>
       <w>88</w>
-      <h>80</h>
+      <h>64</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>90.0;10.0;10.0;80.0</additional_attributes>
+    <additional_attributes>90.0;10.0;10.0;60.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1248</x>
-      <y>224</y>
+      <x>1168</x>
+      <y>240</y>
       <w>96</w>
-      <h>80</h>
+      <h>64</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;100.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;100.0;60.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1208</x>
-      <y>472</y>
-      <w>184</w>
-      <h>48</h>
+      <x>1328</x>
+      <y>192</y>
+      <w>232</w>
+      <h>72</h>
     </coordinates>
-    <panel_attributes>EquipableObject
--
--Type (armor, weapon, jewelry, etc)</panel_attributes>
+    <panel_attributes>[RequiresComponent(typeof(PickupItem))]
+EquipableObject
+--
+EquipSlotType equipSlotType</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
@@ -205,37 +208,38 @@
   <element>
     <id>UMLClass</id>
     <coordinates>
-      <x>1080</x>
-      <y>16</y>
+      <x>928</x>
+      <y>24</y>
       <w>184</w>
       <h>48</h>
     </coordinates>
     <panel_attributes>Interactable (Interface)
 -
-/Interact()/</panel_attributes>
+--
+/virtual Interact()/</panel_attributes>
     <additional_attributes/>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>1160</x>
-      <y>56</y>
-      <w>80</w>
-      <h>152</h>
+      <x>1008</x>
+      <y>64</y>
+      <w>112</w>
+      <h>144</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;80.0;170.0</additional_attributes>
+    <additional_attributes>10.0;10.0;120.0;160.0</additional_attributes>
   </element>
   <element>
     <id>Relation</id>
     <coordinates>
-      <x>576</x>
-      <y>528</y>
-      <w>144</w>
-      <h>80</h>
+      <x>584</x>
+      <y>520</y>
+      <w>136</w>
+      <h>88</h>
     </coordinates>
     <panel_attributes/>
-    <additional_attributes>10.0;10.0;160.0;80.0</additional_attributes>
+    <additional_attributes>10.0;10.0;150.0;90.0</additional_attributes>
   </element>
   <element>
     <id>UMLClass</id>
@@ -248,5 +252,127 @@
     <panel_attributes>NOT-NPC
 --</panel_attributes>
     <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>976</x>
+      <y>520</y>
+      <w>328</w>
+      <h>56</h>
+    </coordinates>
+    <panel_attributes>Inventory
+-
+public Dictionary&lt;ItemCategory, List&lt;PickupItem&gt;&gt; inventory;
+--
+/public List&lt;PickupItem&gt; getInventoryByCategory(Category cat)/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1584</x>
+      <y>24</y>
+      <w>168</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes>&lt;&lt;Stereotype&gt;&gt;
+Package::FatClass
+{Some Properties}
+--
+-id: Long
+_-ClassAttribute: Long_
+--
+#Operation(i: int): int
+/+AbstractOperation()/
+--
+Responsibilities
+-- Resp1
+*-- Resp2*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1176</x>
+      <y>24</y>
+      <w>80</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Item
+--
+string name</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1168</x>
+      <y>56</y>
+      <w>64</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>60.0;10.0;10.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>856</x>
+      <y>88</y>
+      <w>136</w>
+      <h>120</h>
+    </coordinates>
+    <panel_attributes>--
+Enum ItemCategory {
+	Armor
+	Weapon
+	Accessory
+	Misc
+	Potion
+	...
+}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1400</x>
+      <y>296</y>
+      <w>152</w>
+      <h>248</h>
+    </coordinates>
+    <panel_attributes>--
+:: will prob change this later
+Enum EquipSlotType {
+	Chest - worn - layer 1
+	Chest - worn - layer 2
+	...
+	Head - worn - layer 1
+	...
+	Hands - worn - layer 1
+	...
+	Feet - worn - layer 1
+	...
+	Left hand - held
+	Right hand - held
+	Both hands - held
+	Arrow
+	Bolt (crossbow)
+	
+}</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>984</x>
+      <y>144</y>
+      <w>72</w>
+      <h>64</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>70.0;60.0;10.0;10.0</additional_attributes>
   </element>
 </diagram>
