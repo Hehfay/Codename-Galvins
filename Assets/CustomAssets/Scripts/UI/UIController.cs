@@ -32,8 +32,6 @@ public class UIController : MonoBehaviour {
 
     bool isActive;
 
-    public float whatYouPickedUpTimer;
-
 	void Start () {
 
         // This is probably a good way to do it. I should clean it up with a for each child in transform children loop.
@@ -55,13 +53,6 @@ public class UIController : MonoBehaviour {
 	void Update () {
 
         getInput ();
-
-        whatYouPickedUpTimer -= Time.deltaTime;
-        if (whatYouPickedUpTimer < 0) {
-            DestoryWhatWasPickedUp ();
-            // Something like that? Need advice.
-            whatYouPickedUpTimer = 0f;
-        }
 
         if (openInventory) {
             DestoryWhatWasPickedUp ();
@@ -169,10 +160,16 @@ public class UIController : MonoBehaviour {
     }
 
     public void CreateWhatWasPickedUp (string whatWasPickedUp) {
-        whatYouPickedUpTimer = 3f;
         justPickedup.SetActive (true);
         justPickedup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
         justPickedup.GetComponent<Text> ().text = whatWasPickedUp;
+
+        if (justPickedup.GetComponent<Timer> () != null) {
+            justPickedup.GetComponent<Timer> ().duration = 3f;
+        }
+        else {
+            justPickedup.AddComponent<Timer> ().duration = 3f;
+        }
     }
 
     public void DestoryWhatWasPickedUp () {
