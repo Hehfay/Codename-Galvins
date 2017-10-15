@@ -41,7 +41,7 @@ public class CursorManager : MonoBehaviour {
              yMin = ((Screen.height / 2) - (crossHair.height / 2) - 16);
          }
          else {
-             xMin = Screen.width - (Screen.width - Input.mousePosition.x) - (crossHair.width / 2);
+             xMin = Input.mousePosition.x - (crossHair.width / 2);
              yMin = (Screen.height - Input.mousePosition.y) - (crossHair.height / 2) + 3;
          }
          GUI.DrawTexture (new Rect (xMin, yMin, crossHair.width, crossHair.height), crossHair);

@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.2">
+  <zoom_level>8</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>296</x>
+      <y>176</y>
+      <w>224</w>
+      <h>184</h>
+    </coordinates>
+    <panel_attributes>Actor
+--
+-instance_id: Long
+-prefab_id: Long
+-Quest Data
+-AI Task Data
+-AI Procedures
+-NavmeshAgent (radius, etc)
+-Factions
+-Interactable (?) --&gt; Talk to/Stop fighting/ etc
+-Name
+-Inventory
+-EquipedInventory
+-EquipSlots</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>136</x>
+      <y>448</y>
+      <w>192</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Creature
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>208</x>
+      <y>352</y>
+      <w>192</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>220.0;10.0;10.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>456</x>
+      <y>448</y>
+      <w>224</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>Humanoid
+--
+-Dialogue
+-Skills
+-Attributes
+-Personality
+-Disposition toward player</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>408</x>
+      <y>352</y>
+      <w>168</w>
+      <h>112</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;190.0;120.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>752</x>
+      <y>224</y>
+      <w>168</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes>ActorSpawner
+--
+-Actor_to_Spawn: Actor
+-last_spawned : float (time)
+--
+/spawn()/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>344</x>
+      <y>592</y>
+      <w>224</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>NPC
+--
+++Persistently simulated</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>448</x>
+      <y>528</y>
+      <w>136</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>150.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1152</x>
+      <y>192</y>
+      <w>168</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>Loot
+--
+/abstract transferToInventory(Inventory inven)/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1056</x>
+      <y>288</y>
+      <w>168</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>NonStackableLoot
+--
+++cant stack</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1248</x>
+      <y>288</y>
+      <w>168</w>
+      <h>40</h>
+    </coordinates>
+    <panel_attributes>StackableLoot
+--
+++can stack</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1136</x>
+      <y>224</y>
+      <w>88</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>90.0;10.0;10.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1248</x>
+      <y>224</y>
+      <w>96</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;100.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1208</x>
+      <y>472</y>
+      <w>184</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>EquipableObject
+-
+-Type (armor, weapon, jewelry, etc)</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>512</x>
+      <y>248</y>
+      <w>256</w>
+      <h>32</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;.
+&lt;&lt;include&gt;&gt;</panel_attributes>
+    <additional_attributes>10.0;20.0;300.0;20.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1080</x>
+      <y>16</y>
+      <w>184</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>Interactable (Interface)
+-
+/Interact()/</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1160</x>
+      <y>56</y>
+      <w>80</w>
+      <h>152</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;80.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>576</x>
+      <y>528</y>
+      <w>144</w>
+      <h>80</h>
+    </coordinates>
+    <panel_attributes/>
+    <additional_attributes>10.0;10.0;160.0;80.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>592</x>
+      <y>592</y>
+      <w>224</w>
+      <h>48</h>
+    </coordinates>
+    <panel_attributes>NOT-NPC
+--</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

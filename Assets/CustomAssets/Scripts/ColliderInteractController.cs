@@ -149,7 +149,7 @@ public class ColliderInteractController : MonoBehaviour {
 
     private void LockView () {
         CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
-        PlayerController playerController = GetComponent<PlayerController> ();
+        PlayerMovementController playerController = GetComponent<PlayerMovementController> ();
         cursorManager.cursorLocked = false;
         cursorManager.listening = false;
         playerController.shouldRotate = false;

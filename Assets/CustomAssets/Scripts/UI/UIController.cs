@@ -65,7 +65,7 @@ public class UIController : MonoBehaviour {
 
             if (isActive) {
                 GameObject.Find ("Player(Clone)").GetComponent<CursorManager> ().cursorLocked = false;
-                GameObject.Find ("Player(Clone)").GetComponent<PlayerController> ().shouldRotate = false;
+                GameObject.Find ("Player(Clone)").GetComponent<PlayerMovementController> ().shouldRotate = false;
                 switch (uiState) {
                     case UIState.Inventory:
                     DrawInventory ();
@@ -78,7 +78,7 @@ public class UIController : MonoBehaviour {
             }
             else {
                 GameObject.Find ("Player(Clone)").GetComponent<CursorManager> ().cursorLocked = true;
-                GameObject.Find ("Player(Clone)").GetComponent<PlayerController> ().shouldRotate = true;
+                GameObject.Find ("Player(Clone)").GetComponent<PlayerMovementController> ().shouldRotate = true;
                 invCont.deleteUiElements ();
                 lefthand.SetActive (false);
                 righthand.SetActive (false);

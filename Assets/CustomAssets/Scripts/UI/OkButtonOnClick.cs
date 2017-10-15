@@ -20,7 +20,7 @@ public class OkButtonOnClick : MonoBehaviour, IPointerClickHandler {
         cursorManager.cursorLocked = true;
         cursorManager.listening = true;
 
-        PlayerController playerController = currentPlayer.GetComponent<PlayerController> ();
+        PlayerMovementController playerController = currentPlayer.GetComponent<PlayerMovementController> ();
         playerController.shouldRotate = true;
         playerController.listening = true;
 
