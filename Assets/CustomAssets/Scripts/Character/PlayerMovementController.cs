@@ -4,19 +4,22 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovementController : NetworkBehaviour {
     // local variables
+    public Animator animator;
     bool isAlive;
     public GameObject cameraObj; // this is where the player camera will be held
+    Camera camera;
     private CharacterController characterController; // character controller of parent object
+    float radius;
+    float height;
     [SerializeField]
     private float gravityMultiplier;
     [Range(0.0f, 100.0f)]
     public float frictionCoeff = 2.5f;
-
     public float xSensitivity = 1.0f;
     public float ySensitivity = 1.0f;
 
     public float accelRate = 5.0f;
-    public float strafeMultiplier = 0.5f; // accel multipliler for strafe direction
+    public float strafeMultiplier = 0.5f; // accel multipliler for strafe direction (you dont strafe as fast as you move forward
     public float walkSpeed = 1.4f;
     public float runSpeed = 4.0f;
     public float sprintSpeed = 10.0f;
@@ -54,9 +57,10 @@ public class PlayerMovementController : NetworkBehaviour {
         // setup character position
         RaycastHit hit; // raycast hit for below raycast
         Vector3 pos = this.transform.position;
-        float height = characterController.height;
+        height = characterController.height;
+        radius = characterController.radius;
         if (Physics.Raycast(new Ray(pos, Vector3.down), out hit)) { // cast ray from current player position into ground beneath
-            this.transform.position = new Vector3(pos.x, hit.point.y + (height / 2) + 0.2f, pos.z); // set the player to land on the ground beneath
+            this.transform.position = new Vector3(pos.x, hit.point.y /*+ (height / 2) + 0.2f */, pos.z); // set the player to land on the ground beneath
         }
         jumpState = JumpState.Grounded;
         jumpCoeff = Mathf.Sqrt(-1 * Physics.gravity.y * jumpHeight * 2);
@@ -66,9 +70,12 @@ public class PlayerMovementController : NetworkBehaviour {
         accelRate += frictionCoeff;
         cameraObj = new GameObject();
         cameraObj.transform.parent = this.transform;
-        cameraObj.transform.localPosition = new Vector3(0f, 0.525f, 0.2f);
+        cameraObj.transform.localPosition = new Vector3(0f, 1.545f, 0f);
         cameraObj.transform.rotation = new Quaternion(0f, 0f, 0f, 1f);
         Camera.main.GetComponent<PlayerCamera>().setTarget(cameraObj.transform);
+        camera = cameraObj.GetComponentInChildren<Camera>();
+
+        Animator animator = GetComponent<Animator>();
     }
     
     public void FixedUpdate() {
@@ -84,7 +91,7 @@ public class PlayerMovementController : NetworkBehaviour {
             transform.Rotate(0f, yRotInput, 0f, Space.World);
             // rotate camera (vertical)
             // have to clamp rotation around xAxis (vertical look)
-            RotateXAxisClampedBidirectionally(-xRotInput, 70);
+            RotateXAxisClampedBidirectionally(-xRotInput, 50);
         }
         // process click
         if (clicked) {
@@ -118,10 +125,11 @@ public class PlayerMovementController : NetworkBehaviour {
         // Convert above desired direction into actual direction along survace beneath
         RaycastHit groundHitInfo;
         RaycastHit headHitInfo;
-        bool isOnGround = Physics.SphereCast(transform.position, characterController.radius, Vector3.down, out groundHitInfo,
-                           characterController.height / 2, Physics.AllLayers, QueryTriggerInteraction.Ignore);
-        bool hitHead = Physics.SphereCast(transform.position, characterController.radius, Vector3.up, out headHitInfo,
-                           characterController.height / 2, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+        bool isOnGround = //characterController.isGrounded;
+        Physics.SphereCast(transform.position + new Vector3(0.0f, radius, 0.0f), radius, Vector3.down, out groundHitInfo,
+                           0.1f /*height / 2 - radius*/, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+        bool hitHead = Physics.SphereCast(transform.position, radius, Vector3.up, out headHitInfo,
+                           height /*/ 2 */ - radius, Physics.AllLayers, QueryTriggerInteraction.Ignore);
         if (jumpInput && jumpState == JumpState.Grounded) {
             jumpState = JumpState.Inititated;
             velocity = new Vector3(velocity.x, jumpCoeff, velocity.z); // jumping
@@ -174,10 +182,37 @@ public class PlayerMovementController : NetworkBehaviour {
         collisionFlags = characterController.Move(velocity * Time.fixedDeltaTime);
 
         bool suicide = Input.GetKeyDown(KeyCode.K); // kill ; TODO: remove this, its just a dumb testing feature
+
+        switch (Input.inputString)//get keyboard input, probably not a good idea to use strings here...Garbage collection problems with regards to local string usage are known to happen
+        {                        //the garbage collection memory problem arises from local alloction of memory, and not freeing it up efficiently
+            case "p":
+                animator.SetTrigger("Pain");//the animator controller will detect the trigger pain and play the pain animation
+                break;
+            case "a":
+                animator.SetInteger("Death", 1);//the animator controller will detect death=1 and play DeathA
+                break;
+            case "b":
+                animator.SetInteger("Death", 2);//the animator controller will detect death=2 and play DeathB
+                break;
+            case "c":
+                animator.SetInteger("Death", 3);//the animator controller will detect death=3 and play DeathC
+                break;
+            case "n":
+                animator.SetBool("NonCombat", true);//the animator controller will detect this non combat bool, and go into a non combat state "in" this weaponstate
+                break;
+            default:
+                break;
+        }
+        if (velocity.magnitude > 0.1f) {
+            animator.SetBool("Idling", false);
+        }
+        else {
+            animator.SetBool("Idling", true);
+        }
     }
 
     /**
-     * This function handles look rotations about the x-axis (vertical looking).
+     * This function handles look rotations about the local x-axis (vertical looking).
      * It only changes the camera, not the player so that the model does not lean
      * in weird ways. It allows a clamp angle be passed in so that the the camera
      * does not rotate beyond this angle from rest angle in either direction.
@@ -208,7 +243,13 @@ public class PlayerMovementController : NetworkBehaviour {
         cosFinalAngle = Mathf.Cos(desiredRad / 2);
         sinFinalAngle = Mathf.Sin(desiredRad / 2);
         Quaternion rotation = new Quaternion(sinFinalAngle, 0f, 0f, cosFinalAngle);
+        float nearClipPlaneDist = camera.nearClipPlane;
+        Vector3 nearClipPlanePoint = camera.transform.position + camera.transform.forward * nearClipPlaneDist;
         cameraObj.transform.localRotation = rotation;
+        Transform cameraObjTrans = cameraObj.transform;
+        //cameraObj.transform.RotateAround(nearClipPlanePoint, cameraObjTrans.right, angle);
+
+        
     }
 
     /**

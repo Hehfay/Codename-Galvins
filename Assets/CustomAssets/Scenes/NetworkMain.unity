@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.16788375, g: 0.21073635, b: 0.28994125, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -139,6 +139,11 @@ MonoBehaviour:
   timeStopsWhenCLIActivated: 1
   isCliActivated: 0
   backtickInput: 0
+--- !u!224 &352718651 stripped
+RectTransform:
+  m_PrefabParentObject: {fileID: 224642425988247682, guid: 632920a93ccb8fe4eb9b281e5cf03de3,
+    type: 2}
+  m_PrefabInternal: {fileID: 1825492152}
 --- !u!1 &398171806
 GameObject:
   m_ObjectHideFlags: 0
@@ -320,7 +325,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 551513366}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.891676, y: 1.05, z: 30.27}
+  m_LocalPosition: {x: 22.891676, y: 1, z: 30.27}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1582435944}
@@ -500,11 +505,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &787516718 stripped
-RectTransform:
-  m_PrefabParentObject: {fileID: 224792972863277464, guid: 632920a93ccb8fe4eb9b281e5cf03de3,
-    type: 2}
-  m_PrefabInternal: {fileID: 1825492152}
 --- !u!1 &843891929
 GameObject:
   m_ObjectHideFlags: 0
@@ -684,13 +684,13 @@ MonoBehaviour:
   m_NetworkPort: 7777
   m_ServerBindToIP: 0
   m_ServerBindAddress: 
-  m_NetworkAddress: 198.37.197.216
+  m_NetworkAddress: 198.37.247.225
   m_DontDestroyOnLoad: 1
   m_RunInBackground: 1
   m_ScriptCRCCheck: 1
   m_MaxDelay: 0.01
   m_LogLevel: 2
-  m_PlayerPrefab: {fileID: 1818343121984686, guid: bd375a6466d56ea4eb09c3f95431266e,
+  m_PlayerPrefab: {fileID: 1310107706923890, guid: 64988c7356ea8a34c91a98fce7ade0a3,
     type: 2}
   m_AutoCreatePlayer: 1
   m_PlayerSpawnMethod: 0
@@ -838,7 +838,7 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_Children:
   - {fileID: 201265304}
-  - {fileID: 787516718}
+  - {fileID: 352718651}
   m_Father: {fileID: 0}
   m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1491,7 +1491,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4b007b407d32484786150955915b034, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  locationName: 
 --- !u!4 &1810215446
 Transform:
   m_ObjectHideFlags: 0
@@ -1650,6 +1649,26 @@ Prefab:
       propertyPath: cliPromptText
       value: ' >'
       objectReference: {fileID: 0}
+    - target: {fileID: 224731669735092036, guid: 632920a93ccb8fe4eb9b281e5cf03de3,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0.8316602
+      objectReference: {fileID: 0}
+    - target: {fileID: 224731669735092036, guid: 632920a93ccb8fe4eb9b281e5cf03de3,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224731669735092036, guid: 632920a93ccb8fe4eb9b281e5cf03de3,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224642425988247682, guid: 632920a93ccb8fe4eb9b281e5cf03de3,
+        type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 632920a93ccb8fe4eb9b281e5cf03de3, type: 2}
   m_IsPrefabParent: 0
@@ -1765,7 +1784,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1854779718}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.891676, y: 1.05, z: 32.95}
+  m_LocalPosition: {x: 22.891676, y: 1, z: 32.95}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1587770352}
