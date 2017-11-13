@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class InventoryController: MonoBehaviour {
     public GameObject slotItemPrefab;
 
-    CharacterInventory character;
+    Inventory character;
 
     public GameObject lh;
     public GameObject rh;
@@ -72,21 +72,21 @@ public class InventoryController: MonoBehaviour {
             if (character.loot[j] != null) {
                 GameObject g =  Instantiate (slotItemPrefab, slots[j].transform) as GameObject;
                 g.GetComponent<Text> ().text = character.loot[j].equipmentName + " x" + character.itemCount[j];
-                Pickup ce = g.GetComponent<Pickup> ();
+                PickupItem ce = g.GetComponent<PickupItem> ();
                 ce.inventoryIndex = j;
                 g.GetComponent<DataSheetWrapper>().dataSheet = character.loot[j];
-                slots[j].GetComponentInChildren<Pickup> ().count = character.itemCount[j];
+                slots[j].GetComponentInChildren<PickupItem> ().count = character.itemCount[j];
             }
         }
     }
 
     public void readFromInventoryToCharacter () {
 
-        character.leftHand[3].GetComponent<Pickup>().active = true;
-        character.rightHand[3].GetComponent<Pickup>().active = true;
+        character.leftHand[3].GetComponent<PickupItem>().active = true;
+        character.rightHand[3].GetComponent<PickupItem>().active = true;
 
         foreach (Transform t in character.transform) {
-            Pickup g = t.gameObject.GetComponent<Pickup> ();
+            PickupItem g = t.gameObject.GetComponent<PickupItem> ();
             if (g != null) {
                 Destroy (t.gameObject);
             }
@@ -95,10 +95,10 @@ public class InventoryController: MonoBehaviour {
         for (int i = 0; i < 3; ++i) {
             if (lht[i].transform.childCount != 0) {
                 GameObject go = new GameObject ();
-                Pickup ce = go.AddComponent<Pickup> ();
+                PickupItem ce = go.AddComponent<PickupItem> ();
                 DataSheetWrapper dataSheetWrapper = go.AddComponent<DataSheetWrapper> ();
                 dataSheetWrapper.dataSheet = lht[i].GetComponentInChildren<DataSheetWrapper> ().dataSheet;
-                character.leftHandItemCount[i] = lht[i].GetComponentInChildren<Pickup> ().count;
+                character.leftHandItemCount[i] = lht[i].GetComponentInChildren<PickupItem> ().count;
                 character.leftHand[i] = go;
                 ce.inventoryIndex = i;
                 ce.transform.parent = character.transform;
@@ -111,11 +111,11 @@ public class InventoryController: MonoBehaviour {
         for (int i = 0; i < 3; ++i) {
             if (rht[i].transform.childCount != 0) {
                 GameObject go = new GameObject ();
-                Pickup ce = go.AddComponent<Pickup> ().GetComponent<Pickup> ();
+                PickupItem ce = go.AddComponent<PickupItem> ().GetComponent<PickupItem> ();
                 go.AddComponent<DataSheetWrapper>().dataSheet = rht[i].GetComponentInChildren<DataSheetWrapper> ().dataSheet;
-                character.rightHandItemCount[i] = rht[i].GetComponentInChildren<Pickup> ().count;
+                character.rightHandItemCount[i] = rht[i].GetComponentInChildren<PickupItem> ().count;
                 character.rightHand[i] = go;
-                ce.GetComponent<Pickup> ().inventoryIndex = i;
+                ce.GetComponent<PickupItem> ().inventoryIndex = i;
                 ce.transform.parent = character.transform;
             }
             else {
@@ -127,8 +127,8 @@ public class InventoryController: MonoBehaviour {
             character.loot[i] = null;
             if (slots[i].transform.childCount != 0) {
                 character.loot[i] = (slots[i].GetComponentInChildren<DataSheetWrapper> ().dataSheet);
-                slots[i].GetComponentInChildren<Pickup> ().inventoryIndex = i;
-                character.itemCount[i] = slots[i].GetComponentInChildren<Pickup> ().count;
+                slots[i].GetComponentInChildren<PickupItem> ().inventoryIndex = i;
+                character.itemCount[i] = slots[i].GetComponentInChildren<PickupItem> ().count;
             }
         }
 
@@ -173,8 +173,8 @@ public class InventoryController: MonoBehaviour {
             GameObject g =  Instantiate (slotItemPrefab, lht[j].transform) as GameObject;
             g.GetComponent<DataSheetWrapper> ().dataSheet = character.leftHand[j].GetComponent<DataSheetWrapper> ().dataSheet;
             g.GetComponent<Text>().text = character.leftHand[j].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + character.leftHandItemCount[j];
-            g.GetComponent<Pickup> ().inventoryIndex = j;
-            lht[j].GetComponentInChildren<Pickup> ().count = character.leftHandItemCount[j];
+            g.GetComponent<PickupItem> ().inventoryIndex = j;
+            lht[j].GetComponentInChildren<PickupItem> ().count = character.leftHandItemCount[j];
         }
     }
 
@@ -183,8 +183,8 @@ public class InventoryController: MonoBehaviour {
             GameObject g =  Instantiate (slotItemPrefab, rht[j].transform) as GameObject;
             g.GetComponent<DataSheetWrapper> ().dataSheet = character.rightHand[j].GetComponent<DataSheetWrapper> ().dataSheet;
             g.GetComponent<Text>().text = character.rightHand[j].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + character.rightHandItemCount[j];
-            g.GetComponent<Pickup> ().inventoryIndex = j;
-            rht[j].GetComponentInChildren<Pickup> ().count = character.rightHandItemCount[j];
+            g.GetComponent<PickupItem> ().inventoryIndex = j;
+            rht[j].GetComponentInChildren<PickupItem> ().count = character.rightHandItemCount[j];
         }
     }
 
@@ -197,7 +197,7 @@ public class InventoryController: MonoBehaviour {
         }
     }
 
-    public void RegisterCharacterInventoryToInventoryController (CharacterInventory characterInventory) {
+    public void RegisterCharacterInventoryToInventoryController (Inventory characterInventory) {
         character = characterInventory;
     }
 

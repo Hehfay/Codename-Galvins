@@ -6,6 +6,8 @@ using UnityEngine.UI;
 [CreateAssetMenu ()]
 public class Quest: ScriptableObject {
 
+    private string dialog;
+
     public string questName;
 
     public QuestNode currentObjective;
@@ -14,8 +16,13 @@ public class Quest: ScriptableObject {
     public QuestNode firstobjective;
 
     public bool questComplete;
+    public bool questStarted;
 
     Text questLogText;
+
+    public void InitDialog () {
+        dialog = currentObjective.dialog;
+    }
 
     void AdvanceIfAble () {
 
@@ -25,6 +32,8 @@ public class Quest: ScriptableObject {
 
             // Drop the reward on the current node.
             givePlayersQuestNodeRewards ();
+
+            dialog = currentObjective.dialog;
 
             return;
         }
@@ -126,6 +135,7 @@ public class Quest: ScriptableObject {
 
         currentObjective = currentObjective.next[0];
         currentObjective.ShowCurrentTasks ();
+        dialog = currentObjective.dialog;
     }
 
     private void InitNode (QuestNode node) {
@@ -144,6 +154,12 @@ public class Quest: ScriptableObject {
         }
     }
 
+    public string getDialog () {
+        string returnDialog = dialog;
+        dialog = currentObjective.repeatedDialog;
+        return returnDialog;
+    }
+
     public void Init () {
         InitNode (firstobjective);
     }
@@ -151,6 +167,11 @@ public class Quest: ScriptableObject {
     // TODO I don't like that this scriptable object interfaces with an outside gameobject but i can't really think
     // of a better way to send the current quest task to the canvas quest log.
     public void ShowCurrentTasksInLog () {
+
+        if (!questStarted) {
+            return;
+        }
+
         GameObject.Find ("Sanity").GetComponentInChildren<Text>().text += questName + '\n';
         if (questComplete) {
             GameObject.Find ("Sanity").GetComponentInChildren<Text> ().text += " - Complete";
@@ -162,13 +183,14 @@ public class Quest: ScriptableObject {
     }
 
     private void givePlayersQuestNodeRewards () {
-        Debug.Log ("Dropping loot!");
-        // TODO put the reward in the character's inventory 
-        // if their inventory is not full.
         // TODO Figure out how to remove GameObject.Find.
         for (int i = 0; i < currentObjective.rewards.Length; ++i) {
-            currentObjective.rewards[i].GetComponent<Pickup> ().count = currentObjective.rewardCount[i];
-            Instantiate (currentObjective.rewards[i]).transform.position = GameObject.Find ("Player(Clone)").transform.position;
+            currentObjective.rewards[i].GetComponent<PickupItem> ().count = currentObjective.rewardCount[i];
+            Debug.Log ("Dropping loot!");
+            // if the interaction failed, drop the item at the player's feet.
+            if (!currentObjective.rewards[i].GetComponent<PickupItem> ().Interact (GameObject.Find ("Player(Clone)"))) {
+                Instantiate (currentObjective.rewards[i]).transform.position = GameObject.Find ("Player(Clone)").transform.position;
+            }
         }
     }
 }

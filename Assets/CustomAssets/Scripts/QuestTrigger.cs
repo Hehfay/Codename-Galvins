@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class QuestTrigger : MonoBehaviour {
+[CreateAssetMenu()]
+public class QuestTrigger : ScriptableObject {
     public QuestNode questNode;
     public Quest quest;
     public int task;

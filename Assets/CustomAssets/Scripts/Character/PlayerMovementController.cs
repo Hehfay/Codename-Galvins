@@ -69,6 +69,9 @@ public class PlayerMovementController : NetworkBehaviour {
         cameraObj.transform.localPosition = new Vector3(0f, 0.525f, 0.2f);
         cameraObj.transform.rotation = new Quaternion(0f, 0f, 0f, 1f);
         Camera.main.GetComponent<PlayerCamera>().setTarget(cameraObj.transform);
+
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
     }
     
     public void FixedUpdate() {

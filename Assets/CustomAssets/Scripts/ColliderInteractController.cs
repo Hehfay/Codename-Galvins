@@ -41,12 +41,28 @@ public class ColliderInteractController : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        //////////
-        // TODO //
-        //////////
-        // Handle two colliders at once.
-        // We need the ability to switch between talking to someone and
-        // picking something up.
+        RaycastHit hitInfo;
+
+        Ray viewRayCast = Camera.main.ScreenPointToRay (Input.mousePosition);
+
+
+        if (allowedToPickThingsUp) {
+            if (Physics.Raycast(viewRayCast, out hitInfo, 2f)) {
+                currentCollider = hitInfo.collider;
+                Component component = currentCollider.GetComponent (typeof (IInteractable));
+                if (component != null) {
+                    IInteractable iInteract = component as IInteractable;
+                    if (iInteract != null) {
+                        DisplayWhatWasPickedUp (iInteract.ToolTip ());
+                    }
+                }
+            }
+            else {
+                currentCollider = null;
+                // TODO A better way.
+                DestroyWhatWasPickedUp ();
+            }
+        }
 
         getInput ();
 
@@ -59,82 +75,29 @@ public class ColliderInteractController : MonoBehaviour {
 
         // Incase we step outside of the zone and our reference goes null.
         copy = currentCollider;
-        allowedToPickThingsUp = false;
 
-        switch (copy.tag) {
-            case "Pickup": {
-                DeletePrompts ();
-                GetComponent<CharacterInventory> ().PickupLogic (copy);
-            } break;
+        DeletePrompts ();
 
-            case "Quest": {
-                DeletePrompts ();
-
-                // TODO Dialog trees.
-                DisplayWhatWasPickedUp ("");
-            } break;
-        }
+        Component comp = copy.GetComponent (typeof (IInteractable));
+        IInteractable i = comp as IInteractable;
+        i.Interact (gameObject);
 	}
 
     public void DisplayWhatWasPickedUp (string whatWasPickedUp) {
-        //LockView ();
-        allowedToPickThingsUp = true;
-
         uiController.CreateWhatWasPickedUp (whatWasPickedUp);
-
-        // TODO Another way to detect nothing was picked up.
-        // if (whatWasPickedUp != "") {
-        GetComponent<QuestManager> ().ProcessQuestTrigger (copy.GetComponent<QuestTrigger> ());
     }
 
-    void OnTriggerEnter (Collider collider) {
+    public void DestroyWhatWasPickedUp () {
+        uiController.DestoryWhatWasPickedUp ();
+    }
 
+    private void createPopUp (Collider collider) {
         if (!popupInstantiated && allowedToPickThingsUp) {
-            switch (collider.tag) {
-
-                case "Pickup": {
-                    popupInstantiated = true;
-                    newPickupTextPrompt = Instantiate (PickupTextPrompt) as GameObject;
-                    newPickupTextPrompt.transform.SetParent (GuiCanvas.transform);
-
-                    newPickupTextPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
-                } break;
-
-                case "Quest": {
-                    popupInstantiated = true;
-                    newTalkPrompt = Instantiate (TalkPrompt) as GameObject;
-                    newTalkPrompt.transform.SetParent (GuiCanvas.transform);
-                    newTalkPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
-                } break;
-            }
-            currentCollider = collider;
+            popupInstantiated = true;
+            newPickupTextPrompt = Instantiate (PickupTextPrompt) as GameObject;
+            newPickupTextPrompt.transform.SetParent (GuiCanvas.transform);
+            newPickupTextPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
         }
-    }
-
-    void OnTriggerStay (Collider collider) {
-        if (!popupInstantiated && allowedToPickThingsUp) {
-            switch (collider.tag) {
-
-                case "Pickup": {
-                    popupInstantiated = true;
-                    newPickupTextPrompt = Instantiate (PickupTextPrompt) as GameObject;
-                    newPickupTextPrompt.transform.SetParent (GuiCanvas.transform);
-                    newPickupTextPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
-                } break;
-
-                case "Quest": {
-                    popupInstantiated = true;
-                    newTalkPrompt = Instantiate (TalkPrompt) as GameObject;
-                    newTalkPrompt.transform.SetParent (GuiCanvas.transform);
-                    newTalkPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
-                } break;
-            }
-            currentCollider = collider;
-        }
-    }
-
-    void OnTriggerExit (Collider collider) {
-        DeletePrompts ();
     }
 
     private void getInput () {

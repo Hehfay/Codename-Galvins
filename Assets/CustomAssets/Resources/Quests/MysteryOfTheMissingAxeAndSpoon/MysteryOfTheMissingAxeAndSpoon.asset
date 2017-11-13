@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Name: MysteryOfTheMissingAxeAndSpoon
   m_EditorClassIdentifier: 
   questName: The Missing Axe and Spoon
-  currentObjective: {fileID: 11400000, guid: 0bc96c856c106fd44bb82a80bde4d9eb, type: 2}
+  currentObjective: {fileID: 11400000, guid: f7d9fbf340db5f744ba636cb83afbdf5, type: 2}
   firstobjective: {fileID: 11400000, guid: f7d9fbf340db5f744ba636cb83afbdf5, type: 2}
-  questComplete: 1
+  questComplete: 0
+  questStarted: 0

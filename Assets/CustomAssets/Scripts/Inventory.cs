@@ -5,20 +5,21 @@ using UnityEngine.UI;
 
 // This class allows the player to pick things up
 // and manages what you have equipped.
-public class CharacterInventory : MonoBehaviour {
+public class Inventory : MonoBehaviour {
 
-    int INVENTORY_SIZE = 14;
+    public int INVENTORY_SIZE = 14;
 
     // You can hold 3 weapons in each hand.
     // The third index of your hand slots is always
     // the bare hand.
     int NUM_SLOTS_PER_HAND = 4;
 
+    // TODO remove the left and right hand for a different class.
     public GameObject[] leftHand;
     public GameObject[] rightHand;
 
     // Not implemented yet.
-    public Pickup[] armor;
+    public PickupItem[] armor;
 
     // When you pickup an item, its data is stored
     // in this array.
@@ -60,14 +61,14 @@ public class CharacterInventory : MonoBehaviour {
 
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (leftHand[i] != null) {
-                leftHand[i].GetComponent<Pickup>().active = true;
+                leftHand[i].GetComponent<PickupItem>().active = true;
                 break;
             }
         }
 
         for (int i = 0; i < NUM_SLOTS_PER_HAND; ++i) {
             if (rightHand[i] != null) {
-                rightHand[i].GetComponent<Pickup>().active = true;
+                rightHand[i].GetComponent<PickupItem>().active = true;
                 break;
             }
         }
@@ -88,10 +89,10 @@ public class CharacterInventory : MonoBehaviour {
 
     public void PickupLogic (Collider copy) {
 
+        /*
         string whatWasPickedUp = "";
-
         DataSheetWrapper[] dataSheetWrapper = copy.gameObject.GetComponents<DataSheetWrapper> ();
-        Pickup[] pickup = copy.gameObject.GetComponents<Pickup> ();
+        PickupItem[] pickup = copy.gameObject.GetComponents<PickupItem> ();
         if (dataSheetWrapper.Length == 0) {
             return;
         }
@@ -110,6 +111,8 @@ public class CharacterInventory : MonoBehaviour {
                     }
                 }
             }
+
+            // If the item was stackable, and there was no current stack, or the item is not stackable.
             if (!foundSlotForItem) {
                 for (int j = 0; j < INVENTORY_SIZE; ++j) {
                     if (loot[j] == null) {
@@ -127,6 +130,9 @@ public class CharacterInventory : MonoBehaviour {
             Destroy (copy.gameObject);
         }
         GetComponent<ColliderInteractController> ().DisplayWhatWasPickedUp (whatWasPickedUp);
+        */
+
+        Debug.Log ("NOT IN USE ANYMORE!");
     }
 
     private void RegisterCharacterInventoryToInventoryController () {
