@@ -264,6 +264,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 19
       objectReference: {fileID: 0}
+    - target: {fileID: 114634608495626408, guid: 64988c7356ea8a34c91a98fce7ade0a3,
+        type: 2}
+      propertyPath: airbornAccelRate
+      value: 45
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 64988c7356ea8a34c91a98fce7ade0a3, type: 2}
   m_IsPrefabParent: 0
@@ -899,7 +904,7 @@ GameObject:
   - component: {fileID: 1134827414}
   - component: {fileID: 1134827413}
   m_Layer: 0
-  m_Name: Directional Light
+  m_Name: Sun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

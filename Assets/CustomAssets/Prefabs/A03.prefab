@@ -3566,6 +3566,7 @@ MonoBehaviour:
   xSensitivity: 100
   ySensitivity: 100
   accelRate: 65
+  airbornAccelRate: 25
   strafeMultiplier: 0.5
   walkSpeed: 1.4
   runSpeed: 4

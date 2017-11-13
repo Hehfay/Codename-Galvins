@@ -23,6 +23,7 @@ public class PlayerMovementController : NetworkBehaviour {
     public float ySensitivity = 1.0f; // sensitivity settings
 
     public float accelRate = 5.0f; // how fast player accelerates
+    public float airbornAccelRate = 3.0f; // how fast player accelerates when in air
     public float strafeMultiplier = 0.5f; // accel multipliler for strafe direction (you dont strafe as fast as you move forward
     public float walkSpeed = 1.4f; // how fast player moves while walking
     public float runSpeed = 4.0f; // how fast player moves while running
@@ -130,7 +131,7 @@ public class PlayerMovementController : NetworkBehaviour {
         Vector3 velocity = characterController.velocity; // set new velocity to current velocity for now
         Vector3 desiredAccelDirection;
         if (speed > velocity.magnitude) {
-            desiredAccelDirection = transform.forward * zInput * accelRate + transform.right * xInput * accelRate * strafeMultiplier; // get the desired accel direction
+            desiredAccelDirection = transform.forward * zInput + transform.right * xInput * strafeMultiplier; // get the desired accel direction
         } else {
             desiredAccelDirection = new Vector3(0f, 0f, 0f); // No acceleration since moving faster than desired / allowed
         }
@@ -148,7 +149,9 @@ public class PlayerMovementController : NetworkBehaviour {
                            height /*/ 2 */ - radius, Physics.AllLayers, QueryTriggerInteraction.Ignore);
         if (jumpInput && jumpState == JumpState.Grounded) {
             jumpState = JumpState.Inititated;
-            velocity = new Vector3(velocity.x, jumpCoeff, velocity.z); // jumping
+            Vector2 xzPlaneSpeed = Vector2.ClampMagnitude(new Vector2(velocity.x, velocity.z), jumpSpeed); // clamp speed along xz plane
+            velocity = new Vector3(xzPlaneSpeed.x, jumpCoeff, xzPlaneSpeed.y); // jumping
+            
             // TODO: play jump noise
         }
         else if (jumpState == JumpState.Inititated && hitHead) {
@@ -162,7 +165,10 @@ public class PlayerMovementController : NetworkBehaviour {
                 jumpState = JumpState.JustLanded;
                 timeLanded = Time.time; // timestamp of when landed
             } else {
-                velocity += Physics.gravity * Time.fixedDeltaTime;
+                desiredAcceleration += Physics.gravity;
+                desiredAcceleration += (transform.forward * zInput + transform.right * xInput * strafeMultiplier) * airbornAccelRate;
+                Vector2 xzPlaneVelocity = Vector2.ClampMagnitude(new Vector2(velocity.x, velocity.z), jumpSpeed);
+                velocity = new Vector3(xzPlaneVelocity.x, velocity.y, xzPlaneVelocity.y) + (desiredAcceleration * Time.fixedDeltaTime);
             }
             // TODO: play land noise
         }
@@ -186,6 +192,7 @@ public class PlayerMovementController : NetworkBehaviour {
                 velocityDirectionPlane = Vector3.Cross(groundHitNormal, Vector3.up);
                 velocityDirection = Vector3.Cross(groundHitNormal, velocityDirectionPlane).normalized;
                 velocity = velocityDirection * runSpeed;
+
             }
             else {
                 accelDirectionPlane = Vector3.Cross(desiredAccelDirection, Vector3.up); // this is the plane that intersets both y axis and movement direction, always vertical
