@@ -89,12 +89,8 @@ public class PlayerMovementController : NetworkBehaviour {
             r.enabled = false;
         }
     }
-    
-    public void FixedUpdate() {
-        if (!isLocalPlayer) { // networking related: this makes only local player controlled by this script
-            return;
-        }
-        getInput(); // get the input only once per frame
+
+    public void LateUpdate() {
         // rotate camera(vertical) and model(horizontal)
         float xRot = Input.GetAxis("Mouse Y") * Time.deltaTime * xSensitivity; // get rotate input
         float yRot = Input.GetAxis("Mouse X") * Time.deltaTime * ySensitivity; // get rotate input
@@ -105,6 +101,14 @@ public class PlayerMovementController : NetworkBehaviour {
             // have to clamp rotation around xAxis (vertical look)
             RotateXAxisClampedBidirectionally(-xRotInput, 50);
         }
+    }
+
+    public void Update() {
+        if (!isLocalPlayer) { // networking related: this makes only local player controlled by this script
+            return;
+        }
+        getInput(); // get the input only once per frame
+        
         // process click
         if (clicked) {
             RaycastHit hit;
@@ -168,7 +172,7 @@ public class PlayerMovementController : NetworkBehaviour {
                 desiredAcceleration += Physics.gravity;
                 desiredAcceleration += (transform.forward * zInput + transform.right * xInput * strafeMultiplier) * airbornAccelRate;
                 Vector2 xzPlaneVelocity = Vector2.ClampMagnitude(new Vector2(velocity.x, velocity.z), jumpSpeed);
-                velocity = new Vector3(xzPlaneVelocity.x, velocity.y, xzPlaneVelocity.y) + (desiredAcceleration * Time.fixedDeltaTime);
+                velocity = new Vector3(xzPlaneVelocity.x, velocity.y, xzPlaneVelocity.y) + (desiredAcceleration * Time.deltaTime);
             }
             // TODO: play land noise
         }
@@ -205,14 +209,14 @@ public class PlayerMovementController : NetworkBehaviour {
             if ((friction.magnitude * Time.fixedDeltaTime) > velocity.magnitude && desiredAcceleration.magnitude == 0) { // friction would actually cause velocity in negative direction
                 friction = -velocity / Time.fixedDeltaTime; // so make it so that velocity will be zero due to friction
             }
-            velocity = velocity.magnitude * velocityDirection + (desiredAcceleration + friction) * Time.fixedDeltaTime;
+            velocity = velocity.magnitude * velocityDirection + (desiredAcceleration + friction) * Time.deltaTime;
             if (velocity.magnitude > sprintSpeed) { // can't go faster than max velocity
                 velocity = Vector3.ClampMagnitude(velocity, sprintSpeed);
             }
         } else {
         }
 
-        collisionFlags = characterController.Move(velocity * Time.fixedDeltaTime);
+        collisionFlags = characterController.Move(velocity * Time.deltaTime);
 
         bool suicide = Input.GetKeyDown(KeyCode.K); // kill ; TODO: remove this, its just a dumb testing feature
 
