@@ -23,7 +23,6 @@ public class CursorManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-
         if (cursorLocked) {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

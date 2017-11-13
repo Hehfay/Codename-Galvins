@@ -28,7 +28,6 @@ public class Quest: ScriptableObject {
 
         if (currentObjective.next.Length == 0) {
             questComplete = true;
-            Debug.Log ("Quest Complete.");
 
             // Drop the reward on the current node.
             givePlayersQuestNodeRewards ();
@@ -186,10 +185,9 @@ public class Quest: ScriptableObject {
         // TODO Figure out how to remove GameObject.Find.
         for (int i = 0; i < currentObjective.rewards.Length; ++i) {
             currentObjective.rewards[i].GetComponent<PickupItem> ().count = currentObjective.rewardCount[i];
-            Debug.Log ("Dropping loot!");
             // if the interaction failed, drop the item at the player's feet.
-            if (!currentObjective.rewards[i].GetComponent<PickupItem> ().Interact (GameObject.Find ("Player(Clone)"))) {
-                Instantiate (currentObjective.rewards[i]).transform.position = GameObject.Find ("Player(Clone)").transform.position;
+            if (!currentObjective.rewards[i].GetComponent<PickupItem> ().Interact (GameObject.Find ("A03(Clone)"))) {
+                Instantiate (currentObjective.rewards[i]).transform.position = GameObject.Find ("A03(Clone)").transform.position;
             }
         }
     }

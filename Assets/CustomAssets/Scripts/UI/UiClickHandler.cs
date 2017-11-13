@@ -8,7 +8,7 @@ using UnityEngine.UI;
 // This script handles the click event for UI elements.
 // When a UI element is clicked on, it is dropped.
 public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
-    string playerString = "Player(Clone)";
+    string playerString = "A03(Clone)";
 
     public static UiClickHandler currentClickHandler;
     UIController uiController;

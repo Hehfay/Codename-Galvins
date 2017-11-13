@@ -14,8 +14,7 @@ public class OkButtonOnClick : MonoBehaviour, IPointerClickHandler {
     }
 
     public void OnPointerClick (PointerEventData eventData) {
-        currentPlayer = GameObject.Find ("Player(Clone)");
-
+        currentPlayer = GameObject.Find ("A03(Clone)");
         CursorManager cursorManager = currentPlayer.GetComponent<CursorManager>();
         cursorManager.cursorLocked = true;
         cursorManager.listening = true;

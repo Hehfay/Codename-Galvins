@@ -532,7 +532,6 @@ GameObject:
   - component: {fileID: 114738738208750900}
   - component: {fileID: 114261662740180386}
   - component: {fileID: 54510117813537184}
-  - component: {fileID: 114417219694418872}
   m_Layer: 0
   m_Name: A03
   m_TagString: Untagged
@@ -3503,19 +3502,6 @@ MonoBehaviour:
   currentCollider: {fileID: 0}
   interactWithCollider: 0
   popupInstantiated: 0
---- !u!114 &114417219694418872
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1310107706923890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed7ac18c18b89cb48b4b40d03e5eb6c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  quests:
-  - {fileID: 11400000, guid: b85046b9e3f226b429d164cb28f893ca, type: 2}
 --- !u!114 &114556244657186034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3622,6 +3608,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6a85431f1226b847be19cf13317c001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  INVENTORY_SIZE: 14
   leftHand:
   - {fileID: 0}
   - {fileID: 0}

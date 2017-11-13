@@ -65,12 +65,12 @@ public class UIController : MonoBehaviour {
             // Toggle the inventory display.
             isActive = !isActive;
 
-            GameObject.Find("Player(Clone)").GetComponent<ColliderInteractController>().allowedToPickThingsUp = !isActive;
-            GameObject.Find ("Player(Clone)").GetComponent<ColliderInteractController> ().DeletePrompts ();
+            GameObject.Find("A03(Clone)").GetComponent<ColliderInteractController>().allowedToPickThingsUp = !isActive;
+            GameObject.Find ("A03(Clone)").GetComponent<ColliderInteractController> ().DeletePrompts ();
 
             if (isActive) {
-                GameObject.Find ("Player(Clone)").GetComponent<CursorManager> ().cursorLocked = false;
-                GameObject.Find ("Player(Clone)").GetComponent<PlayerMovementController> ().shouldRotate = false;
+                GameObject.Find ("A03(Clone)").GetComponent<CursorManager> ().cursorLocked = false;
+                GameObject.Find ("A03(Clone)").GetComponent<PlayerMovementController> ().shouldRotate = false;
                 switch (uiState) {
                     case UIState.Inventory:
                     DrawInventory ();
@@ -82,8 +82,8 @@ public class UIController : MonoBehaviour {
                 }
             }
             else {
-                GameObject.Find ("Player(Clone)").GetComponent<CursorManager> ().cursorLocked = true;
-                GameObject.Find ("Player(Clone)").GetComponent<PlayerMovementController> ().shouldRotate = true;
+                GameObject.Find ("A03(Clone)").GetComponent<CursorManager> ().cursorLocked = true;
+                GameObject.Find ("A03(Clone)").GetComponent<PlayerMovementController> ().shouldRotate = true;
                 invCont.deleteUiElements ();
                 lefthand.SetActive (false);
                 righthand.SetActive (false);

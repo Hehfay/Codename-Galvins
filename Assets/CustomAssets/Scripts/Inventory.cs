@@ -88,50 +88,6 @@ public class Inventory : MonoBehaviour {
 	}
 
     public void PickupLogic (Collider copy) {
-
-        /*
-        string whatWasPickedUp = "";
-        DataSheetWrapper[] dataSheetWrapper = copy.gameObject.GetComponents<DataSheetWrapper> ();
-        PickupItem[] pickup = copy.gameObject.GetComponents<PickupItem> ();
-        if (dataSheetWrapper.Length == 0) {
-            return;
-        }
-
-        int numPickedUp = 0;
-        for (int i = 0; i < dataSheetWrapper.Length; ++i) {
-            bool foundSlotForItem = false;
-            if (dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.stackable) {
-                for (int j = 0; j < INVENTORY_SIZE; ++j) {
-                    if (dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet == loot[j]) {
-                        itemCount[j] += pickup[i].count;
-                        foundSlotForItem = true;
-                        whatWasPickedUp += dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + pickup[i].count.ToString () + "\n";
-                        Destroy (dataSheetWrapper[i]);
-                        numPickedUp++;
-                    }
-                }
-            }
-
-            // If the item was stackable, and there was no current stack, or the item is not stackable.
-            if (!foundSlotForItem) {
-                for (int j = 0; j < INVENTORY_SIZE; ++j) {
-                    if (loot[j] == null) {
-                        itemCount[j] += pickup[i].count;
-                        loot[j] = dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet;
-                        whatWasPickedUp += dataSheetWrapper[i].GetComponent<DataSheetWrapper>().dataSheet.equipmentName + " x" + pickup[i].count.ToString () + "\n";
-                        Destroy (dataSheetWrapper[i]);
-                        numPickedUp++;
-                        break;
-                    }
-                }
-            }
-        }
-        if (numPickedUp == dataSheetWrapper.Length) {
-            Destroy (copy.gameObject);
-        }
-        GetComponent<ColliderInteractController> ().DisplayWhatWasPickedUp (whatWasPickedUp);
-        */
-
         Debug.Log ("NOT IN USE ANYMORE!");
     }
 

@@ -109,13 +109,4 @@ public class ColliderInteractController : MonoBehaviour {
         Destroy (newPickupTextPrompt);
         popupInstantiated = false;
     }
-
-    private void LockView () {
-        CursorManager cursorManager = gameObject.GetComponent<CursorManager> ();
-        PlayerMovementController playerController = GetComponent<PlayerMovementController> ();
-        cursorManager.cursorLocked = false;
-        cursorManager.listening = false;
-        playerController.shouldRotate = false;
-        allowedToPickThingsUp = false;
-    }
 }
