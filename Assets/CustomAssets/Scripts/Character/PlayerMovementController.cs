@@ -3,49 +3,54 @@ using UnityEngine.Networking;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovementController : NetworkBehaviour {
-    // local variables
-    public Animator animator;
-    bool isAlive;
-    public GameObject cameraObj; // this is where the player camera will be held
-    Camera camera;
-    private CharacterController characterController; // character controller of parent object
-    float radius;
-    float height;
-    [SerializeField]
-    private float gravityMultiplier;
-    [Range(0.0f, 100.0f)]
-    public float frictionCoeff = 2.5f;
-    public float xSensitivity = 1.0f;
-    public float ySensitivity = 1.0f;
+    // conversion constants
+    private float degreeToRadConst = Mathf.PI / 180;
+    private float radToDegreeConst = 180 / Mathf.PI;
 
-    public float accelRate = 5.0f;
+    // local variables
+    public Animator animator; // player animator
+    bool isAlive; // is this character alive?
+    public GameObject cameraObj; // this is where the player camera will be held
+    Camera camera; // the camera that is made child of cameraObj
+    private CharacterController characterController; // character controller of parent object
+    float radius; // how wide is player
+    float height; // how tall is player
+    [SerializeField]
+    private float gravityMultiplier; // how much gravity affects player. Can raise or lower based on desired feel of the game (or special effects)
+    [Range(0.0f, 100.0f)]
+    public float frictionCoeff = 2.5f; // how much does friction slow player down
+    public float xSensitivity = 1.0f; // sensitivity settings
+    public float ySensitivity = 1.0f; // sensitivity settings
+
+    public float accelRate = 5.0f; // how fast player accelerates
     public float strafeMultiplier = 0.5f; // accel multipliler for strafe direction (you dont strafe as fast as you move forward
-    public float walkSpeed = 1.4f;
-    public float runSpeed = 4.0f;
-    public float sprintSpeed = 10.0f;
+    public float walkSpeed = 1.4f; // how fast player moves while walking
+    public float runSpeed = 4.0f; // how fast player moves while running
+    public float sprintSpeed = 10.0f; // how fast player moves while sprinting
     public float jumpSpeed = 3.0f; // run speed while jumping
     public float jumpHeight = 1.5f; // average jump height of human
     public float jumpLandDuration = 0.1f; // how long in the landing phase
     public float minSpeed = 0.1f; // average jump speed of human
     
 
-    private float xInput;
-    private float zInput;
-    private float xRotInput;
-    private float yRotInput;
-    private bool clicked;
-    private Vector2 mousePos;
-    private bool jumpInput;
-    private bool isWalking;
-    private bool isSprinting;
+    private float xInput; // left-right move input
+    private float zInput; // forward-backward move input
+    private float xRotInput; // mouse x input
+    private float yRotInput; // mouse y input
+    private bool clicked; // did player click
+    private Vector2 mousePos; // mouse input
+    private bool jumpInput; // player pressed jump button
+    private bool isWalking; // player trying to walk
+    private bool isSprinting; // player trying to sprint
     private bool wasSprinting; // for FOV kick, whenever I get around to implementing it (if we want)
-    private bool isGrounded;
-    private bool wasGrounded;
-    private CollisionFlags collisionFlags;
+    private bool isGrounded; // is on ground this fixedUpdate
+    private bool wasGrounded; // was on ground last fixedUpdate
+    private CollisionFlags collisionFlags; // not used; here bc it was in StandardAssets PlayerController; may be useful in future.
 
     private JumpState jumpState;
     private float jumpCoeff;
-    private float timeLanded;
+    private float timeLanded; // when did the player land
+    private float airTime; // how long been in air
 
     public bool shouldRotate;
     public bool listening;
@@ -63,7 +68,7 @@ public class PlayerMovementController : NetworkBehaviour {
             this.transform.position = new Vector3(pos.x, hit.point.y /*+ (height / 2) + 0.2f */, pos.z); // set the player to land on the ground beneath
         }
         jumpState = JumpState.Grounded;
-        jumpCoeff = Mathf.Sqrt(-1 * Physics.gravity.y * jumpHeight * 2);
+        jumpCoeff = Mathf.Sqrt(-1 * Physics.gravity.y * jumpHeight * 2); // velocity required to reach jumpHeight
         isAlive = true;
         shouldRotate = true;
         // setup camera
@@ -76,6 +81,12 @@ public class PlayerMovementController : NetworkBehaviour {
         camera = cameraObj.GetComponentInChildren<Camera>();
 
         Animator animator = GetComponent<Animator>();
+
+        // disable mesh renders as they get in way of view frustum
+        SkinnedMeshRenderer[] meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
+        foreach(SkinnedMeshRenderer r in meshRenderers) {
+            r.enabled = false;
+        }
     }
     
     public void FixedUpdate() {
@@ -117,7 +128,12 @@ public class PlayerMovementController : NetworkBehaviour {
         }
 
         Vector3 velocity = characterController.velocity; // set new velocity to current velocity for now
-        Vector3 desiredAccelDirection = transform.forward * zInput * accelRate + transform.right * xInput * accelRate * strafeMultiplier; // get the desired accel direction
+        Vector3 desiredAccelDirection;
+        if (speed > velocity.magnitude) {
+            desiredAccelDirection = transform.forward * zInput * accelRate + transform.right * xInput * accelRate * strafeMultiplier; // get the desired accel direction
+        } else {
+            desiredAccelDirection = new Vector3(0f, 0f, 0f); // No acceleration since moving faster than desired / allowed
+        }
         Vector3 desiredAcceleration = Vector3.zero; // acceleration input by player ; zero if no collision with surface beneath
         Vector3 accelDirectionPlane; // this is the vertical plane that intersects the desired acceleration direction
         Vector3 velocityDirectionPlane = Vector3.Cross(velocity, Vector3.up); // this is the vertical plane that intersects current velocity
@@ -127,7 +143,7 @@ public class PlayerMovementController : NetworkBehaviour {
         RaycastHit headHitInfo;
         bool isOnGround = //characterController.isGrounded;
         Physics.SphereCast(transform.position + new Vector3(0.0f, radius, 0.0f), radius, Vector3.down, out groundHitInfo,
-                           0.1f /*height / 2 - radius*/, Physics.AllLayers, QueryTriggerInteraction.Ignore);
+                           0.2f /*height / 2 - radius*/, Physics.AllLayers, QueryTriggerInteraction.Ignore);
         bool hitHead = Physics.SphereCast(transform.position, radius, Vector3.up, out headHitInfo,
                            height /*/ 2 */ - radius, Physics.AllLayers, QueryTriggerInteraction.Ignore);
         if (jumpInput && jumpState == JumpState.Grounded) {
@@ -162,20 +178,30 @@ public class PlayerMovementController : NetworkBehaviour {
             }
         }
         if (jumpState == JumpState.Grounded || jumpState == JumpState.JustLanded) {
-            accelDirectionPlane = Vector3.Cross(desiredAccelDirection, Vector3.up); // this is the plane that intersets both y axis and movement direction, always vertical
+            Vector3 groundHitNormal = groundHitInfo.normal.normalized;
+            float angleFromVertical = Mathf.Acos(Vector3.Dot(groundHitNormal, Vector3.up)) * radToDegreeConst;
             velocityDirectionPlane = Vector3.Cross(velocity, Vector3.up);
-            desiredAccelDirection = Vector3.Cross(groundHitInfo.normal, accelDirectionPlane).normalized; // this is the line of intersection between the vertical plane and the plane walking on.
             Vector3 velocityDirection = Vector3.Cross(groundHitInfo.normal, velocityDirectionPlane).normalized; // line of intersection between vertical plane of velocity and plane walking on.
-            desiredAccelDirection = desiredAccelDirection.normalized; // normalize the direction of the accel
-            desiredAcceleration = desiredAccelDirection * accelRate; // now get actual acceleration by taking direction * accelRate
+            if (angleFromVertical > characterController.slopeLimit) {
+                velocityDirectionPlane = Vector3.Cross(groundHitNormal, Vector3.up);
+                velocityDirection = Vector3.Cross(groundHitNormal, velocityDirectionPlane).normalized;
+                velocity = velocityDirection * runSpeed;
+            }
+            else {
+                accelDirectionPlane = Vector3.Cross(desiredAccelDirection, Vector3.up); // this is the plane that intersets both y axis and movement direction, always vertical
+                desiredAccelDirection = Vector3.Cross(groundHitInfo.normal, accelDirectionPlane).normalized; // this is the line of intersection between the vertical plane and the plane walking on.
+                desiredAccelDirection = desiredAccelDirection.normalized; // normalize the direction of the accel
+                desiredAcceleration = desiredAccelDirection * accelRate; // now get actual acceleration by taking direction * accelRate
+            }
 
             Vector3 friction = velocityDirection * frictionCoeff * -1;
             if ((friction.magnitude * Time.fixedDeltaTime) > velocity.magnitude && desiredAcceleration.magnitude == 0) { // friction would actually cause velocity in negative direction
                 friction = -velocity / Time.fixedDeltaTime; // so make it so that velocity will be zero due to friction
             }
             velocity = velocity.magnitude * velocityDirection + (desiredAcceleration + friction) * Time.fixedDeltaTime;
-            velocity = Vector3.ClampMagnitude(velocity, speed);
-            //velocity += Physics.gravity * Time.fixedDeltaTime;
+            if (velocity.magnitude > sprintSpeed) { // can't go faster than max velocity
+                velocity = Vector3.ClampMagnitude(velocity, sprintSpeed);
+            }
         } else {
         }
 
@@ -188,7 +214,7 @@ public class PlayerMovementController : NetworkBehaviour {
             case "p":
                 animator.SetTrigger("Pain");//the animator controller will detect the trigger pain and play the pain animation
                 break;
-            case "a":
+            /*case "a":
                 animator.SetInteger("Death", 1);//the animator controller will detect death=1 and play DeathA
                 break;
             case "b":
@@ -196,7 +222,7 @@ public class PlayerMovementController : NetworkBehaviour {
                 break;
             case "c":
                 animator.SetInteger("Death", 3);//the animator controller will detect death=3 and play DeathC
-                break;
+                break; */
             case "n":
                 animator.SetBool("NonCombat", true);//the animator controller will detect this non combat bool, and go into a non combat state "in" this weaponstate
                 break;
@@ -218,9 +244,7 @@ public class PlayerMovementController : NetworkBehaviour {
      * does not rotate beyond this angle from rest angle in either direction.
      */
     void RotateXAxisClampedBidirectionally(float angle, float clampAngle) {
-        // conversion constants
-        float degreeToRadConst = Mathf.PI / 180;
-        float radToDegreeConst = 180 / Mathf.PI;
+        
 
         // convert the incoming angle as degrees to rads
         float rad = angle * degreeToRadConst;
