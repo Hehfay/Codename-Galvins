@@ -4,17 +4,6 @@ using UnityEngine;
 
 [CreateAssetMenu()]
 public class DataSheet : ScriptableObject {
-
-    
-    // Type healing, AOE
-
-    // public sound;
-
-
-
-    // The number of hands this combat equipment takes.
-    public HandOccupancies handOccupancy;
-
     // Is this combat equipment armor? Armor is handled particularly; it cannot be put in weapon slots.
     public bool isArmor;
 

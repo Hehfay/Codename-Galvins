@@ -49,7 +49,6 @@ GameObject:
   - component: {fileID: 114276594026780264}
   - component: {fileID: 54127999334631000}
   - component: {fileID: 82910769924033814}
-  - component: {fileID: 114491546547864046}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -123,7 +122,7 @@ MeshRenderer:
   m_GameObject: {fileID: 1818343121984686}
   m_Enabled: 1
   m_CastShadows: 1
-  m_ReceiveShadows: 1
+  m_ReceiveShadows: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -333,19 +332,6 @@ MonoBehaviour:
   currentCollider: {fileID: 0}
   interactWithCollider: 0
   popupInstantiated: 0
---- !u!114 &114491546547864046
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1818343121984686}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ed7ac18c18b89cb48b4b40d03e5eb6c5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  quests:
-  - {fileID: 11400000, guid: b85046b9e3f226b429d164cb28f893ca, type: 2}
 --- !u!114 &114522780988060810
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -357,6 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6a85431f1226b847be19cf13317c001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  INVENTORY_SIZE: 14
   leftHand:
   - {fileID: 0}
   - {fileID: 0}

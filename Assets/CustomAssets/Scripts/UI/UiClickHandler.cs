@@ -13,17 +13,17 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
     public static UiClickHandler currentClickHandler;
     UIController uiController;
     InventoryController inventoryController;
-    CharacterInventory character;
+    Inventory character;
 
     void Start () {
         uiController = GameObject.Find ("Canvas").GetComponent<UIController>();
         inventoryController = GameObject.Find ("Canvas").GetComponent<InventoryController>();
-        character = GameObject.Find (playerString).GetComponent<CharacterInventory>();
+        character = GameObject.Find (playerString).GetComponent<Inventory>();
     }
 
     public void OnPointerClick (PointerEventData eventData) {
 
-        int index = gameObject.GetComponent<Pickup> ().inventoryIndex;
+        int index = gameObject.GetComponent<PickupItem> ().inventoryIndex;
 
         int itemCount;
 
@@ -48,7 +48,7 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
 
             uiController.SelectCountButtonSetText ("1");
 
-            uiController.SelectCountButtonSetMaxCount (GetComponent<Pickup>().count);
+            uiController.SelectCountButtonSetMaxCount (GetComponent<PickupItem>().count);
 
             currentClickHandler = this;
             uiController.selectCountEnabled = true;
@@ -61,7 +61,7 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
         GameObject c = GameObject.Find (playerString);
         dropItem.transform.position = c.transform.position;
 
-        dropItem.GetComponent<Pickup> ().count = GetComponent<Pickup> ().count;
+        dropItem.GetComponent<PickupItem> ().count = GetComponent<PickupItem> ().count;
 
         Instantiate (dropItem);
 
@@ -74,7 +74,7 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
         // TODO Wrap this nicely so other drop logic can use it.
 
         // See if the item has a quest trigger.
-        QuestTrigger pickupQuestTrigger = dropItem.GetComponent<QuestTrigger>();
+        QuestTrigger pickupQuestTrigger = dropItem.GetComponent<QuestTriggerWrapper>().questTrigger;
         if (pickupQuestTrigger != null) {
             GetComponent<QuestManager> ().ProcessQuestUnTrigger(pickupQuestTrigger);
         }
@@ -86,13 +86,13 @@ public class UiClickHandler : MonoBehaviour, IPointerClickHandler {
         GameObject c = GameObject.Find (playerString);
         dropItem.transform.position = c.transform.position;
 
-        gameObject.GetComponent<Pickup> ().count -= dropCount;
+        gameObject.GetComponent<PickupItem> ().count -= dropCount;
 
-        dropItem.GetComponent<Pickup> ().count = dropCount;
+        dropItem.GetComponent<PickupItem> ().count = dropCount;
 
         Instantiate (dropItem);
 
-        if (gameObject.GetComponent<Pickup>().count == 0) {
+        if (gameObject.GetComponent<PickupItem>().count == 0) {
             gameObject.transform.SetParent (null);
             Destroy (gameObject);
         }

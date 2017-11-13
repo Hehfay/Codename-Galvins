@@ -11,7 +11,6 @@ public enum UIState {
 // This script handles toggling the UI.
 public class UIController : MonoBehaviour {
 
-
     public bool selectCountEnabled;
 
     private bool openInventory;
@@ -28,24 +27,30 @@ public class UIController : MonoBehaviour {
     public GameObject questLog;
     public GameObject SelectCount;
     public GameObject justPickedup;
-    CharacterInventory myCharacterScript;
+
+    public GameObject DialogBox;
+    public GameObject DialogTopics;
+    public GameObject NameBox;
+    public GameObject GoodbyeButton;
+
+    public GameObject DialogTopicButton;
+
+    public GameObject Layout;
+
+    Inventory myCharacterScript;
+
+    /* I am just going to see how this goes. */
+    private GameObject CharacterThatActivatedDialog;
+
+    /* And seeing how this goes. */
+    private GameObject CurrentInteraction;
 
     bool isActive;
 
 	void Start () {
-
-        // This is probably a good way to do it. I should clean it up with a for each child in transform children loop.
-        // And then everything that needs the UI can find the UIController and call public functions on it.
-
-        SelectCount.SetActive (false);
-        isActive = false;
-        lefthand.SetActive (false);
-        righthand.SetActive (false);
-        inventory.SetActive (false);
-        questTab.SetActive (false);
-        inventoryTab.SetActive (false);
-        questLog.SetActive (false);
-        justPickedup.SetActive (false);
+        for (int i = 0; i < transform.childCount; ++i) {
+            transform.GetChild (i).transform.gameObject.SetActive (false);
+        }
         invCont = GetComponent<InventoryController>();
 	}
 	
@@ -132,13 +137,14 @@ public class UIController : MonoBehaviour {
         inventory.SetActive (false);
 
         questLog.SetActive (true);
-        GetComponent<QuestManager> ().WriteToQuestLog ();
+
+        GameObject.Find ("QuestManager").GetComponent<QuestManager> ().WriteToQuestLog ();
+        // GetComponent<QuestManager> ().WriteToQuestLog ();
     }
 
     private void getInput () {
         openInventory = Input.GetKeyDown (KeyCode.E);
     }
-
 
     public void CreateSelectCountButton () {
         SelectCount.SetActive (true);
@@ -162,10 +168,76 @@ public class UIController : MonoBehaviour {
     public void CreateWhatWasPickedUp (string whatWasPickedUp) {
         justPickedup.SetActive (true);
         justPickedup.GetComponent<RectTransform> ().localPosition = new Vector3 (0, 0, 0);
+
+        if (whatWasPickedUp == "") {
+            whatWasPickedUp = "Inventory Full";
+        }
         justPickedup.GetComponent<Text> ().text = whatWasPickedUp;
     }
 
     public void DestoryWhatWasPickedUp () {
         justPickedup.SetActive (false);
+    }
+
+    /******************/
+    /* Dialog Methods */
+    /******************/
+
+    public void SetDialogBoxActiveState (bool state) {
+        DialogBox.SetActive(state);
+        DialogTopics.SetActive(state);
+        NameBox.SetActive (state);
+        GoodbyeButton.SetActive (state);
+    }
+
+    private void SetCharacterRotateState (bool state) {
+        CharacterThatActivatedDialog.GetComponent<CursorManager> ().cursorLocked = state;
+        CharacterThatActivatedDialog.GetComponent<PlayerMovementController> ().shouldRotate = state;
+    }
+
+    public void EnableDialog (GameObject characterThatActivatedDialog, GameObject interaction) {
+        CharacterThatActivatedDialog = characterThatActivatedDialog;
+        CurrentInteraction = interaction;
+        SetCharacterRotateState (false);
+        SetDialogBoxActiveState (true);
+
+        DisplayName (interaction.GetComponent<AIInteraction>().characterName);
+        DisplayGreeting (interaction.GetComponent<AIDialogContainer>().greeting);
+
+        int iMax = interaction.GetComponent<AIDialogContainer> ().dialogTopics.Length;
+        for (int i = 0; i < iMax; ++i) {
+            GameObject obj = Instantiate (DialogTopicButton);
+            obj.GetComponent<DialogTopicOnClick> ().questManager = characterThatActivatedDialog.GetComponent<QuestManager> ();
+            obj.transform.SetParent(Layout.transform, true);
+            obj.GetComponent<DialogTopicOnClick> ().dialogTopic = interaction.GetComponent<AIDialogContainer> ().dialogTopics[i];
+            obj.GetComponentInChildren<Text> ().text = interaction.GetComponent<AIDialogContainer> ().dialogTopics[i];
+            obj.GetComponent<DialogTopicOnClick> ().dialog = interaction.GetComponent<AIDialogContainer> ().dialog[i];
+            obj.GetComponent<DialogTopicOnClick> ().questTrigger = interaction.GetComponent<AIDialogContainer> ().questTriggers[i];
+        }
+    }
+
+    public void DisableDialog () {
+        SetCharacterRotateState (true);
+        SetDialogBoxActiveState (false);
+        CharacterThatActivatedDialog = null;
+    }
+
+    public void DisplayGreeting (string greeting) {
+        DialogBox.GetComponentInChildren<Text> ().text = greeting;
+    }
+
+    public void DisplayName (string name) {
+        NameBox.GetComponent<Text> ().text = name;
+    }
+
+    public void DialogOptionClicked (string dialog) {
+        DialogBox.GetComponentInChildren<Text> ().text = dialog;
+    }
+
+    public void DestroyTopics () {
+        DialogTopicOnClick[] objsToDelete = DialogTopics.GetComponentsInChildren<DialogTopicOnClick> ();
+        for (int i = 0; i < objsToDelete.Length; ++i) {
+            Destroy (objsToDelete[i].gameObject);
+        }
     }
 }

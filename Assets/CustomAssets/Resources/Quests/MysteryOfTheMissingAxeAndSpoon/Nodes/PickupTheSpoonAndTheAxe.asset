@@ -11,6 +11,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21238c5bfa3800043bd6ab00280626a1, type: 3}
   m_Name: PickupTheSpoonAndTheAxe
   m_EditorClassIdentifier: 
+  dialog: I recently lost my axe and spoon. Could you help me find them?
+  repeatedDialog: Have you had any luck finding them?
   questLogDescription: Find the Spoon.
   advanceConditionGate: 0
   taskType: 0
@@ -22,6 +24,7 @@ MonoBehaviour:
   - Find the Spoon
   - Find the Axe
   objectives:
-  - {fileID: 1729987497063828, guid: 80db095f2112a024ca57f57a83e01b10, type: 2}
-  - {fileID: 1623542887717794, guid: 1609d5e0dd4605e4582cdd88a8b6d691, type: 2}
+  - {fileID: 1864759814268568, guid: 80db095f2112a024ca57f57a83e01b10, type: 2}
+  - {fileID: 1314169405552624, guid: 20a2a64613bf1ba40938a9c206d7c66e, type: 2}
   rewards: []
+  rewardCount: 

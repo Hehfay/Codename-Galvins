@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 
 public class CreateQuestTriggers : EditorWindow {
+    /*
     [MenuItem ("Quest/Create Quest Triggers")]
 
     public static void ShowWindow () {
@@ -47,4 +48,5 @@ public class CreateQuestTriggers : EditorWindow {
         }
 
     }
+    */
 }

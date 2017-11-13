@@ -88,6 +88,15 @@ public class PlayerMovementController : NetworkBehaviour {
         foreach(SkinnedMeshRenderer r in meshRenderers) {
             r.enabled = false;
         }
+
+        QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 30;
+    }
+    
+    public void FixedUpdate() {
+        if (!isLocalPlayer) { // networking related: this makes only local player controlled by this script
+            return;
+        }
     }
 
     public void LateUpdate() {

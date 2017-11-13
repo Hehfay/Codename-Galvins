@@ -49,7 +49,8 @@ public class CreateItems : EditorWindow {
                 DataSheetWrapper dataSheetWrapper = newPrefab.AddComponent<DataSheetWrapper> ();
                 dataSheetWrapper.dataSheet = dataSheets[i];
 
-                newPrefab.AddComponent<Pickup> ();
+                PickupItem p = newPrefab.AddComponent<PickupItem> ();
+                p.stackable = dataSheets[i].stackable;
 
                 Rigidbody rigidBody = newPrefab.AddComponent<Rigidbody> ();
                 rigidBody.mass = 1;

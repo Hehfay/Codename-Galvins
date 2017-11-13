@@ -17,6 +17,12 @@ public enum TaskType {
 [CreateAssetMenu()]
 public class QuestNode : ScriptableObject {
 
+    // The exposition text is used when the quest giver is explaining the quest to you.
+    public string dialog;
+
+    // repeated dialog
+    public string repeatedDialog;
+
     public Dictionary<int, bool> advanceConditions;
     public Dictionary<int, string> taskDescription;
 
@@ -24,7 +30,6 @@ public class QuestNode : ScriptableObject {
 
     public AdvanceConditionGate advanceConditionGate;
     public TaskType taskType;
-
 
     public QuestNode previous;
     public QuestNode[] next;
@@ -37,9 +42,9 @@ public class QuestNode : ScriptableObject {
     // This will be read by an editor script to know which gameobjects to attach quest triggers to.
     public GameObject[] objectives;
 
-
     // Used if completing a quest gives you a reward.
     public GameObject[] rewards;
+    public int[] rewardCount;
 
     public void ShowCurrentTasks () {
         for (int i = 0; i < tasks.Length; ++i) {
