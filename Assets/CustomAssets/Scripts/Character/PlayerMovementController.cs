@@ -90,7 +90,7 @@ public class PlayerMovementController : NetworkBehaviour {
         }
 
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = -1;
     }
     
     public void FixedUpdate() {
