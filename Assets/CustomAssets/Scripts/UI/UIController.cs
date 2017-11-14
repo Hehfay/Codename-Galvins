@@ -172,7 +172,7 @@ public class UIController : MonoBehaviour {
         if (whatWasPickedUp == "") {
             whatWasPickedUp = "Inventory Full";
         }
-        justPickedup.GetComponent<Text> ().text = whatWasPickedUp;
+        justPickedup.GetComponentInChildren<Text> ().text = whatWasPickedUp;
     }
 
     public void DestoryWhatWasPickedUp () {
