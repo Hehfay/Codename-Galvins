@@ -3,12 +3,9 @@ using UnityEngine.Networking;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovementController : NetworkBehaviour {
-    // conversion constants
-    private float degreeToRadConst = Mathf.PI / 180;
-    private float radToDegreeConst = 180 / Mathf.PI;
 
     // local variables
-    public Animator animator; // player animator
+    private Animator animator; // player animator
     bool isAlive; // is this character alive?
     public GameObject cameraObj; // this is where the player camera will be held
     Camera camera; // the camera that is made child of cameraObj
@@ -21,6 +18,7 @@ public class PlayerMovementController : NetworkBehaviour {
     public float frictionCoeff = 2.5f; // how much does friction slow player down
     public float xSensitivity = 1.0f; // sensitivity settings
     public float ySensitivity = 1.0f; // sensitivity settings
+    public float maxVerticalLookAngle = 50.0f;
 
     public float accelRate = 5.0f; // how fast player accelerates
     public float airbornAccelRate = 3.0f; // how fast player accelerates when in air
@@ -81,7 +79,7 @@ public class PlayerMovementController : NetworkBehaviour {
         Camera.main.GetComponent<PlayerCamera>().setTarget(cameraObj.transform);
         camera = cameraObj.GetComponentInChildren<Camera>();
 
-        Animator animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
 
         // disable mesh renders as they get in way of view frustum
         SkinnedMeshRenderer[] meshRenderers = GetComponentsInChildren<SkinnedMeshRenderer>();
@@ -108,7 +106,7 @@ public class PlayerMovementController : NetworkBehaviour {
             transform.Rotate(0f, yRotInput, 0f, Space.World);
             // rotate camera (vertical)
             // have to clamp rotation around xAxis (vertical look)
-            RotateXAxisClampedBidirectionally(-xRotInput, 50);
+            RotateXAxisClampedBidirectionally(-xRotInput, maxVerticalLookAngle);
         }
     }
 
@@ -198,7 +196,7 @@ public class PlayerMovementController : NetworkBehaviour {
         }
         if (jumpState == JumpState.Grounded || jumpState == JumpState.JustLanded) {
             Vector3 groundHitNormal = groundHitInfo.normal.normalized;
-            float angleFromVertical = Mathf.Acos(Vector3.Dot(groundHitNormal, Vector3.up)) * radToDegreeConst;
+            float angleFromVertical = MathUtil.convertRadToDegree(Mathf.Acos(Vector3.Dot(groundHitNormal, Vector3.up)));
             velocityDirectionPlane = Vector3.Cross(velocity, Vector3.up);
             Vector3 velocityDirection = Vector3.Cross(groundHitInfo.normal, velocityDirectionPlane).normalized; // line of intersection between vertical plane of velocity and plane walking on.
             if (angleFromVertical > characterController.slopeLimit) {
@@ -267,11 +265,11 @@ public class PlayerMovementController : NetworkBehaviour {
         
 
         // convert the incoming angle as degrees to rads
-        float rad = angle * degreeToRadConst;
+        float rad = MathUtil.convertDegreeToRad(angle);
         // get current angles
         Quaternion curRot = cameraObj.transform.localRotation;
         float curRad = Mathf.Asin(curRot.x) * 2;
-        float curAngle = curRad * radToDegreeConst;
+        float curAngle = MathUtil.convertRadToDegree(curRad);
 
         float desiredAngle = curAngle + angle;
         if (desiredAngle < 0) {
@@ -280,20 +278,15 @@ public class PlayerMovementController : NetworkBehaviour {
         else {
             desiredAngle = Mathf.Min(desiredAngle, clampAngle);
         }
-        float desiredRad = desiredAngle * degreeToRadConst;
+        float desiredRad = MathUtil.convertDegreeToRad(desiredAngle);
 
         float cosFinalAngle = 0;
         float sinFinalAngle = 0;
         cosFinalAngle = Mathf.Cos(desiredRad / 2);
         sinFinalAngle = Mathf.Sin(desiredRad / 2);
         Quaternion rotation = new Quaternion(sinFinalAngle, 0f, 0f, cosFinalAngle);
-        float nearClipPlaneDist = camera.nearClipPlane;
-        Vector3 nearClipPlanePoint = camera.transform.position + camera.transform.forward * nearClipPlaneDist;
         cameraObj.transform.localRotation = rotation;
-        Transform cameraObjTrans = cameraObj.transform;
-        //cameraObj.transform.RotateAround(nearClipPlanePoint, cameraObjTrans.right, angle);
-
-        
+        Transform cameraObjTrans = cameraObj.transform;        
     }
 
     /**
