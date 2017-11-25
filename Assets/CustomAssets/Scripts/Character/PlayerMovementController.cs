@@ -78,6 +78,7 @@ public class PlayerMovementController : NetworkBehaviour {
         cameraObj.transform.rotation = new Quaternion(0f, 0f, 0f, 1f);
         Camera.main.GetComponent<PlayerCamera>().setTarget(cameraObj.transform);
         camera = cameraObj.GetComponentInChildren<Camera>();
+        camera.fieldOfView = 60f;
 
         animator = GetComponent<Animator>();
 

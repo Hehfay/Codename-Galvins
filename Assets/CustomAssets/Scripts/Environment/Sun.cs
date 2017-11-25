@@ -34,25 +34,25 @@ public class Sun : MonoBehaviour {
         float time = calendar.getTime(); // eventually replace with game time (takes pauses, etc into effect)
         Quaternion finalRotation = getSunRotationAtTime(time);
         this.transform.rotation = finalRotation;
+
+        light.intensity = calculateSunIntensity();
     }
 
     /**
      * Returns value [0, 1]
      */
-    private float calculateSunIntensity (float angle, float maxIntensity = 1.0f) {
+    private float calculateSunIntensity (float maxIntensity = 1.0f) {
         float intensity = 0.0f;
-        if (angle > 180 + angleOffset && angle < 360 - angleOffset) {
-            intensity = 0;
+        float dot = Vector3.Dot(light.transform.forward.normalized, Vector3.up);
+        float rad = Mathf.PI - Mathf.Acos(dot);
+        float angle = MathUtil.convertRadToDegree(rad);
+        Debug.Log(angle);
+        if (angle <= 90) {
+            intensity = maxIntensity;
+        } else if (angle <= (90 + angleOffset)) {
+            float t = Mathf.InverseLerp(90 + angleOffset, 90, angle);
+            intensity = t;
         }
-        else {
-            float rad = MathUtil.convertDegreeToRad(angle);
-            float minSinValue = Mathf.Sin(MathUtil.convertDegreeToRad(180 + angleOffset));
-            float conversionConstant = 1 / (1 - Mathf.Sin(minSinValue));
-            intensity = (Mathf.Sin(rad) - minSinValue) * conversionConstant * maxIntensity;
-            Mathf.Clamp(intensity, 0.0f, maxIntensity);
-        }
-        intensity = 0.5f;
-
         return intensity;
     }
 
@@ -64,22 +64,25 @@ public class Sun : MonoBehaviour {
         spinDegrees %= 360f;
 
         float revolutionDegrees = earthRevolutionDegreesPerSecond * time;
+        if (Input.GetKeyDown(KeyCode.P)) {
+            Debug.Log("down");
+        }
         revolutionDegrees %= 360f;
 
-        spinDegrees -= revolutionDegrees; // have to minus the revolution because it will also spin as well.
+        
 
-        light.intensity = calculateSunIntensity(spinDegrees);
-
-        // we're going to apply this one first, so even though the axis should be tilted, since its first we can just do forward;
-        Quaternion spinRotation = Quaternion.AngleAxis(spinDegrees, Vector3.forward);
+        Quaternion earthAxisRelativeToGroundAtLatitude = Quaternion.AngleAxis(-latitude, Vector3.right);
 
         Quaternion axisTilt = Quaternion.AngleAxis(axisOffset, Vector3.right);
+        Debug.DrawRay(transform.position, axisTilt * Vector3.forward, Color.blue);
 
-        //Quaternion latitudeTilt = Quaternion.AngleAxis(latitude);
+        Quaternion sunAxisRotationAboutEarthAxisRelToGround = Quaternion.AngleAxis(spinDegrees + revolutionDegrees, earthAxisRelativeToGroundAtLatitude * Vector3.forward);
 
-        Quaternion revolutionRotation = Quaternion.AngleAxis(revolutionDegrees, Vector3.forward);
+        // apply the rotations
+        Quaternion finalAxis = sunAxisRotationAboutEarthAxisRelToGround * axisTilt * earthAxisRelativeToGroundAtLatitude;
 
-        // By ordering the application of the rotations correctly, we made the axes above easier to use.
-        return revolutionRotation * axisTilt * spinRotation;
+        // undo seasonal rotation of sun affecting day night cycle of sun.
+        finalAxis = Quaternion.AngleAxis(-revolutionDegrees, finalAxis * Vector3.forward) * finalAxis;
+        return finalAxis;
     }
 }

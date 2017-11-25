@@ -11,7 +11,7 @@ public class Calendar : MonoBehaviour {
     public float secondsPerDay;
     public float daysPerYear;
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         timeElapsed = startTime;
 		if (instance != null) {
             Destroy(this);
@@ -21,8 +21,8 @@ public class Calendar : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () {
-        timeElapsed += Time.fixedDeltaTime;
+	void Update () {
+        timeElapsed += Time.deltaTime;
 	}
 
     public static Calendar getInstance() {
