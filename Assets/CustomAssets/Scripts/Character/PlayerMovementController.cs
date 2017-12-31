@@ -36,7 +36,8 @@ public class PlayerMovementController : NetworkBehaviour {
     private float zInput; // forward-backward move input
     private float xRotInput; // mouse x input
     private float yRotInput; // mouse y input
-    private bool clicked; // did player click
+    private bool leftMouseClicked; // did player click left mb
+    private bool rightMouseClicked; // did player click right mb
     private Vector2 mousePos; // mouse input
     private bool jumpInput; // player pressed jump button
     private bool isWalking; // player trying to walk
@@ -118,7 +119,7 @@ public class PlayerMovementController : NetworkBehaviour {
         getInput(); // get the input only once per frame
         
         // process click
-        if (clicked) {
+        if (leftMouseClicked) {
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(mousePos);
             Physics.Raycast(ray, out hit, 2.0f);
@@ -200,11 +201,10 @@ public class PlayerMovementController : NetworkBehaviour {
             float angleFromVertical = MathUtil.convertRadToDegree(Mathf.Acos(Vector3.Dot(groundHitNormal, Vector3.up)));
             velocityDirectionPlane = Vector3.Cross(velocity, Vector3.up);
             Vector3 velocityDirection = Vector3.Cross(groundHitInfo.normal, velocityDirectionPlane).normalized; // line of intersection between vertical plane of velocity and plane walking on.
-            if (angleFromVertical > characterController.slopeLimit) {
+            if (angleFromVertical > characterController.slopeLimit) { // slide down the terrain bc its too steep
                 velocityDirectionPlane = Vector3.Cross(groundHitNormal, Vector3.up);
                 velocityDirection = Vector3.Cross(groundHitNormal, velocityDirectionPlane).normalized;
                 velocity = velocityDirection * runSpeed;
-
             }
             else {
                 accelDirectionPlane = Vector3.Cross(desiredAccelDirection, Vector3.up); // this is the plane that intersets both y axis and movement direction, always vertical
@@ -223,13 +223,15 @@ public class PlayerMovementController : NetworkBehaviour {
             }
         } else {
         }
+        Vector3 moveVal = velocity * Time.deltaTime;
 
-        collisionFlags = characterController.Move(velocity * Time.deltaTime);
+        collisionFlags = characterController.Move(moveVal);
+        // now check if that move causes problems
 
         bool suicide = Input.GetKeyDown(KeyCode.K); // kill ; TODO: remove this, its just a dumb testing feature
 
-        switch (Input.inputString)//get keyboard input, probably not a good idea to use strings here...Garbage collection problems with regards to local string usage are known to happen
-        {                        //the garbage collection memory problem arises from local alloction of memory, and not freeing it up efficiently
+        switch (Input.inputString) //get keyboard input, probably not a good idea to use strings here...Garbage collection problems with regards to local string usage are known to happen
+        {                          //the garbage collection memory problem arises from local alloction of memory, and not freeing it up efficiently
             case "p":
                 animator.SetTrigger("Pain");//the animator controller will detect the trigger pain and play the pain animation
                 break;
@@ -253,6 +255,10 @@ public class PlayerMovementController : NetworkBehaviour {
         }
         else {
             animator.SetBool("Idling", true);
+        }
+
+        if (leftMouseClicked) {
+            animator.SetTrigger("Use");
         }
     }
 
@@ -298,7 +304,7 @@ public class PlayerMovementController : NetworkBehaviour {
         yRotInput = Input.GetAxis("Mouse X") * Time.deltaTime * ySensitivity; // get rotate input
         xInput = Input.GetAxis("Horizontal"); // get input
         zInput = Input.GetAxis("Vertical"); // get input
-        clicked = Input.GetMouseButtonDown(0);
+        leftMouseClicked = Input.GetMouseButtonDown(0);
         mousePos = Input.mousePosition;
         isSprinting = Input.GetButton("Sprint"); // is user trying to sprint
         isWalking = Input.GetButton("Walk"); // is user trying to walk

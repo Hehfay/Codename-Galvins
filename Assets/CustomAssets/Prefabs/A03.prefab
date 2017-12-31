@@ -68,6 +68,8 @@ GameObject:
   - component: {fileID: 4639594442603894}
   - component: {fileID: 33814738869833670}
   - component: {fileID: 23744404390202670}
+  - component: {fileID: 64959929678625122}
+  - component: {fileID: 114639137810512962}
   m_Layer: 0
   m_Name: Longsword
   m_TagString: Untagged
@@ -532,6 +534,7 @@ GameObject:
   - component: {fileID: 114738738208750900}
   - component: {fileID: 114261662740180386}
   - component: {fileID: 54510117813537184}
+  - component: {fileID: 114703934361980600}
   m_Layer: 0
   m_Name: A03
   m_TagString: Untagged
@@ -3465,6 +3468,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &64959929678625122
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1018329264613040}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 1
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300056, guid: 4a8a9f9c4997e6146927d2ff7ef87db2, type: 3}
 --- !u!95 &95469225042159092
 Animator:
   serializedVersion: 3
@@ -3545,12 +3562,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73bea36db1f81bb43a74d80644bb34d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animator: {fileID: 95469225042159092}
   cameraObj: {fileID: 0}
   gravityMultiplier: 2
   frictionCoeff: 35
   xSensitivity: 100
   ySensitivity: 100
+  maxVerticalLookAngle: 90
   accelRate: 65
   airbornAccelRate: 25
   strafeMultiplier: 0.5
@@ -3563,6 +3580,18 @@ MonoBehaviour:
   minSpeed: 0.1
   shouldRotate: 0
   listening: 0
+--- !u!114 &114639137810512962
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1018329264613040}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: febe7dd2abb3a504a9dfe93ccbb3323c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 100
 --- !u!114 &114678291389240954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3583,6 +3612,20 @@ MonoBehaviour:
   m_SnapThreshold: 5
   m_InterpolateRotation: 1
   m_InterpolateMovement: 1
+--- !u!114 &114703934361980600
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310107706923890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2330ffcb6b370347b679bed2335e96d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 0}
+  health: 100
+  testDamageResistance: 0.1
 --- !u!114 &114718662008986036
 MonoBehaviour:
   m_ObjectHideFlags: 1

@@ -46,7 +46,6 @@ public class Sun : MonoBehaviour {
         float dot = Vector3.Dot(light.transform.forward.normalized, Vector3.up);
         float rad = Mathf.PI - Mathf.Acos(dot);
         float angle = MathUtil.convertRadToDegree(rad);
-        Debug.Log(angle);
         if (angle <= 90) {
             intensity = maxIntensity;
         } else if (angle <= (90 + angleOffset)) {
