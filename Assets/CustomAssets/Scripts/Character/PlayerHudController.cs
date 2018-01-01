@@ -44,7 +44,7 @@ public class PlayerHudController : MonoBehaviour {
   * This function gets the player input for this controller
   */
     void getInput() {
-        backtickInput = Input.GetButton("Backtick"); // is user trying to jump
+        backtickInput = Input.GetButtonDown("Backtick"); // is user trying to jump
     }
 
 }

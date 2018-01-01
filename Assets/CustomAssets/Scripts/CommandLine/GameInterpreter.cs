@@ -44,6 +44,10 @@ public class GameInterpreter : MonoBehaviour {
                 Time.timeScale = 0.0f;
             } else if (tokens[0].ToLower().Equals("time.resume")) {
                 Time.timeScale = 1.0f;
+            } else if (tokens[0].ToLower().Equals("time.scale")) {
+                string val = tokens[1].ToLower();
+                int num = int.Parse(val);
+                Time.timeScale = num;
             }
         } else {
             Debug.Log("Error: cannot parse empty string.");

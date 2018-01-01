@@ -31,7 +31,7 @@ public class Sun : MonoBehaviour {
         earthSpinDegreesPerSecond = 360 / calendar.secondsPerDay; // how many degrees per second
         earthRevolutionDegreesPerSecond = 360 / (calendar.daysPerYear * calendar.secondsPerDay); // how much revolution per second
 
-        float time = calendar.getTime(); // eventually replace with game time (takes pauses, etc into effect)
+        float time = calendar.getTime();
         Quaternion finalRotation = getSunRotationAtTime(time);
         this.transform.rotation = finalRotation;
 
@@ -60,6 +60,7 @@ public class Sun : MonoBehaviour {
        
 
         float spinDegrees = earthSpinDegreesPerSecond * time;
+        spinDegrees += 180; // this is so that time 0 in game time results in 12 am sun time
         spinDegrees %= 360f;
 
         float revolutionDegrees = earthRevolutionDegreesPerSecond * time;

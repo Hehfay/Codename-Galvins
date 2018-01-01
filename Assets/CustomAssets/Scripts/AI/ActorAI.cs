@@ -26,13 +26,6 @@ public class ActorAI : MonoBehaviour {
         }
 	}
 
-    private void A() {
-        /*
-         * 
-         * scene s -> loop through gameobject --> loop through fields/methods COMPONENTS
-         */
-    }
-
     public void doInteract() {
         Debug.Log("Target = " + agent.destination);
         Debug.Log("I am at :" + transform.position);

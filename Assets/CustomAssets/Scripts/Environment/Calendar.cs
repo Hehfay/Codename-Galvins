@@ -9,10 +9,13 @@ public class Calendar : MonoBehaviour {
     private float timeElapsed;
     public float startTime;
     public float secondsPerDay;
+    private float secondsPerHour;
+
     public float daysPerYear;
 	// Use this for initialization
 	void Awake () {
         timeElapsed = startTime;
+        secondsPerHour = secondsPerDay / 24;
 		if (instance != null) {
             Destroy(this);
         } else {
@@ -39,7 +42,7 @@ public class Calendar : MonoBehaviour {
 
     // TODO: fix all of below functions
     public float getTimeOfDay() {
-        return 8;
+        return (timeElapsed % secondsPerDay) / secondsPerHour;
     }
 
     public int getMonthOfYear() {

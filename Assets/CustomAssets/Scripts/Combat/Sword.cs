@@ -44,7 +44,6 @@ public class Sword : MonoBehaviour {
     }
 
     void OnTriggerEnter(Collider collider) {
-        Debug.Log(collider.gameObject.name);
         DamageExampleTest d = collider.gameObject.GetComponent<DamageExampleTest>();
         if (d != null) {
             DamageTest dt = new DamageTest();

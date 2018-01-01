@@ -20,12 +20,12 @@ public class PlayerMovementController : NetworkBehaviour {
     public float ySensitivity = 1.0f; // sensitivity settings
     public float maxVerticalLookAngle = 50.0f;
 
-    public float accelRate = 5.0f; // how fast player accelerates
-    public float airbornAccelRate = 3.0f; // how fast player accelerates when in air
-    public float strafeMultiplier = 0.5f; // accel multipliler for strafe direction (you dont strafe as fast as you move forward
+    public float accelRate = 4.0f; // how fast player accelerates
+    public float airbornAccelRate = 2.0f; // how fast player accelerates when in air
+    public float strafeMultiplier = 0.75f; // accel multipliler for strafe direction (you dont strafe as fast as you move forward
     public float walkSpeed = 1.4f; // how fast player moves while walking
-    public float runSpeed = 4.0f; // how fast player moves while running
-    public float sprintSpeed = 10.0f; // how fast player moves while sprinting
+    public float runSpeed = 3.0f; // how fast player moves while running
+    public float sprintSpeed = 6.0f; // how fast player moves while sprinting
     public float jumpSpeed = 3.0f; // run speed while jumping
     public float jumpHeight = 1.5f; // average jump height of human
     public float jumpLandDuration = 0.1f; // how long in the landing phase
