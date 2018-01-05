@@ -17,10 +17,8 @@ public enum TaskType {
 [CreateAssetMenu()]
 public class QuestNode : ScriptableObject {
 
-    // The exposition text is used when the quest giver is explaining the quest to you.
     public string dialog;
 
-    // repeated dialog
     public string repeatedDialog;
 
     public Dictionary<int, bool> advanceConditions;
@@ -62,9 +60,7 @@ public class QuestNode : ScriptableObject {
             if (taskComplete) {
                 output += " - Complete";
             }
-
             // Debug.Log (output);
-
         }
     }
 
@@ -84,6 +80,16 @@ public class QuestNode : ScriptableObject {
         return output;
     }
 
+    public bool aTaskIsComplete () {
+        for (int i = 0; i < tasks.Length; ++i) {
+            if (!IsTaskComplete(tasks[i])) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
     public void ShowCurrentTasksInLog () {
         for (int i = 0; i < tasks.Length; ++i) {
             string output;
@@ -100,8 +106,7 @@ public class QuestNode : ScriptableObject {
             if (taskComplete) {
                 output += " - Complete";
             }
-            GameObject.Find ("Sanity").GetComponentInChildren<Text>().text += "    > " + output + '\n';
+            GameObject.Find ("UIQuestLog(Clone)").GetComponentInChildren<Text>().text += "    > " + output + '\n';
         }
     }
-
 }

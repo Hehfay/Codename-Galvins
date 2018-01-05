@@ -4,109 +4,123 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class ColliderInteractController : MonoBehaviour {
-
-    GameObject GuiCanvas;
-
-    // The popup of what you just picked up.
-    public GameObject JustPickedUp;
-
-    public GameObject PickupTextPrompt;
-    GameObject newPickupTextPrompt;
-
+    public GameObject InteractPrompt;
     public bool allowedToPickThingsUp;
 
-    public GameObject TalkPrompt;
-    GameObject newTalkPrompt;
+    private GameObject Canvas;
+    private Collider currentCollider;
+    private Collider previousCollider;
+    private List<GameObject> references;
+    private bool popupInstantiated;
+    private bool interactInput;
 
-    // This is the collider you are interacting with when you press 'f'.
-    public Collider currentCollider;
+    // This value could be changed by a telekenesis effect, perhaps.
+    // Set in the editor.
+    public float rayCastDistance;
 
-    // Copy of currentCollider for processing when 'f' is pressed.
-    Collider copy;
+    private void DestroyPopup () {
+        Destroy (references[0]);
+        references.Clear ();
+        popupInstantiated = false;
+    }
 
-    public bool interactWithCollider;
+    private void CreatePopup (string popUpText) {
+        references.Clear ();
 
-    // False if a popup has not been instantiaed.
-    public bool popupInstantiated = false;
+        GameObject popup = (Instantiate (InteractPrompt, Canvas.transform, false));
+        references.Add (popup);
+        references[0].transform.GetChild (0).transform.GetChild (0).GetComponent<Text> ().text = popUpText;
+        popupInstantiated = true;
+    }
 
-    UIController uiController;
-
-	// Use this for initialization
 	void Start () {
+        references = new List<GameObject>();
+        Canvas = GameObject.Find ("Canvas");
         allowedToPickThingsUp = true;
-        GuiCanvas = GameObject.Find ("Canvas");
-        uiController = GuiCanvas.GetComponent<UIController> ();
+        popupInstantiated = false;
+        Debug.Assert (Canvas != null);
+        currentCollider = previousCollider = null;
 	}
+
+    private void GetInput () {
+        // allowedToPickThingsUp = (Input.GetKeyDown (KeyCode.E) ^ allowedToPickThingsUp);
+        interactInput = Input.GetKeyDown (KeyCode.F);
+    }
 	
-	// Update is called once per frame
 	void Update () {
 
-        RaycastHit hitInfo;
+        GetInput ();
 
+        RaycastHit hitInfo;
         Ray viewRayCast = Camera.main.ScreenPointToRay (Input.mousePosition);
 
-
         if (allowedToPickThingsUp) {
-            if (Physics.Raycast(viewRayCast, out hitInfo, 2f)) {
+
+            if (Physics.Raycast (viewRayCast, out hitInfo, rayCastDistance)) {
+                previousCollider = currentCollider;
                 currentCollider = hitInfo.collider;
                 Component component = currentCollider.GetComponent (typeof (IInteractable));
+
                 if (component != null) {
                     IInteractable iInteract = component as IInteractable;
-                    if (iInteract != null) {
-                        DisplayWhatWasPickedUp (iInteract.ToolTip ());
+                    if (iInteract != null && !popupInstantiated) {
+                        CreatePopup (iInteract.ToolTip ());
+                    }
+                    else if (currentCollider != previousCollider) {
+                        // Make a brand new one.
+                        DestroyPopup ();
+                        CreatePopup (iInteract.ToolTip ());
+                    }
+                }
+                else {
+                    previousCollider = currentCollider = null;
+                    if (popupInstantiated) {
+                        DestroyPopup ();
                     }
                 }
             }
             else {
-                currentCollider = null;
-                // TODO A better way.
-                DestroyWhatWasPickedUp ();
+                previousCollider = currentCollider = null;
+                if (popupInstantiated) {
+                    DestroyPopup ();
+                }
+            }
+        }
+        else {
+            previousCollider = currentCollider = null;
+            if (popupInstantiated) {
+                DestroyPopup ();
             }
         }
 
-        getInput ();
-
-        if (!interactWithCollider)
-            return;
-        if (currentCollider == null)
-            return;
-        if (!allowedToPickThingsUp)
-            return;
-
-        // Incase we step outside of the zone and our reference goes null.
-        copy = currentCollider;
-
-        DeletePrompts ();
-
-        Component comp = copy.GetComponent (typeof (IInteractable));
-        IInteractable i = comp as IInteractable;
-        i.Interact (gameObject);
+        if (popupInstantiated && allowedToPickThingsUp && currentCollider != null && interactInput) {
+            Component comp = currentCollider.GetComponent (typeof (IInteractable));
+            if (comp == null) {
+                currentCollider = previousCollider = null;
+                DestroyPopup ();
+                return;
+            }
+            IInteractable i = comp as IInteractable;
+            i.Interact (gameObject);
+        }
+        // No further functionality with the object your interacting with should be called here.
+        // Everything should be in the Interact function.
 	}
 
-    public void DisplayWhatWasPickedUp (string whatWasPickedUp) {
-        uiController.CreateWhatWasPickedUp (whatWasPickedUp);
-    }
-
-    public void DestroyWhatWasPickedUp () {
-        uiController.DestoryWhatWasPickedUp ();
-    }
-
-    private void createPopUp (Collider collider) {
-        if (!popupInstantiated && allowedToPickThingsUp) {
-            popupInstantiated = true;
-            newPickupTextPrompt = Instantiate (PickupTextPrompt) as GameObject;
-            newPickupTextPrompt.transform.SetParent (GuiCanvas.transform);
-            newPickupTextPrompt.GetComponent<RectTransform> ().localPosition = new Vector3 (0, -50, 0);
+    public void DestroyPopUpConditionally () {
+        if (popupInstantiated) {
+            DestroyPopup ();
         }
     }
 
-    private void getInput () {
-        interactWithCollider = Input.GetKeyDown (KeyCode.F);
+    public void DisableInteractController () {
+        enabled = false;
+        DestroyPopUpConditionally ();
+        allowedToPickThingsUp = false;
     }
 
-    public void DeletePrompts () {
-        Destroy (newTalkPrompt);
-        Destroy (newPickupTextPrompt);
-        popupInstantiated = false;
+    public void EnableInteractController () {
+        enabled = true;
+        allowedToPickThingsUp = true;
     }
 }

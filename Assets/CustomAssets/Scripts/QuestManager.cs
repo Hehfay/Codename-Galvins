@@ -7,20 +7,33 @@ public class QuestManager : MonoBehaviour {
     public List<Quest> quests;
 
     void Start () {
+        if (false) {
+            // If there are multiple quest managers in the scene that is bad.
+            Debug.Log ("Start Quest Manager.");
+        }
         for (int i = 0; i < quests.Count; ++i) {
             quests[i].Init ();
             quests[i].ShowCurrentTasks ();
         }
     }
 
-    public void StartQuestIfNotAlreadyStarted (Quest quest) {
-        if (!quest.questStarted) {
-            quest.questStarted = true;
+    public void ProcessQuestTrigger (Quest quest, QuestTrigger trigger) {
+        if (!quest.active) {
+            quest.active = true;
+            quest.SetCurrentObjectiveToFirstObjective ();
             quest.InitDialog ();
+        }
+        else {
+            quest.ProcessQuestTrigger (trigger);
         }
     }
 
+    public void QuestPostProcessing (Quest quest, QuestTrigger trigger) {
+        quest.PostProcessing ();
+    }
+
     public void ProcessQuestTrigger (QuestTrigger questTrigger) {
+        Debug.Log("Process Quest Trigger");
         if (questTrigger == null) {
             return;
         }
@@ -35,6 +48,7 @@ public class QuestManager : MonoBehaviour {
     }
 
     public void ProcessQuestUnTrigger (QuestTrigger questTrigger) {
+        Debug.Log ("Processing Quest UnTrigger");
         // TODO A better way to lookup the quests.
         for (int i = 0; i < quests.Count; ++i) {
             if (questTrigger.quest == quests[i]) {

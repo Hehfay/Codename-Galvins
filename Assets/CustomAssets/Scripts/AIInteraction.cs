@@ -8,25 +8,21 @@ public class AIInteraction : MonoBehaviour, IInteractable {
     public string characterName;
 
     public bool Interact (GameObject gameobject) {
+        // Draw the dialog box.
+        GetComponent<UIDialogFactory> ().CreateFactoryItem ();
+        GetComponent<UIDialogFactory> ().enabled = true;
 
-        // TODO Checks to see if you can interact with the character.
-        // For example, is this character attacking you? etc.
+        gameobject.GetComponent<CursorManager> ().enabled = false;
+        gameobject.GetComponent<PlayerMovementController> ().enabled = false;
+        gameobject.GetComponent<CursorManager> ().UnlockCursor ();
+        gameobject.GetComponent<CursorManager> ().enabled = false;
+        gameobject.GetComponent<ColliderInteractController> ().DestroyPopUpConditionally ();
+        gameobject.GetComponent<ColliderInteractController> ().enabled = false;
 
-        // gameobject.GetComponent<QuestManager> ().ProcessQuestTrigger (GetComponent<QuestTrigger>());
+        // Disable factory input.
+        gameobject.GetComponent<UIInputHandler> ().enabled = false;
 
-        UIController uiController = GameObject.Find ("Canvas").GetComponent<UIController>();
-
-        uiController.EnableDialog (gameobject, gameObject);
-        /*
-        uiController.DisplayName (characterName);
-        AIDialogContainer localContainer = GetComponent<AIDialogContainer> ();
-
-        uiController.CreateDialogTopicButtons (localContainer, );
-
-        for (int i = GetComponent<AIDialogContainer>().dialogTopics.Length - 1; i >= 0; --i) {
-            uiController.CreateDialogTopicButtons (localContainer.dialogTopics[i], i);
-        }
-        */
+        // Create the inventory.
         return true;
     }
 

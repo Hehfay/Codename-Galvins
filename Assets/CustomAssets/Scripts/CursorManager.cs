@@ -9,11 +9,9 @@ public class CursorManager : MonoBehaviour {
     public bool cursorLocked;
     public TextAsset crossHairRaw;
     private Texture2D crossHair;
-    public bool listening;
 
 	// Use this for initialization
 	void Start () {
-        listening = true;
         Cursor.lockState = CursorLockMode.Locked;
         cursorLocked = true;
         Cursor.visible = true;
@@ -21,17 +19,17 @@ public class CursorManager : MonoBehaviour {
         crossHair.LoadImage (crossHairRaw.bytes);
 	}
 	
-	// Update is called once per frame
-	void Update () {
-        if (cursorLocked) {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-        else {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-	}
+    public void UnlockCursor () {
+        cursorLocked = false;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void LockCursor () {
+        cursorLocked = true;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
 
     void OnGUI () {
         if (cursorLocked) {
@@ -46,6 +44,12 @@ public class CursorManager : MonoBehaviour {
                 yMin = (Screen.height - Input.mousePosition.y) - (crossHair.height / 2) + 3;
             }
             GUI.DrawTexture (new Rect (xMin, yMin, crossHair.width, crossHair.height), crossHair);
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        else {
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }

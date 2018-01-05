@@ -9,13 +9,6 @@ using System;
 // This script calls readFromInventoryToCharacter on the InventoryController script
 // to update the character data with the latest Ui information.
 public class DragHandler: MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
-
-    InventoryController invCont;
-
-    void Start () {
-        invCont = transform.parent.transform.parent.transform.parent.GetComponent<InventoryController>();
-    }
-
     public static GameObject itemBeingDragged;
     Vector3 startPosition;
     public static Transform startParent;
@@ -36,9 +29,6 @@ public class DragHandler: MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         GetComponent<CanvasGroup> ().blocksRaycasts = true;
         if (transform.parent == startParent) {
             transform.position = startPosition;
-        }
-        else {
-            invCont.readFromInventoryToCharacter ();
         }
     }
 }

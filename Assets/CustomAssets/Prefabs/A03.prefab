@@ -532,6 +532,12 @@ GameObject:
   - component: {fileID: 114738738208750900}
   - component: {fileID: 114261662740180386}
   - component: {fileID: 54510117813537184}
+  - component: {fileID: 114319134318564224}
+  - component: {fileID: 114954663239683978}
+  - component: {fileID: 114533504127944812}
+  - component: {fileID: 114331642453215832}
+  - component: {fileID: 114594322978924910}
+  - component: {fileID: 114105854465145822}
   m_Layer: 0
   m_Name: A03
   m_TagString: Untagged
@@ -3482,6 +3488,19 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114105854465145822
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310107706923890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 928c9b233908bac49895d3bfcd2639fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rememberUIState: 0
+  framerate: 30
 --- !u!114 &114261662740180386
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3493,15 +3512,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f65dadbde494eef47a95dc989026b46a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  JustPickedUp: {fileID: 1630763203453086, guid: 43fe7cedd1439884f88212ad42289f5f,
-    type: 2}
-  PickupTextPrompt: {fileID: 1664422159923830, guid: 28fd8c6b7fc763e4ab52f8e9af076863,
+  InteractPrompt: {fileID: 1189653547992150, guid: 986c552f2b802874c9a99d5fc1effdf6,
     type: 2}
   allowedToPickThingsUp: 0
-  TalkPrompt: {fileID: 1167984159562256, guid: 463a5bffa45bb444b84665be5d8e57ad, type: 2}
-  currentCollider: {fileID: 0}
-  interactWithCollider: 0
-  popupInstantiated: 0
+  rayCastDistance: 2
+--- !u!114 &114319134318564224
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310107706923890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3e8bc1bbafaee354eb294ce1d9939bde, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UICharacterInventory: {fileID: 1867931739324668, guid: 793c11a125fcc5c4dad6b49794088e33,
+    type: 2}
+--- !u!114 &114331642453215832
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310107706923890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80f9acd6ad26eca4ab8d451a086c67d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UIOptionsMenu: {fileID: 1053218967703772, guid: e255a78962eab2e4bb10d31ce664d41b,
+    type: 2}
+--- !u!114 &114533504127944812
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310107706923890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdcf8238a1981344f8b41c6ad90812ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UIQuestLog: {fileID: 1414218415013182, guid: 6c8e058fa81bcfc48b71421dfc6f6c6e, type: 2}
 --- !u!114 &114556244657186034
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3534,6 +3586,19 @@ MonoBehaviour:
     i15: 163
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &114594322978924910
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310107706923890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d186e8da422cfa4cbbafd59f38aeff0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotItemPrefab: {fileID: 1106010620724704, guid: 50dc6c4c2466abc4a9ce746de966c8e0,
+    type: 2}
 --- !u!114 &114634608495626408
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3562,7 +3627,6 @@ MonoBehaviour:
   jumpLandDuration: 0.1
   minSpeed: 0.1
   shouldRotate: 0
-  listening: 0
 --- !u!114 &114678291389240954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3596,7 +3660,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cursorLocked: 0
   crossHairRaw: {fileID: 4900000, guid: 467074da7dfd9634ab2ecefa20a9e5a9, type: 3}
-  listening: 0
 --- !u!114 &114738738208750900
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3608,7 +3671,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6a85431f1226b847be19cf13317c001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  INVENTORY_SIZE: 14
+  inventory:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  INVENTORY_SIZE: 5
   leftHand:
   - {fileID: 0}
   - {fileID: 0}
@@ -3619,25 +3688,22 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  armor: []
-  loot:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  itemCount: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
-  leftHandItemCount: 00000000000000000000000000000000
-  rightHandItemCount: 00000000000000000000000000000000
+  chest: {fileID: 0}
+  head: {fileID: 0}
+  hands: {fileID: 0}
+  feet: {fileID: 0}
+--- !u!114 &114954663239683978
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310107706923890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6457eec08a233844ab6bf173694d16a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  UITabs: {fileID: 1314236702090454, guid: bbed872093c40ec478079853aca49bdc, type: 2}
 --- !u!136 &136163435855919654
 CapsuleCollider:
   m_ObjectHideFlags: 1

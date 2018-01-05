@@ -6,5 +6,5 @@ public class AIDialogContainer : MonoBehaviour {
     public string[] dialogTopics;
     public string[] dialog;
     public QuestTrigger[] questTriggers;
-    public string greeting;
+    public string[] greeting;
 }
