@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-
-
-
 public class ContainerSlot : MonoBehaviour, IDropHandler {
+
+    public GameObject slotItem;
 
     public GameObject item {
         get {
@@ -33,8 +32,13 @@ public class ContainerSlot : MonoBehaviour, IDropHandler {
                     return; // Cannot swap.
                 }
             }
+
+            // Make the current child a child of the start parent.
             item.transform.SetParent (DragHandler.startParent);
+            // A function on the start parent for create child?
         }
+        // Make the item being dragged a child of this gameobject.
+        // A function on container slot to create a child? 
         DragHandler.itemBeingDragged.transform.SetParent (transform);
 
         QuestTriggerWrapper questTriggerWrapper = item.GetComponent<SlotObjectContainer> ().obj.GetComponent<QuestTriggerWrapper> ();
@@ -45,5 +49,7 @@ public class ContainerSlot : MonoBehaviour, IDropHandler {
                 GameObject.Find("QuestManager").GetComponent<QuestManager> ().ProcessQuestUnTrigger(trigger);
             }
         }
+        Debug.Log ("Refreshing");
+        transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UICharacterInventoryFactory> ().RefreshCharacterInventory ();
     }
 }

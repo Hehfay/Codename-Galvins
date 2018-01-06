@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using UnityEngine;
+using UnityEngine.UI;
 using System;
 
 public class EquipmentSlot : MonoBehaviour, IDropHandler {
 
     public EquipSlotType equipmentType;
+
+    public GameObject slotItem;
 
     public GameObject item {
         get {
@@ -33,7 +36,22 @@ public class EquipmentSlot : MonoBehaviour, IDropHandler {
         if (item) {
             item.transform.SetParent (DragHandler.startParent);
         }
-        DragHandler.itemBeingDragged.transform.SetParent (transform);
+
+        GameObject containerSlot = null;
+        if (DragHandler.itemBeingDragged.transform.parent.GetComponent<ContainerSlot> ()) {
+            containerSlot = DragHandler.startParent.gameObject;
+
+            GameObject objCopy = DragHandler.itemBeingDragged.GetComponent<SlotObjectContainer> ().obj;
+            GameObject newSlotItem = Instantiate (slotItem, transform, false);
+            newSlotItem.GetComponent<SlotObjectContainer> ().obj = objCopy;
+            newSlotItem.GetComponentInChildren<Text> ().text = DragHandler.itemBeingDragged.GetComponentInChildren<Text> ().text;
+            DragHandler.itemBeingDragged = null;
+        }
+        else {
+            DragHandler.itemBeingDragged.transform.SetParent (transform);
+        }
+
+        Destroy (containerSlot);
 
         QuestTriggerWrapper questTriggerWrapper = item.GetComponent<SlotObjectContainer> ().obj.GetComponent<QuestTriggerWrapper> ();
         if (questTriggerWrapper != null) {

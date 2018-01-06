@@ -69,7 +69,6 @@ public class PlayerInventorySlot : MonoBehaviour, IDropHandler {
                 GameObject.Find("QuestManager").GetComponent<QuestManager> ().ProcessQuestTrigger(trigger);
             }
         }
-        Debug.Log ("refreshing inventory");
         transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UICharacterInventoryFactory> ().RefreshCharacterInventory ();
     }
 }
