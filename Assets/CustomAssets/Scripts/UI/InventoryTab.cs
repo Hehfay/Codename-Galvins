@@ -3,17 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
-using System;
 
 public class InventoryTab: MonoBehaviour, IPointerClickHandler {
 
-    UIController uiController;
-
-    void Start () {
-        uiController = transform.parent.GetComponent<UIController> ();
-    }
+    public GameObject slotItemPrefab;
 
     public void OnPointerClick (PointerEventData eventData) {
-        uiController.InventoryTabClicked ();
+
+        if (UIState.uiState == UIState.UIStateEnum.Inventory) {
+            return;
+        }
+
+        switch (UIState.uiState) {
+            case UIState.UIStateEnum.QuestLog:
+            transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UIQuestLogFactory> ().DestroyFactoryItem ();
+            break;
+
+            case UIState.UIStateEnum.Options:
+            transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UIOptionsFactory> ().DestroyFactoryItem ();
+            break;
+        }
+
+        UIState.uiState = UIState.UIStateEnum.Inventory;
+        transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UICharacterInventoryFactory> ().CreateFactoryItem (slotItemPrefab);
     }
 }

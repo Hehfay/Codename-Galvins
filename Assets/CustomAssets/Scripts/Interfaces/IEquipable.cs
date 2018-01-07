@@ -3,7 +3,5 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public interface IEquipable {
-
     EquipSlotType GetEquipSlotType();
-
 }

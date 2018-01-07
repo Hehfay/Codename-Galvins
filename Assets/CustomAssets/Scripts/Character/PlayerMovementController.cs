@@ -53,7 +53,6 @@ public class PlayerMovementController : NetworkBehaviour {
     private float airTime; // how long been in air
 
     public bool shouldRotate;
-    public bool listening;
 
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
@@ -88,9 +87,6 @@ public class PlayerMovementController : NetworkBehaviour {
         foreach(SkinnedMeshRenderer r in meshRenderers) {
             r.enabled = false;
         }
-
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = -1;
     }
     
     public void FixedUpdate() {
@@ -187,7 +183,7 @@ public class PlayerMovementController : NetworkBehaviour {
         }
         else if (!isOnGround) {
             // TODO: figure out why this happens
-            Debug.Log("I am not on the ground, somehow.");
+            // Debug.Log("I am not on the ground, somehow.");
             jumpState = JumpState.Airborn;
         }
         else if (jumpState == JumpState.JustLanded) {
@@ -306,12 +302,11 @@ public class PlayerMovementController : NetworkBehaviour {
         zInput = Input.GetAxis("Vertical"); // get input
         leftMouseClicked = Input.GetMouseButtonDown(0);
         mousePos = Input.mousePosition;
-        isSprinting = Input.GetButton("Sprint"); // is user trying to sprint
-        isWalking = Input.GetButton("Walk"); // is user trying to walk
-        jumpInput = Input.GetButton("Jump"); // is user trying to jump
-
+        isSprinting = Input.GetButton ("Sprint"); // is user trying to sprint
+        isWalking = Input.GetButton ("Walk"); // is user trying to walk
+        jumpInput = Input.GetButton ("Jump"); // is user trying to jump
+        shouldRotate = (Input.GetKeyDown (KeyCode.E) ^ shouldRotate); // Exclusive OR
     }
-
 
     private void OnControllerColliderHit(ControllerColliderHit hit) {
         Rigidbody body = hit.collider.attachedRigidbody;

@@ -25,6 +25,6 @@ MonoBehaviour:
   - Find the Axe
   objectives:
   - {fileID: 1864759814268568, guid: 80db095f2112a024ca57f57a83e01b10, type: 2}
-  - {fileID: 1314169405552624, guid: 20a2a64613bf1ba40938a9c206d7c66e, type: 2}
+  - {fileID: 1498935295421412, guid: bbb2a302293df5c47bb9eeeb77aca9f9, type: 2}
   rewards: []
   rewardCount: 

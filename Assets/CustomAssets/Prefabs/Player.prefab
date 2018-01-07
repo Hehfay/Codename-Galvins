@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6a85431f1226b847be19cf13317c001, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  INVENTORY_SIZE: 14
+  INVENTORY_SIZE: 5
   leftHand:
   - {fileID: 0}
   - {fileID: 0}
@@ -361,16 +361,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  itemCount: 0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+  itemCount: 0000000000000000000000000000000000000000
   leftHandItemCount: 00000000000000000000000000000000
   rightHandItemCount: 00000000000000000000000000000000
 --- !u!114 &114821206141654580
@@ -404,12 +395,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73bea36db1f81bb43a74d80644bb34d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 0}
   cameraObj: {fileID: 0}
   gravityMultiplier: 2
   frictionCoeff: 35
   xSensitivity: 100
   ySensitivity: 100
   accelRate: 65
+  airbornAccelRate: 3
   strafeMultiplier: 0.5
   walkSpeed: 1.4
   runSpeed: 4

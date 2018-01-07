@@ -16,8 +16,8 @@ public class InitializeQuests : EditorWindow {
             Quest[] quests = Resources.FindObjectsOfTypeAll<Quest> ();
 
             for (int i = 0; i < quests.Length; ++i) {
-                quests[i].questComplete = false;
-                quests[i].questStarted  = false;
+                quests[i].active  = false;
+                quests[i].complete = false;
                 quests[i].SetCurrentObjectiveToFirstObjective ();
             }
             Debug.Log ("Done initializing.");
