@@ -21,8 +21,8 @@ GameObject:
   - component: {fileID: 224288825084118226}
   - component: {fileID: 222676633036212412}
   - component: {fileID: 114500588691585052}
-  - component: {fileID: 114905722309219658}
   - component: {fileID: 114795224645611588}
+  - component: {fileID: 114189016983913972}
   m_Layer: 5
   m_Name: Slot3
   m_TagString: Untagged
@@ -40,8 +40,8 @@ GameObject:
   - component: {fileID: 224911774544354586}
   - component: {fileID: 222859547550744162}
   - component: {fileID: 114680679280676028}
-  - component: {fileID: 114311281673971366}
   - component: {fileID: 114505256778339016}
+  - component: {fileID: 114906872865068106}
   m_Layer: 5
   m_Name: Slot2
   m_TagString: Untagged
@@ -151,8 +151,8 @@ GameObject:
   - component: {fileID: 224291281278825232}
   - component: {fileID: 222273750232814142}
   - component: {fileID: 114561179421716906}
-  - component: {fileID: 114726144177407234}
   - component: {fileID: 114120559851117600}
+  - component: {fileID: 114856013778341946}
   m_Layer: 5
   m_Name: Slot3 (1)
   m_TagString: Untagged
@@ -244,8 +244,8 @@ GameObject:
   - component: {fileID: 224385536674081650}
   - component: {fileID: 222245697607950852}
   - component: {fileID: 114707436969170000}
-  - component: {fileID: 114165352155040072}
   - component: {fileID: 114698729132416196}
+  - component: {fileID: 114380810574688220}
   m_Layer: 5
   m_Name: Slot1
   m_TagString: Untagged
@@ -449,8 +449,8 @@ GameObject:
   - component: {fileID: 224610872801343466}
   - component: {fileID: 222961679547429854}
   - component: {fileID: 114712464628088910}
-  - component: {fileID: 114044278953260962}
   - component: {fileID: 114078146142909584}
+  - component: {fileID: 114591580678757280}
   m_Layer: 5
   m_Name: Slot3 (2)
   m_TagString: Untagged
@@ -481,18 +481,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &114044278953260962
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1987850633081162}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d639bae74f9440e47b4608967e553843, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotItem: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8, type: 2}
 --- !u!114 &114062970808848654
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -774,18 +762,6 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Left Hand
---- !u!114 &114165352155040072
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1516354498710688}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d639bae74f9440e47b4608967e553843, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotItem: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8, type: 2}
 --- !u!114 &114186624924795054
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -813,6 +789,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114189016983913972
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1078565085708664}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d639bae74f9440e47b4608967e553843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotItem: {fileID: 1106010620724704, guid: 50dc6c4c2466abc4a9ce746de966c8e0, type: 2}
+  slotItemInteractingWithContainer: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8,
+    type: 2}
 --- !u!114 &114198863391166462
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1025,18 +1015,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   equipmentType: {fileID: 11400000, guid: 9a2ebe1a664926e4c8d421a756e5dbfd, type: 2}
   slotItem: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8, type: 2}
---- !u!114 &114311281673971366
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1113064091765924}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d639bae74f9440e47b4608967e553843, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotItem: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8, type: 2}
 --- !u!114 &114327852295208344
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1070,6 +1048,20 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Head
+--- !u!114 &114380810574688220
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1516354498710688}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d639bae74f9440e47b4608967e553843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotItem: {fileID: 1106010620724704, guid: 50dc6c4c2466abc4a9ce746de966c8e0, type: 2}
+  slotItemInteractingWithContainer: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8,
+    type: 2}
 --- !u!114 &114382366779317668
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1375,6 +1367,20 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114591580678757280
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1987850633081162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d639bae74f9440e47b4608967e553843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotItem: {fileID: 1106010620724704, guid: 50dc6c4c2466abc4a9ce746de966c8e0, type: 2}
+  slotItemInteractingWithContainer: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8,
+    type: 2}
 --- !u!114 &114626470543284700
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1587,18 +1593,6 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
---- !u!114 &114726144177407234
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1268248086272466}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d639bae74f9440e47b4608967e553843, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  slotItem: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8, type: 2}
 --- !u!114 &114770079752777636
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1695,6 +1689,20 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!114 &114856013778341946
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1268248086272466}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d639bae74f9440e47b4608967e553843, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  slotItem: {fileID: 1106010620724704, guid: 50dc6c4c2466abc4a9ce746de966c8e0, type: 2}
+  slotItemInteractingWithContainer: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8,
+    type: 2}
 --- !u!114 &114868906671654862
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1741,18 +1749,20 @@ MonoBehaviour:
   m_Spacing: {x: 0, y: 0}
   m_Constraint: 0
   m_ConstraintCount: 1
---- !u!114 &114905722309219658
+--- !u!114 &114906872865068106
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1078565085708664}
+  m_GameObject: {fileID: 1113064091765924}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d639bae74f9440e47b4608967e553843, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slotItem: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8, type: 2}
+  slotItem: {fileID: 1106010620724704, guid: 50dc6c4c2466abc4a9ce746de966c8e0, type: 2}
+  slotItemInteractingWithContainer: {fileID: 1359688811396970, guid: 6cdf53939c0f6134383bfadc1e60ceb8,
+    type: 2}
 --- !u!114 &114913486900277786
 MonoBehaviour:
   m_ObjectHideFlags: 1

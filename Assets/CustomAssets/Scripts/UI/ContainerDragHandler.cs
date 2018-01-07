@@ -5,20 +5,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 
-public class ContainerDragHandler : MonoBehaviour, IDropHandler {
+public class ContainerDragHandler : MonoBehaviour/*, IDropHandler*/ {
     public GameObject Slot;
     public GameObject ContainerSlotItem;
 
+    // I decided that i didn't want to support the drag and drop on chests to create new items.
+    /*
     public void OnDrop (PointerEventData eventData) {
         if (DragHandler.itemBeingDragged == null) {
             return;
         }
-        CreateSlotWithItem (DragHandler.itemBeingDragged.GetComponent<SlotObjectContainer>().obj);
 
         GameObject containerSlot = null;
         if (DragHandler.itemBeingDragged.transform.parent.GetComponent<ContainerSlot>()) {
             containerSlot = DragHandler.startParent.gameObject;
         }
+
+        CreateSlotWithItem (DragHandler.itemBeingDragged.GetComponent<SlotObjectContainer>().obj);
+
         if (containerSlot) {
             Destroy (containerSlot);
         }
@@ -26,6 +30,7 @@ public class ContainerDragHandler : MonoBehaviour, IDropHandler {
 
         DragHandler.itemBeingDragged = null;
     }
+    */
 
     public void CreateSlotWithItem (GameObject Item) {
         GameObject slot = Instantiate (Slot, transform.GetChild(0).transform.GetChild(0), false);
@@ -50,8 +55,5 @@ public class ContainerDragHandler : MonoBehaviour, IDropHandler {
                 GameObject.Find("QuestManager").GetComponent<QuestManager> ().ProcessQuestUnTrigger(trigger);
             }
         }
-
-        // Refresh the player inventory.
-        transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UICharacterInventoryFactory> ().RefreshCharacterInventory ();
     }
 }

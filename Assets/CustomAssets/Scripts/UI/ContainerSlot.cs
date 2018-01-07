@@ -1,6 +1,8 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class ContainerSlot : MonoBehaviour, IDropHandler {
@@ -17,39 +19,72 @@ public class ContainerSlot : MonoBehaviour, IDropHandler {
     }
 
     public void OnDrop (PointerEventData eventData) {
-        if (item) {
-            GameObject itemBeingDraggedSlot = DragHandler.itemBeingDragged.transform.parent.gameObject;
-            EquipmentSlot equipmentSlot = itemBeingDraggedSlot.GetComponent<EquipmentSlot> ();
-            if (equipmentSlot != null) {
-                // This is a red flag because the item being dragged is coming from an equipment slot.
-                // Need to make sure that the item in this slot is of the same type.
-                Equipment equipment = item.GetComponent<SlotObjectContainer> ().obj.GetComponent<Equipment>();
-                if (equipment == null) {
-                    return; // Cannot swap.
-                }
+        // The only way this function will be called is if the player is trying to swap an item from the inventory
+        // with a item on the chest.
 
-                if (!equipmentSlot.equipmentType.Equals(item.GetComponent<SlotObjectContainer> ().obj.GetComponent<Equipment>().equipmentType)) {
-                    return; // Cannot swap.
-                }
+        if (DragHandler.startParent.GetComponent<PlayerInventorySlot> ()) {
+            // The player is swapping an item from the inventory.
+
+            GameObject itemCopy = item;
+            itemCopy.transform.SetParent (DragHandler.startParent);
+            DragHandler.itemBeingDragged.transform.SetParent (transform);
+            transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UICharacterInventoryFactory> ().RefreshCharacterInventory ();
+
+            itemCopy.transform.SetParent (null);
+            DragHandler.itemBeingDragged.transform.SetParent (null);
+
+            CreateSlotItemAsChildOfExistingSlot (DragHandler.itemBeingDragged);
+            DragHandler.startParent.GetComponent<PlayerInventorySlot> ().CreateSlotItemAsChildOfExistingSlot (itemCopy);
+        }
+        else if (DragHandler.startParent.GetComponent<ContainerSlot> ()) {
+            item.transform.SetParent (DragHandler.startParent);
+            DragHandler.itemBeingDragged.transform.SetParent (transform);
+            DragHandler.itemBeingDragged = null;
+        }
+        else if (DragHandler.startParent.GetComponent<EquipmentSlot>()) {
+
+            GameObject uiObject = DragHandler.itemBeingDragged.GetComponent<SlotObjectContainer> ().obj;
+            Equipment equipmentComponent = uiObject.GetComponent<Equipment> ();
+            if (equipmentComponent == null ||
+                item.GetComponent<SlotObjectContainer> ().obj.GetComponent<Equipment> () == null ||
+                !equipmentComponent.equipmentType.Equals (item.GetComponent<SlotObjectContainer> ().obj.GetComponent<Equipment> ().equipmentType)) {
+                DragHandler.itemBeingDragged.transform.SetParent (DragHandler.startParent);
+                return;
             }
 
-            // Make the current child a child of the start parent.
-            item.transform.SetParent (DragHandler.startParent);
-            // A function on the start parent for create child?
-        }
-        // Make the item being dragged a child of this gameobject.
-        // A function on container slot to create a child? 
-        DragHandler.itemBeingDragged.transform.SetParent (transform);
+            GameObject itemCopy = item;
+            itemCopy.transform.SetParent (DragHandler.startParent);
+            DragHandler.itemBeingDragged.transform.SetParent (transform);
+            transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UICharacterInventoryFactory> ().RefreshCharacterInventory ();
 
-        QuestTriggerWrapper questTriggerWrapper = item.GetComponent<SlotObjectContainer> ().obj.GetComponent<QuestTriggerWrapper> ();
+            CreateSlotItemAsChildOfExistingSlot (DragHandler.itemBeingDragged);
+            DragHandler.startParent.GetComponent<EquipmentSlot> ().CreateSlotItemAsChildOfExistingSlot (itemCopy);
+        }
+    }
+
+    public void CreateSlotItemAsChildOfExistingSlot (GameObject itemcopy) {
+        GameObject newSlotItem = Instantiate (slotItem, transform, false);
+        Component comp = itemcopy.GetComponent<SlotObjectContainer>().obj.GetComponent (typeof (IObjectData));
+        IObjectData objectData = comp as IObjectData;
+        string uiText;
+        if (objectData.count () == 1) {
+            uiText = objectData.objectName ();
+        }
+        else {
+            uiText = objectData.objectName () + " x" + objectData.count ();
+        }
+        newSlotItem.GetComponent<SlotObjectContainer> ().obj = itemcopy.GetComponent<SlotObjectContainer>().obj;
+        newSlotItem.GetComponent<Text> ().text = uiText;
+
+        QuestTriggerWrapper questTriggerWrapper = newSlotItem.GetComponent<SlotObjectContainer> ().obj.GetComponent<QuestTriggerWrapper>();
         if (questTriggerWrapper != null) {
             QuestTrigger trigger = questTriggerWrapper.questTrigger;
             if (trigger != null) {
-                Debug.Log ("Process Quest UnTrigger");
+                Debug.Log ("Process Quest UnTrigger.");
                 GameObject.Find("QuestManager").GetComponent<QuestManager> ().ProcessQuestUnTrigger(trigger);
             }
         }
-        Debug.Log ("Refreshing");
-        transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UICharacterInventoryFactory> ().RefreshCharacterInventory ();
+
+        Destroy (itemcopy);
     }
 }

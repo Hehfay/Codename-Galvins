@@ -9,7 +9,7 @@ public class InteractUtility : MonoBehaviour {
     //
     // Things this fucntion handles:
     // - Lock character rotation
-    //  - Note that restricting player movement is not handled here, because its not common to all interactions.
+    // - Note that restricting player movement is not handled here, because its not common to all interactions.
     // 
     // - Disable the Collider Interaction Controller
     //

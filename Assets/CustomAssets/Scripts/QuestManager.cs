@@ -7,10 +7,6 @@ public class QuestManager : MonoBehaviour {
     public List<Quest> quests;
 
     void Start () {
-        if (false) {
-            // If there are multiple quest managers in the scene that is bad.
-            Debug.Log ("Start Quest Manager.");
-        }
         for (int i = 0; i < quests.Count; ++i) {
             quests[i].Init ();
             quests[i].ShowCurrentTasks ();
