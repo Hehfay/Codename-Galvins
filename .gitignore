@@ -28,6 +28,7 @@ ExportedObj/
 Assets/TEMP*
 Standard\ Assets*
 Assets/Editor/CrossPlatformInput*
+Assets/Editor.meta
 Assets/UnityVS*
 Assets/CustomAssets/Resources/Items
 Assets/CustomAssets/Resources/Items.meta

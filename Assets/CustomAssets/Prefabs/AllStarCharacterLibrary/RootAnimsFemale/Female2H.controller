@@ -81,18 +81,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ColliderTestTime: 0
---- !u!114 &11420114
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b62ece7acb9130c418f43cccb6996b6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ColliderTestTime: 0
 --- !u!114 &11424444
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -29980,8 +29968,7 @@ AnimatorState:
   m_Transitions:
   - {fileID: 110125296}
   - {fileID: 110134390}
-  m_StateMachineBehaviours:
-  - {fileID: 11420114}
+  m_StateMachineBehaviours: []
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 0

@@ -104,7 +104,7 @@ public class PlayerMovementController : NetworkBehaviour {
             transform.Rotate(0f, yRotInput, 0f, Space.World);
             // rotate camera (vertical)
             // have to clamp rotation around xAxis (vertical look)
-            RotateXAxisClampedBidirectionally(-xRotInput, maxVerticalLookAngle);
+            CmdRotateXAxisClampedBidirectionally(-xRotInput, maxVerticalLookAngle);
         }
     }
 
@@ -221,8 +221,7 @@ public class PlayerMovementController : NetworkBehaviour {
         }
         Vector3 moveVal = velocity * Time.deltaTime;
 
-        collisionFlags = characterController.Move(moveVal);
-        // now check if that move causes problems
+        CmdMovePlayer(moveVal);
 
         bool suicide = Input.GetKeyDown(KeyCode.K); // kill ; TODO: remove this, its just a dumb testing feature
 
@@ -258,13 +257,19 @@ public class PlayerMovementController : NetworkBehaviour {
         }
     }
 
+    [Command]
+    public void CmdMovePlayer(Vector3 displacement) {
+        collisionFlags = characterController.Move(displacement);
+    }
+
     /**
      * This function handles look rotations about the local x-axis (vertical looking).
      * It only changes the camera, not the player so that the model does not lean
      * in weird ways. It allows a clamp angle be passed in so that the the camera
      * does not rotate beyond this angle from rest angle in either direction.
      */
-    void RotateXAxisClampedBidirectionally(float angle, float clampAngle) {
+     [Command]
+    void CmdRotateXAxisClampedBidirectionally(float angle, float clampAngle) {
         
 
         // convert the incoming angle as degrees to rads
