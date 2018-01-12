@@ -13,6 +13,14 @@ public class UICharacterInventoryFactory: MonoBehaviour {
         Canvas = GameObject.Find ("Canvas");
     }
 
+    void Update () {
+        if (references.Count != 0) {
+            if (references[0] == null) {
+                Debug.Log ("references[0] == null");
+            }
+        }
+    }
+
     public void CreateFactoryItem (GameObject slotItemPrefab) {
         references.Clear ();
         references.Add (Instantiate (UICharacterInventory, Canvas.transform, false));
@@ -23,7 +31,9 @@ public class UICharacterInventoryFactory: MonoBehaviour {
         if (references.Count == 0) {
             return;
         }
+
         CharacterInventory characterInventory = GetComponent<CharacterInventory> ();
+
         references[0].GetComponent<UIInventoryPopulator> ().PopulateCharacterInventory (ref characterInventory);
         Destroy (references[0]);
         references.Clear ();

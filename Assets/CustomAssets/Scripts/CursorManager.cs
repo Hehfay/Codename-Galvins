@@ -1,17 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 // This script handles locking and unlocking the cursor when 
 // escape is pressed. It also handles loading the cursor texture.
-public class CursorManager : MonoBehaviour {
+public class CursorManager : NetworkBehaviour {
 
     public bool cursorLocked;
     public TextAsset crossHairRaw;
     private Texture2D crossHair;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    public void Start () {
+        if (!isLocalPlayer) {
+            return;
+        }
         Cursor.lockState = CursorLockMode.Locked;
         cursorLocked = true;
         Cursor.visible = true;
@@ -32,6 +36,9 @@ public class CursorManager : MonoBehaviour {
     }
 
     void OnGUI () {
+        if (!isLocalPlayer) {
+            return;
+        }
         if (cursorLocked) {
             float xMin;
             float yMin;
