@@ -8,6 +8,7 @@ public class InventoryTab: MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick (PointerEventData eventData) {
         if (!transform.root.GetComponent<PlayerReferenceContainer>().Player.GetComponent<NetworkIdentity>().isLocalPlayer) {
+            Debug.Log ("Returning from click.");
             return;
         }
 

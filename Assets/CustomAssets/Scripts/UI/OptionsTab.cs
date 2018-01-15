@@ -5,8 +5,21 @@ using UnityEngine.EventSystems;
 public class OptionsTab: MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick (PointerEventData eventData) {
-        if (!transform.root.GetComponent<PlayerReferenceContainer>().Player.GetComponent<NetworkIdentity>().isLocalPlayer) {
+
+        GameObject playerReference =
+            transform.root.GetComponent<PlayerReferenceContainer> ().Player;
+
+        if (playerReference == null) {
+            Debug.Log ("playerReference is null.");
             return;
+        }
+
+        if (!(playerReference.GetComponent<NetworkIdentity> ().isLocalPlayer)) {
+            Debug.Log ("Not the local player.");
+            return;
+        }
+        else {
+            Debug.Log ("This is the local player.");
         }
 
         if (UIState.uiState == UIState.UIStateEnum.Options) {
@@ -15,15 +28,15 @@ public class OptionsTab: MonoBehaviour, IPointerClickHandler {
 
         switch (UIState.uiState) {
             case UIState.UIStateEnum.Inventory:
-            transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UICharacterInventoryFactory> ().DestroyFactoryItem ();
+            playerReference.GetComponent<UICharacterInventoryFactory> ().DestroyFactoryItem ();
             break;
 
             case UIState.UIStateEnum.QuestLog:
-            transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UIQuestLogFactory> ().DestroyFactoryItem ();
+            playerReference.GetComponent<UIQuestLogFactory> ().DestroyFactoryItem ();
             break;
         }
 
         UIState.uiState = UIState.UIStateEnum.Options;
-        transform.root.GetComponent<PlayerReferenceContainer> ().Player.GetComponent<UIOptionsFactory> ().CreateFactoryItem ();
+        playerReference.GetComponent<UIOptionsFactory> ().CreateFactoryItem ();
     }
 }
