@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class UIInputHandler : MonoBehaviour {
+public class UIInputHandler : NetworkBehaviour {
     private bool active;
     private GameObject Canvas;
     public GameObject slotItemPrefab;
@@ -14,6 +15,9 @@ public class UIInputHandler : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!isLocalPlayer) { // networking related: this makes only local player controlled by this script
+            return;
+        }
         if (Input.GetKeyDown(KeyCode.E)) {
             active = !active;
 
@@ -26,6 +30,8 @@ public class UIInputHandler : MonoBehaviour {
                 InteractUtility.InteractEnd (gameObject);
             }
 
+            // TEMPORARY At some point soon this code will not work because the health bar
+            // should always display.
             foreach (Transform t in Canvas.transform) {
                 Destroy (t.gameObject);
             }
