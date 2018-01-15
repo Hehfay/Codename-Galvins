@@ -1,12 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
+﻿using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.EventSystems;
 
-public class QuestLogTab : MonoBehaviour, IPointerClickHandler{
+public class QuestLogTab : MonoBehaviour, IPointerClickHandler {
 
     public void OnPointerClick (PointerEventData eventData) {
+        if (!transform.root.GetComponent<PlayerReferenceContainer>().Player.GetComponent<NetworkIdentity>().isLocalPlayer) {
+            return;
+        }
 
         if (UIState.uiState == UIState.UIStateEnum.QuestLog) {
             return;
