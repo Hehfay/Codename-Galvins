@@ -3585,7 +3585,7 @@ MonoBehaviour:
     i14: 224
     i15: 163
   m_ServerOnly: 0
-  m_LocalPlayerAuthority: 0
+  m_LocalPlayerAuthority: 1
 --- !u!114 &114594322978924910
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3644,9 +3644,9 @@ MonoBehaviour:
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
-  m_SnapThreshold: 5
-  m_InterpolateRotation: 1
-  m_InterpolateMovement: 1
+  m_SnapThreshold: 0.001
+  m_InterpolateRotation: 5
+  m_InterpolateMovement: 5
 --- !u!114 &114718662008986036
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3713,7 +3713,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}

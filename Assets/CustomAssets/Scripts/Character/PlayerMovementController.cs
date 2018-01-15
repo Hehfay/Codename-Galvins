@@ -4,6 +4,7 @@ using UnityEngine.Networking;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovementController : NetworkBehaviour {
 
+
     // local variables
     private Animator animator; // player animator
     bool isAlive; // is this character alive?
@@ -104,7 +105,7 @@ public class PlayerMovementController : NetworkBehaviour {
             transform.Rotate(0f, yRotInput, 0f, Space.World);
             // rotate camera (vertical)
             // have to clamp rotation around xAxis (vertical look)
-            CmdRotateXAxisClampedBidirectionally(-xRotInput, maxVerticalLookAngle);
+            RotateXAxisClampedBidirectionally(-xRotInput, maxVerticalLookAngle);
         }
     }
 
@@ -221,7 +222,7 @@ public class PlayerMovementController : NetworkBehaviour {
         }
         Vector3 moveVal = velocity * Time.deltaTime;
 
-        CmdMovePlayer(moveVal);
+        collisionFlags = characterController.Move(moveVal);
 
         bool suicide = Input.GetKeyDown(KeyCode.K); // kill ; TODO: remove this, its just a dumb testing feature
 
@@ -257,9 +258,13 @@ public class PlayerMovementController : NetworkBehaviour {
         }
     }
 
-    [Command]
-    public void CmdMovePlayer(Vector3 displacement) {
-        collisionFlags = characterController.Move(displacement);
+    public void OnCollisionEnter(Collider other) {
+        if (!isServer) {
+            return;
+        } else {
+
+        }
+
     }
 
     /**
@@ -268,8 +273,7 @@ public class PlayerMovementController : NetworkBehaviour {
      * in weird ways. It allows a clamp angle be passed in so that the the camera
      * does not rotate beyond this angle from rest angle in either direction.
      */
-     [Command]
-    void CmdRotateXAxisClampedBidirectionally(float angle, float clampAngle) {
+    void RotateXAxisClampedBidirectionally(float angle, float clampAngle) {
         
 
         // convert the incoming angle as degrees to rads
