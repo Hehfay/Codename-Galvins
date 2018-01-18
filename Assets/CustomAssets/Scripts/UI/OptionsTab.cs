@@ -18,9 +18,6 @@ public class OptionsTab: MonoBehaviour, IPointerClickHandler {
             Debug.Log ("Not the local player.");
             return;
         }
-        else {
-            Debug.Log ("This is the local player.");
-        }
 
         if (UIState.uiState == UIState.UIStateEnum.Options) {
             return;

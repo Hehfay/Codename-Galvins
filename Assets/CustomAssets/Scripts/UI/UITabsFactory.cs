@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class UITabsFactory : MonoBehaviour {
     public GameObject UITabs;
@@ -8,6 +9,9 @@ public class UITabsFactory : MonoBehaviour {
     private GameObject Canvas;
 
     void Start () {
+        if (!(GetComponent<NetworkIdentity> ().isLocalPlayer)) {
+            return;
+        }
         references = new List<GameObject>();
         Canvas = GameObject.Find ("Canvas");
         Canvas.GetComponent<PlayerReferenceContainer> ().Player = gameObject;
