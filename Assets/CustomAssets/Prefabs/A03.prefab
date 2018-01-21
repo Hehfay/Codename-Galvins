@@ -538,6 +538,8 @@ GameObject:
   - component: {fileID: 114331642453215832}
   - component: {fileID: 114594322978924910}
   - component: {fileID: 114105854465145822}
+  - component: {fileID: 114103421774900112}
+  - component: {fileID: 114644101435437780}
   m_Layer: 0
   m_Name: A03
   m_TagString: Untagged
@@ -3463,14 +3465,14 @@ Rigidbody:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1310107706923890}
   serializedVersion: 2
-  m_Mass: 1
+  m_Mass: 70
   m_Drag: 0
   m_AngularDrag: 0.05
   m_UseGravity: 1
   m_IsKinematic: 1
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!95 &95469225042159092
 Animator:
   serializedVersion: 3
@@ -3488,6 +3490,29 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
+--- !u!114 &114103421774900112
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310107706923890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: de8cf972e5a9c1944b8586015f4af530, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  accelRate: 65
+  airbornAccelRate: 25
+  walkSpeed: 1.4
+  runSpeed: 4
+  sprintSpeed: 7
+  slideDownSlopeSpeed: 8
+  maxXZAirborneSpeed: 3
+  strafeMultiplier: 0.8
+  backpedalMultiplier: 0.5
+  jumpHeight: 1.2
+  jumpLandDuration: 0.2
+  frictionCoefficient: 35
 --- !u!114 &114105854465145822
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3627,6 +3652,20 @@ MonoBehaviour:
   jumpLandDuration: 0.1
   minSpeed: 0.1
   shouldRotate: 0
+--- !u!114 &114644101435437780
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1310107706923890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d3d1298f5708cd458d60b9747eb00fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xRotationClamped: 1
+  xPositiveRotationClampDegree: 85
+  xNegativeRotationClampDegree: 85
 --- !u!114 &114678291389240954
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3713,7 +3752,7 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.6
+  m_Radius: 0.5
   m_Height: 1.8
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}

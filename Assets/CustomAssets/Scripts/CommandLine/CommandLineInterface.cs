@@ -81,7 +81,7 @@ public class CommandLineInterface : MonoBehaviour {
         commandLineText.text += s;
     }
     public void println(string s) {
-        commandLineText.text += s + "\n";
+        print(s + "\n");
     }
 
     /**

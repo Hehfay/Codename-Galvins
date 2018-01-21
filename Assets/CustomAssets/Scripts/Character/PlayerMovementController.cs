@@ -55,31 +55,36 @@ public class PlayerMovementController : NetworkBehaviour {
 
     public bool shouldRotate;
 
+    PlayerRotation playerRotation;
+    PlayerTranslation playerTranslation;
+
     public override void OnStartLocalPlayer() {
         base.OnStartLocalPlayer();
         // get the character controller of parent object
-        characterController = GetComponent<CharacterController>();
+        //characterController = GetComponent<CharacterController>();
         // setup character position
         RaycastHit hit; // raycast hit for below raycast
         Vector3 pos = this.transform.position;
-        height = characterController.height;
-        radius = characterController.radius;
+        //height = characterController.height;
+        //radius = characterController.radius;
         if (Physics.Raycast(new Ray(pos, Vector3.down), out hit)) { // cast ray from current player position into ground beneath
             this.transform.position = new Vector3(pos.x, hit.point.y /*+ (height / 2) + 0.2f */, pos.z); // set the player to land on the ground beneath
         }
-        jumpState = JumpState.Grounded;
-        jumpCoeff = Mathf.Sqrt(-1 * Physics.gravity.y * jumpHeight * 2); // velocity required to reach jumpHeight
+        //jumpState = JumpState.Grounded;
+        //jumpCoeff = Mathf.Sqrt(-1 * Physics.gravity.y * jumpHeight * 2); // velocity required to reach jumpHeight
         isAlive = true;
         shouldRotate = true;
         // setup camera
-        accelRate += frictionCoeff;
-        cameraObj = new GameObject();
+        //accelRate += frictionCoeff;
+        /*cameraObj = new GameObject();
         cameraObj.transform.parent = this.transform;
         cameraObj.transform.localPosition = new Vector3(0f, 1.545f, 0f);
         cameraObj.transform.rotation = new Quaternion(0f, 0f, 0f, 1f);
         Camera.main.GetComponent<PlayerCamera>().setTarget(cameraObj.transform);
         camera = cameraObj.GetComponentInChildren<Camera>();
-        camera.fieldOfView = 60f;
+        camera.fieldOfView = 60f; */
+        playerRotation = GetComponent<PlayerRotation>();
+        playerTranslation = GetComponent<PlayerTranslation>();
 
         animator = GetComponent<Animator>();
 
@@ -101,11 +106,12 @@ public class PlayerMovementController : NetworkBehaviour {
         float xRot = Input.GetAxis("Mouse Y") * Time.deltaTime * xSensitivity; // get rotate input
         float yRot = Input.GetAxis("Mouse X") * Time.deltaTime * ySensitivity; // get rotate input
         if (shouldRotate) {
+            playerRotation.Rotate(new Vector2(xRot, yRot));
             // rotate model(horizontal)
-            transform.Rotate(0f, yRotInput, 0f, Space.World);
+            //transform.Rotate(0f, yRotInput, 0f, Space.World);
             // rotate camera (vertical)
             // have to clamp rotation around xAxis (vertical look)
-            RotateXAxisClampedBidirectionally(-xRotInput, maxVerticalLookAngle);
+            //RotateXAxisClampedBidirectionally(-xRotInput, maxVerticalLookAngle);
         }
     }
 
@@ -130,99 +136,20 @@ public class PlayerMovementController : NetworkBehaviour {
         }
 
         // do translational movement
-        float speed = runSpeed; // determine max speed based on running/walking/sprinting
+        PlayerTranslation.RunState runState = PlayerTranslation.RunState.Running;
         if (isSprinting) { // sprinting overrides others
-            speed = sprintSpeed;
+            runState = PlayerTranslation.RunState.Sprinting;
         }
         else if (isWalking) {
-            speed = walkSpeed;
+            runState = PlayerTranslation.RunState.Walking;
+        } else if (zInput == 0 && xInput == 0) { // not moving
+            runState = PlayerTranslation.RunState.Still;
         }
-
-        Vector3 velocity = characterController.velocity; // set new velocity to current velocity for now
-        Vector3 desiredAccelDirection;
-        if (speed > velocity.magnitude) {
-            desiredAccelDirection = transform.forward * zInput + transform.right * xInput * strafeMultiplier; // get the desired accel direction
-        } else {
-            desiredAccelDirection = new Vector3(0f, 0f, 0f); // No acceleration since moving faster than desired / allowed
+        playerTranslation.SetRunState(runState);
+        playerTranslation.SetMovementDirection(new Vector2(xInput, zInput));
+        if (jumpInput) {
+            playerTranslation.Jump();
         }
-        Vector3 desiredAcceleration = Vector3.zero; // acceleration input by player ; zero if no collision with surface beneath
-        Vector3 accelDirectionPlane; // this is the vertical plane that intersects the desired acceleration direction
-        Vector3 velocityDirectionPlane = Vector3.Cross(velocity, Vector3.up); // this is the vertical plane that intersects current velocity
-
-        // Convert above desired direction into actual direction along survace beneath
-        RaycastHit groundHitInfo;
-        RaycastHit headHitInfo;
-        bool isOnGround = //characterController.isGrounded;
-        Physics.SphereCast(transform.position + new Vector3(0.0f, radius, 0.0f), radius, Vector3.down, out groundHitInfo,
-                           0.2f /*height / 2 - radius*/, Physics.AllLayers, QueryTriggerInteraction.Ignore);
-        bool hitHead = Physics.SphereCast(transform.position, radius, Vector3.up, out headHitInfo,
-                           height /*/ 2 */ - radius, Physics.AllLayers, QueryTriggerInteraction.Ignore);
-        if (jumpInput && jumpState == JumpState.Grounded) {
-            jumpState = JumpState.Inititated;
-            Vector2 xzPlaneSpeed = Vector2.ClampMagnitude(new Vector2(velocity.x, velocity.z), jumpSpeed); // clamp speed along xz plane
-            velocity = new Vector3(xzPlaneSpeed.x, jumpCoeff, xzPlaneSpeed.y); // jumping
-            
-            // TODO: play jump noise
-        }
-        else if (jumpState == JumpState.Inititated && hitHead) {
-            jumpState = JumpState.Grounded; // could also choose just landed and play noises for both leaving ground and landing; or neither
-        }
-        else if (jumpState == JumpState.Inititated && !isOnGround) { // just left the ground
-            jumpState = JumpState.Airborn;
-        }
-        else if (jumpState == JumpState.Airborn) {
-            if (isOnGround) {
-                jumpState = JumpState.JustLanded;
-                timeLanded = Time.time; // timestamp of when landed
-            } else {
-                desiredAcceleration += Physics.gravity;
-                desiredAcceleration += (transform.forward * zInput + transform.right * xInput * strafeMultiplier) * airbornAccelRate;
-                Vector2 xzPlaneVelocity = Vector2.ClampMagnitude(new Vector2(velocity.x, velocity.z), jumpSpeed);
-                velocity = new Vector3(xzPlaneVelocity.x, velocity.y, xzPlaneVelocity.y) + (desiredAcceleration * Time.deltaTime);
-            }
-            // TODO: play land noise
-        }
-        else if (!isOnGround) {
-            // TODO: figure out why this happens
-            // Debug.Log("I am not on the ground, somehow.");
-            jumpState = JumpState.Airborn;
-        }
-        else if (jumpState == JumpState.JustLanded) {
-            if (Time.time - timeLanded > jumpLandDuration) {
-                jumpState = JumpState.Grounded;
-                timeLanded = 0.0f; // sentinel value indicating not in use
-            }
-        }
-        if (jumpState == JumpState.Grounded || jumpState == JumpState.JustLanded) {
-            Vector3 groundHitNormal = groundHitInfo.normal.normalized;
-            float angleFromVertical = MathUtil.convertRadToDegree(Mathf.Acos(Vector3.Dot(groundHitNormal, Vector3.up)));
-            velocityDirectionPlane = Vector3.Cross(velocity, Vector3.up);
-            Vector3 velocityDirection = Vector3.Cross(groundHitInfo.normal, velocityDirectionPlane).normalized; // line of intersection between vertical plane of velocity and plane walking on.
-            if (angleFromVertical > characterController.slopeLimit) { // slide down the terrain bc its too steep
-                velocityDirectionPlane = Vector3.Cross(groundHitNormal, Vector3.up);
-                velocityDirection = Vector3.Cross(groundHitNormal, velocityDirectionPlane).normalized;
-                velocity = velocityDirection * runSpeed;
-            }
-            else {
-                accelDirectionPlane = Vector3.Cross(desiredAccelDirection, Vector3.up); // this is the plane that intersets both y axis and movement direction, always vertical
-                desiredAccelDirection = Vector3.Cross(groundHitInfo.normal, accelDirectionPlane).normalized; // this is the line of intersection between the vertical plane and the plane walking on.
-                desiredAccelDirection = desiredAccelDirection.normalized; // normalize the direction of the accel
-                desiredAcceleration = desiredAccelDirection * accelRate; // now get actual acceleration by taking direction * accelRate
-            }
-
-            Vector3 friction = velocityDirection * frictionCoeff * -1;
-            if ((friction.magnitude * Time.fixedDeltaTime) > velocity.magnitude && desiredAcceleration.magnitude == 0) { // friction would actually cause velocity in negative direction
-                friction = -velocity / Time.fixedDeltaTime; // so make it so that velocity will be zero due to friction
-            }
-            velocity = velocity.magnitude * velocityDirection + (desiredAcceleration + friction) * Time.deltaTime;
-            if (velocity.magnitude > sprintSpeed) { // can't go faster than max velocity
-                velocity = Vector3.ClampMagnitude(velocity, sprintSpeed);
-            }
-        } else {
-        }
-        Vector3 moveVal = velocity * Time.deltaTime;
-
-        collisionFlags = characterController.Move(moveVal);
 
         bool suicide = Input.GetKeyDown(KeyCode.K); // kill ; TODO: remove this, its just a dumb testing feature
 
@@ -246,6 +173,7 @@ public class PlayerMovementController : NetworkBehaviour {
             default:
                 break;
         }
+        Vector3 velocity = playerTranslation.GetCurrentVelocity();
         if (velocity.magnitude > 0.1f) {
             animator.SetBool("Idling", false);
         }

@@ -29,7 +29,7 @@ public class GameInterpreter : MonoBehaviour {
 
     public static GameInterpreter getInstance() {
         if (instance == null) {
-            GameObject obj = new GameObject();
+            GameObject obj = new GameObject("Game Interpreter");
             instance = obj.AddComponent<GameInterpreter>();
         }
         return instance;
