@@ -9,10 +9,10 @@ public class InteractUtility : MonoBehaviour {
     //
     // Things this fucntion handles:
     // - Lock character rotation
-    // - Note that restricting player movement is not handled here, because its not common to all interactions.
-    // 
     // - Disable the Collider Interaction Controller
     //
+    // Note that restricting player movement is not handled here, because its not common to all interactions.
+
     public static void InteractStart (GameObject Player) {
         Player.GetComponent<CursorManager> ().UnlockCursor ();
         Player.GetComponent<ColliderInteractController> ().DisableInteractController ();

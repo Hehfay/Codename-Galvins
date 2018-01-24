@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using UnityEngine.UI;
 
 public class ColliderInteractController : MonoBehaviour {
@@ -16,6 +17,8 @@ public class ColliderInteractController : MonoBehaviour {
 
     // This value could be changed by a telekenesis effect, perhaps.
     // Set in the editor.
+    [Tooltip("The distance you need to be within before you can interact with things. " +
+             "Could be modified by telekenesis, for example.")]
     public float rayCastDistance;
 
     private void DestroyPopup () {
@@ -34,6 +37,10 @@ public class ColliderInteractController : MonoBehaviour {
     }
 
 	void Start () {
+        if (!(GetComponent<NetworkIdentity>().isLocalPlayer)) {
+            return;
+        }
+
         references = new List<GameObject>();
         Canvas = GameObject.Find ("Canvas");
         allowedToPickThingsUp = true;
@@ -48,6 +55,9 @@ public class ColliderInteractController : MonoBehaviour {
     }
 	
 	void Update () {
+        if (!(GetComponent<NetworkIdentity>().isLocalPlayer)) {
+            return;
+        }
 
         GetInput ();
 

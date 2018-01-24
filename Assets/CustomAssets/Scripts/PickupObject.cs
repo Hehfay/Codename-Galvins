@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class PickupObject : MonoBehaviour, IInteractable {
+public class PickupObject : NetworkBehaviour, IInteractable {
 
     public string ToolTip () {
         Component component = GetComponent (typeof(IObjectData));
@@ -59,9 +60,15 @@ public class PickupObject : MonoBehaviour, IInteractable {
                 GameObject.Find ("QuestManager").GetComponent<QuestManager>().ProcessQuestTrigger(qt.questTrigger);
             }
             if (gameObject.activeInHierarchy) {
-                gameObject.SetActive (false);
+                CmdDeactivateGameObject ();
             }
         }
         return foundSlotForItem;
+    }
+
+    [Command]
+    public void CmdDeactivateGameObject () {
+        Debug.Log ("deactivate");
+        gameObject.SetActive (false);
     }
 }
